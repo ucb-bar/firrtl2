@@ -47,7 +47,7 @@ object ClassLogLevelAnnotation extends HasShellOptions {
       longOption = "class-log-level",
       toAnnotationSeq = (a: Seq[String]) =>
         a.map { aa =>
-          val className :: levelName :: _ = aa.split(":").toList
+          val className :: levelName :: _ = aa.split(":").toList: @unchecked
           val level = LogLevel(levelName)
           ClassLogLevelAnnotation(className, level)
         },

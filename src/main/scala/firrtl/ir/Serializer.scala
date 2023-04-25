@@ -190,7 +190,7 @@ object Serializer {
 
     // We could initialze the StringBuilder size, but this is bad for small modules which may not
     // even reach the bufferSize.
-    private implicit val b = new StringBuilder
+    private implicit val b: StringBuilder = new StringBuilder
 
     // The flattening of Whens into WhenBegin and friends requires us to keep track of the
     // indention level
@@ -252,10 +252,10 @@ object Serializer {
     case c: Conditionally => b ++= sIt(c).mkString
     case EmptyStmt => b ++= "skip"
     case bb: Block => b ++= sIt(bb).mkString
-    case stop @ Stop(info, ret, clk, en) =>
+    case stop @ Stop(info, ret, clk, en, _) =>
       b ++= "stop("; s(clk); b ++= ", "; s(en); b ++= ", "; b ++= ret.toString; b += ')'
       sStmtName(stop.name); s(info)
-    case print @ Print(info, string, args, clk, en) =>
+    case print @ Print(info, string, args, clk, en, _) =>
       b ++= "printf("; s(clk); b ++= ", "; s(en); b ++= ", "; b ++= string.escape
       if (args.nonEmpty) b ++= ", "; s(args, ", "); b += ')'
       sStmtName(print.name); s(info)
@@ -295,7 +295,7 @@ object Serializer {
     case Attach(info, exprs)             =>
       // exprs should never be empty since the attach statement takes *at least* two signals according to the spec
       b ++= "attach ("; s(exprs, ", "); b += ')'; s(info)
-    case veri @ Verification(op, info, clk, pred, en, msg) =>
+    case veri @ Verification(op, info, clk, pred, en, msg, _) =>
       b ++= op.toString; b += '('; s(List(clk, pred, en), ", ", false); b ++= msg.escape
       b += ')'; sStmtName(veri.name); s(info)
 

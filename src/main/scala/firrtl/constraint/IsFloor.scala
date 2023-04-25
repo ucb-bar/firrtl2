@@ -22,7 +22,7 @@ case class IsFloor private (child: Constraint, dummyArg: Int) extends Constraint
     case x: IsFloor => x
     case _ => this
   }
-  val children = Vector(child)
+  lazy val children = Vector(child)
 
   override def map(f: Constraint => Constraint): Constraint = IsFloor(f(child))
 

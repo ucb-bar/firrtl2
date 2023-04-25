@@ -10,6 +10,7 @@ import firrtl.annotations.{Annotation, NoTargetAnnotation}
 import firrtl.options.Viewer.view
 import firrtl.options.{CustomFileEmission, Dependency}
 import firrtl.stage.FirrtlOptions
+import firrtl.stage.FirrtlOptionsView
 
 private[firrtl] abstract class SMTEmitter private[firrtl] ()
     extends Transform

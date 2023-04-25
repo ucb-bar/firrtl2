@@ -19,28 +19,36 @@ class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.U
 
   /* An option parser that prepends to a Seq[Int] */
   class IntParser extends OptionParser[AnnotationSeq]("Int Parser") {
-    opt[Int]("integer").abbr("n").unbounded.action((x, c) => IntAnnotation(x) +: c)
+    opt[Int]("integer").abbr("n").unbounded().action((x, c) => IntAnnotation(x) +: c)
     help("help")
   }
 
   trait DuplicateShortOption { this: OptionParser[AnnotationSeq] =>
-    opt[Int]("not-an-integer").abbr("n").unbounded.action((x, c) => IntAnnotation(x) +: c)
+    opt[Int]("not-an-integer").abbr("n").unbounded().action((x, c) => IntAnnotation(x) +: c)
   }
 
   trait DuplicateLongOption { this: OptionParser[AnnotationSeq] =>
-    opt[Int]("integer").abbr("m").unbounded.action((x, c) => IntAnnotation(x) +: c)
+    opt[Int]("integer").abbr("m").unbounded().action((x, c) => IntAnnotation(x) +: c)
+  }
+
+  var terminateStatus: Either[String, Unit] = null
+  trait TerminateToVariable[T] extends OptionParser[T] {
+    override def terminate(exitState: Either[String, Unit]): Unit = terminateStatus = exitState
   }
 
   trait WithIntParser { val parser = new IntParser }
+  trait WithIntTerminateCaptureParser { val parser = new IntParser with TerminateToVariable[AnnotationSeq] }
 
   behavior.of("A default OptionsParser")
 
-  it should "call sys.exit if terminate is called" in new WithIntParser {
+  it should "call sys.exit if terminate is called" in new WithIntTerminateCaptureParser {
     info("exit status of 1 for failure")
-    catchStatus { parser.terminate(Left("some message")) } should be(Left(1))
+    parser.terminate(Left("some message"))
+    terminateStatus should be(Left("some message"))
 
     info("exit status of 0 for success")
-    catchStatus { parser.terminate(Right(())) } should be(Left(0))
+    parser.terminate(Right(()))
+    terminateStatus should be(Right(()))
   }
 
   it should "print to stderr on an invalid option" in new WithIntParser {
@@ -50,13 +58,14 @@ class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.U
   behavior.of("An OptionParser with DoNotTerminateOnExit mixed in")
 
   it should "disable sys.exit for terminate method" in {
-    val parser = new IntParser with DoNotTerminateOnExit
+    val parser = new IntParser with DoNotTerminateOnExit[AnnotationSeq]
 
+    // parser.terminate() should never call sys.exit(), if it does, then the JVM will terminate
     info("no exit for failure")
-    catchStatus { parser.terminate(Left("some message")) } should be(Right(()))
+    parser.terminate(Left("some message"))
 
     info("no exit for success")
-    catchStatus { parser.terminate(Right(())) } should be(Right(()))
+    parser.terminate(Right(()))
   }
 
   behavior.of("An OptionParser with DuplicateHandling mixed in")
@@ -78,7 +87,7 @@ class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.U
   behavior.of("An OptionParser with ExceptOnError mixed in")
 
   it should "cause an OptionsException on an invalid option" in {
-    val parser = new IntParser with ExceptOnError
+    val parser = new IntParser with ExceptOnError[AnnotationSeq]
     intercept[OptionsException] { parser.parse(Array("--foo"), Seq[Annotation]()) }.getMessage should include(
       "Unknown option"
     )

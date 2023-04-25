@@ -8,6 +8,7 @@ import firrtl.Utils.error
 import firrtl.stage.Forms
 
 import java.io.File
+import java.lang
 
 class CreateMemoryAnnotations extends Transform with DependencyAPIMigration {
 
@@ -22,8 +23,9 @@ class CreateMemoryAnnotations extends Transform with DependencyAPIMigration {
         Seq(MemLibOutConfigFileAnnotation(outputConfig, Nil)) ++ {
           if (inputFileName.isEmpty) None
           else if (new File(inputFileName).exists) {
-            import CustomYAMLProtocol._
-            Some(PinAnnotation(new YamlFileReader(inputFileName).parse[Config].map(_.pin.name)))
+            throw new RuntimeException("Can't dump to YAML")
+            //import CustomYAMLProtocol._
+            //Some(PinAnnotation(new YamlFileReader(inputFileName).parse[Config].map(_.pin.name)))
           } else error("Input configuration file does not exist!")
         }
       case a => Seq(a)

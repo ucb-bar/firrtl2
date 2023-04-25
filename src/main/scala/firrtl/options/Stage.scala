@@ -54,8 +54,9 @@ abstract class Stage extends Phase {
     * @return output annotations
     * @throws firrtl.options.OptionsException if command line or annotation validation fails
     */
-  final def execute(args: Array[String], annotations: AnnotationSeq): AnnotationSeq =
+  final def execute(args: Array[String], annotations: AnnotationSeq): AnnotationSeq = {
     transform(shell.parse(args, annotations))
+  }
 
 }
 
@@ -65,16 +66,22 @@ abstract class Stage extends Phase {
 class StageMain(val stage: Stage) {
 
   /** The main function that serves as this stage's command line interface.
+    *
     * @param args command line arguments
     */
-  final def main(args: Array[String]): Unit = try {
-    stage.execute(args, Seq.empty)
-  } catch {
-    case a: StageError =>
-      System.exit(a.code.number)
-    case a: OptionsException =>
-      StageUtils.dramaticUsageError(a.message)
-      System.exit(1)
-  }
+  final def main(args: Array[String]): Unit =
+    System.exit(mainInner(args))
 
+  final def mainInner(args: Array[String]): Int = {
+    try {
+      stage.execute(args, Seq.empty)
+      0
+    } catch {
+      case a: StageError =>
+        a.code.number
+      case a: OptionsException =>
+        StageUtils.dramaticUsageError(a.message)
+        1
+    }
+  }
 }

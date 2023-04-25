@@ -12,6 +12,7 @@ import firrtl.stage.TransformManager.TransformDependency
 import firrtl.traversals.Foreachers._
 import java.io.{ByteArrayOutputStream, Writer}
 import scala.collection.mutable.ArrayBuffer
+import firrtl.stage.FirrtlOptionsView
 import Utils.{collectInstantiatedModules, throwInternalError}
 
 /** This object defines Annotations that are used by Protocol Buffer emission.

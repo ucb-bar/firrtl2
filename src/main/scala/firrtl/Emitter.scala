@@ -11,6 +11,7 @@ import firrtl.options.Viewer.view
 import firrtl.options.{CustomFileEmission, Dependency, HasShellOptions, PhaseException, ShellOption}
 import firrtl.passes.PassException
 import firrtl.stage.{FirrtlFileAnnotation, FirrtlOptions, RunFirrtlTransformAnnotation}
+import firrtl.stage.FirrtlOptionsView
 
 case class EmitterException(message: String) extends PassException(message)
 

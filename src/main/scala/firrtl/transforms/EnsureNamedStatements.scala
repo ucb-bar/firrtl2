@@ -25,15 +25,15 @@ object EnsureNamedStatements extends Transform with DependencyAPIMigration {
   }
 
   private def onStmt(namespace: Namespace)(stmt: Statement): Statement = stmt match {
-    case s: Print if s.name.isEmpty => s.withName(namespace.newName("print"))
-    case s: Stop if s.name.isEmpty => s.withName(namespace.newName("stop"))
+    case s: Print if s.name.isEmpty => s.copy(name=namespace.newName("print"))
+    case s: Stop if s.name.isEmpty => s.copy(name=namespace.newName("stop"))
     case s: Verification if s.name.isEmpty =>
       val baseName = s.op match {
         case Formal.Cover  => "cover"
         case Formal.Assert => "assert"
         case Formal.Assume => "assume"
       }
-      s.withName(namespace.newName(baseName))
+      s.copy(name=namespace.newName(baseName))
     case other => other.mapStmt(onStmt(namespace))
   }
 }

@@ -260,6 +260,7 @@ object JsonProtocol extends LazyLogging {
     Try(writePretty(annos)).recoverWith {
       case e: org.json4s.MappingException =>
         val badAnnos = findUnserializeableAnnos(annos)
+        throw e
         Failure(if (badAnnos.isEmpty) e else UnserializableAnnotationException(badAnnos))
     }
   }
@@ -292,8 +293,7 @@ object JsonProtocol extends LazyLogging {
   }
 
   def deserializeTry(in: JsonInput, allowUnrecognizedAnnotations: Boolean = false): Try[Seq[Annotation]] = Try {
-    val parsed = parse(in)
-    val annos = parsed match {
+    val annos: Seq[JValue] = parse(in) match {
       case JArray(objs) => objs
       case x =>
         throw new InvalidAnnotationJSONException(

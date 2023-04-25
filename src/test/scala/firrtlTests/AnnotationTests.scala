@@ -516,6 +516,7 @@ class JsonAnnotationTests extends AnnotationTests {
     val text = FileUtils.getText(annoFile)
     annoFile.delete()
 
+    import org.json4s.convertToJsonInput
     val readAnnos = JsonProtocol.deserializeTry(text).get
 
     annos should be(readAnnos)

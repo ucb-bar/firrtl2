@@ -384,7 +384,7 @@ private[stage] object CurrentFirrtlStateAnnotation extends HasShellOptions {
     Dependency(passes.ResolveFlows)
   ) ++ Forms.Checks
 
-  override val options = Seq(
+  override val options: Seq[ShellOption[String]] = Seq(
     new ShellOption[String](
       longOption = "start-from",
       toAnnotationSeq = a =>

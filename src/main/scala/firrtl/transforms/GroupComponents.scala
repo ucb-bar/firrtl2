@@ -336,11 +336,11 @@ class GroupComponents extends Transform with DependencyAPIMigration {
     }
     def onStmt(stmt: Statement): Unit = stmt match {
       case w: WDefInstance =>
-      case q @ Stop(_, _, clk, en) =>
+      case q @ Stop(_, _, clk, en, _) =>
         val simName = simNamespace.newTemp
         simulations(simName) = q
         Seq(clk, en).map(onExpr(WRef(simName)))
-      case q @ Print(_, _, args, clk, en) =>
+      case q @ Print(_, _, args, clk, en, _) =>
         val simName = simNamespace.newTemp
         simulations(simName) = q
         (args :+ clk :+ en).map(onExpr(WRef(simName)))

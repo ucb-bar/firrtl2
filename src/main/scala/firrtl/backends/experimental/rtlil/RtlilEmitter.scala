@@ -15,6 +15,7 @@ import firrtl.options.{CustomFileEmission, Dependency}
 import firrtl.passes.LowerTypes
 import firrtl.passes.MemPortUtils.memPortField
 import firrtl.stage.{FirrtlOptions, TransformManager}
+import firrtl.stage.FirrtlOptionsView
 
 import scala.annotation.tailrec
 import scala.collection.mutable
@@ -788,7 +789,7 @@ private[firrtl] class RtlilEmitter extends SeqTransform with Emitter with Depend
           declares += Seq(sx.info)
           declares += Seq("wire ", sx.value.tpe, " ", string_to_rtlil_name(sx.name))
           assigns ++= output_expr(string_to_rtlil_name(sx.name), sx.value, sx.info)
-        case x @ Verification(value, info, _, pred, en, _) =>
+        case x @ Verification(value, info, _, pred, en, _, _) =>
           value match {
             case Formal.Assert =>
               formals += emit_cell(

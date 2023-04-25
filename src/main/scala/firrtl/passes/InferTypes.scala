@@ -41,7 +41,7 @@ object InferTypes extends Pass {
 
     // we first need to remove the unknown widths and bounds from all ports,
     // as their type will determine the module types
-    val portsKnown = c.modules.map(_.map { p: Port => p.copy(tpe = remove_unknowns(p.tpe)) })
+    val portsKnown = c.modules.map(_.map { (p: Port) => p.copy(tpe = remove_unknowns(p.tpe)) })
     val mtypes = portsKnown.map(m => m.name -> module_type(m)).toMap
 
     def infer_types_e(types: TypeLookup)(e: Expression): Expression =

@@ -403,7 +403,7 @@ object Utils extends LazyLogging {
   /** Returns an inlined expression (replacing node references with values),
     * stopping on a stopping condition or until the reference is not a node
     */
-  def inline(nodeMap: NodeMap, stop: String => Boolean = { x: String => false })(e: Expression): Expression = {
+  def inline(nodeMap: NodeMap, stop: String => Boolean = { (x: String) => false })(e: Expression): Expression = {
     def onExp(e: Expression): Expression = e.map(onExp) match {
       case Reference(name, _, _, _) if nodeMap.contains(name) && !stop(name) => onExp(nodeMap(name))
       case other                                                             => other

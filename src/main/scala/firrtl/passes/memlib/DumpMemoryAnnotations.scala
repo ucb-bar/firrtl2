@@ -152,7 +152,7 @@ class DumpMemoryAnnotations extends Transform with DependencyAPIMigration {
               case (name, content) =>
                 BlackBoxInlineAnno(ModuleName(name, CircuitName(state.circuit.main)), name + ".v", content)
             }
-        }.flatten
+        }.flatten(asIterable = seqToAnnoSeq(_))
       case MemLibOutConfigFileAnnotation(_, Nil) => Nil
       case GenVerilogMemBehaviorModelAnno(_)     => Nil
       case a                                     => Seq(a)

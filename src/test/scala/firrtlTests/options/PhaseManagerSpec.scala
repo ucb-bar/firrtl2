@@ -399,7 +399,7 @@ class PhaseManagerSpec extends AnyFlatSpec with Matchers {
     d.mkdirs()
 
     {
-      val f = new File(d + "/dependencyGraph.dot")
+      val f = new File(d.getAbsolutePath + "/dependencyGraph.dot")
       val w = new PrintWriter(f)
       w.write(pm.dependenciesToGraphviz)
       w.close
@@ -407,8 +407,8 @@ class PhaseManagerSpec extends AnyFlatSpec with Matchers {
     }
 
     {
-      val f = new File(d + "/transformOrder.dot")
-      val w = new PrintWriter(new File(d + "/transformOrder.dot"))
+      val f = new File(d.getAbsolutePath + "/transformOrder.dot")
+      val w = new PrintWriter(new File(d.getAbsolutePath + "/transformOrder.dot"))
       try {
         info("transform order:\n" + pm.prettyPrint("    "))
         w.write(pm.transformOrderToGraphviz())

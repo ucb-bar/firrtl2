@@ -5,7 +5,6 @@ package ir
 
 import Utils.{dec2string, trim}
 import firrtl.backends.experimental.smt.random.DefRandom
-import dataclass.{data, since}
 import firrtl.constraint.{Constraint, IsKnown, IsVar}
 import org.apache.commons.text.translate.{AggregateTranslator, JavaUnicodeEscaper, LookupTranslator}
 
@@ -720,7 +719,7 @@ case class Attach(info: Info, exprs: Seq[Expression]) extends Statement with Has
   def foreachInfo(f:   Info => Unit):             Unit = f(info)
 }
 
-@data class Stop(info: Info, ret: Int, clk: Expression, en: Expression, @since("FIRRTL 1.5") name: String = "")
+case class Stop(info: Info, ret: Int, clk: Expression, en: Expression, name: String = "")
     extends Statement
     with HasInfo
     with IsDeclaration
@@ -728,29 +727,20 @@ case class Attach(info: Info, exprs: Seq[Expression]) extends Statement with Has
   def mapStmt(f:     Statement => Statement):   Statement = this
   def mapExpr(f:     Expression => Expression): Statement = Stop(info, ret, f(clk), f(en), name)
   def mapType(f:     Type => Type):             Statement = this
-  def mapString(f:   String => String):         Statement = withName(f(name))
+  def mapString(f:   String => String):         Statement = this.copy(name=f(name))
   def mapInfo(f:     Info => Info):             Statement = this.copy(info = f(info))
   def foreachStmt(f: Statement => Unit):        Unit = ()
   def foreachExpr(f: Expression => Unit): Unit = { f(clk); f(en) }
   def foreachType(f:   Type => Unit):   Unit = ()
   def foreachString(f: String => Unit): Unit = f(name)
   def foreachInfo(f:   Info => Unit):   Unit = f(info)
-  def copy(info: Info = info, ret: Int = ret, clk: Expression = clk, en: Expression = en): Stop = {
-    Stop(info, ret, clk, en, name)
-  }
 }
-object Stop {
-  def unapply(s: Stop): Some[(Info, Int, Expression, Expression)] = {
-    Some((s.info, s.ret, s.clk, s.en))
-  }
-}
-@data class Print(
+case class Print(
   info:   Info,
   string: StringLit,
   args:   Seq[Expression],
   clk:    Expression,
   en:     Expression,
-  @since("FIRRTL 1.5")
   name: String = "")
     extends Statement
     with HasInfo
@@ -759,27 +749,13 @@ object Stop {
   def mapStmt(f:     Statement => Statement):   Statement = this
   def mapExpr(f:     Expression => Expression): Statement = Print(info, string, args.map(f), f(clk), f(en), name)
   def mapType(f:     Type => Type):             Statement = this
-  def mapString(f:   String => String):         Statement = withName(f(name))
+  def mapString(f:   String => String):         Statement = this.copy(name=f(name))
   def mapInfo(f:     Info => Info):             Statement = this.copy(info = f(info))
   def foreachStmt(f: Statement => Unit):        Unit = ()
   def foreachExpr(f: Expression => Unit): Unit = { args.foreach(f); f(clk); f(en) }
   def foreachType(f:   Type => Unit):   Unit = ()
   def foreachString(f: String => Unit): Unit = f(name)
   def foreachInfo(f:   Info => Unit):   Unit = f(info)
-  def copy(
-    info:   Info = info,
-    string: StringLit = string,
-    args:   Seq[Expression] = args,
-    clk:    Expression = clk,
-    en:     Expression = en
-  ): Print = {
-    Print(info, string, args, clk, en, name)
-  }
-}
-object Print {
-  def unapply(s: Print): Some[(Info, StringLit, Seq[Expression], Expression, Expression)] = {
-    Some((s.info, s.string, s.args, s.clk, s.en))
-  }
 }
 
 // formal
@@ -789,14 +765,13 @@ object Formal extends Enumeration {
   val Cover = Value("cover")
 }
 
-@data class Verification(
+case class Verification(
   op:   Formal.Value,
   info: Info,
   clk:  Expression,
   pred: Expression,
   en:   Expression,
   msg:  StringLit,
-  @since("FIRRTL 1.5")
   name: String = "")
     extends Statement
     with HasInfo
@@ -806,28 +781,13 @@ object Formal extends Enumeration {
   def mapExpr(f: Expression => Expression): Statement =
     copy(clk = f(clk), pred = f(pred), en = f(en))
   def mapType(f:     Type => Type):      Statement = this
-  def mapString(f:   String => String):  Statement = withName(f(name))
+  def mapString(f:   String => String):  Statement = this.copy(name=f(name))
   def mapInfo(f:     Info => Info):      Statement = copy(info = f(info))
   def foreachStmt(f: Statement => Unit): Unit = ()
   def foreachExpr(f: Expression => Unit): Unit = { f(clk); f(pred); f(en); }
   def foreachType(f:   Type => Unit):   Unit = ()
   def foreachString(f: String => Unit): Unit = f(name)
   def foreachInfo(f:   Info => Unit):   Unit = f(info)
-  def copy(
-    op:   Formal.Value = op,
-    info: Info = info,
-    clk:  Expression = clk,
-    pred: Expression = pred,
-    en:   Expression = en,
-    msg:  StringLit = msg
-  ): Verification = {
-    Verification(op, info, clk, pred, en, msg, name)
-  }
-}
-object Verification {
-  def unapply(s: Verification): Some[(Formal.Value, Info, Expression, Expression, Expression, StringLit)] = {
-    Some((s.op, s.info, s.clk, s.pred, s.en, s.msg))
-  }
 }
 // end formal
 
@@ -924,13 +884,13 @@ case object UnknownBound extends Bound {
   def serialize: String = Serializer.serialize(this)
   def map(f: Constraint => Constraint): Constraint = this
   override def reduce(): Constraint = this
-  val children = Vector()
+  lazy val children = Vector()
 }
 case class CalcBound(arg: Constraint) extends Bound {
   def serialize: String = Serializer.serialize(this)
   def map(f: Constraint => Constraint): Constraint = f(arg)
   override def reduce(): Constraint = arg
-  val children = Vector(arg)
+  lazy val children = Vector(arg)
 }
 case class VarBound(name: String) extends IsVar with Bound {
   override def serialize: String = Serializer.serialize(this)
@@ -1079,7 +1039,7 @@ case class IntervalType(lower: Bound, upper: Bound, point: Width) extends Ground
   })
 
   /** If bounds are known, calculates the width, otherwise returns UnknownWidth */
-  lazy val width: Width = (point, lower, upper) match {
+  val width: Width = (point, lower, upper) match {
     case (IntWidth(i), l: IsKnown, u: IsKnown) =>
       IntWidth(Math.max(Utils.getSIntWidth(minAdjusted.get), Utils.getSIntWidth(maxAdjusted.get)))
     case _ => UnknownWidth

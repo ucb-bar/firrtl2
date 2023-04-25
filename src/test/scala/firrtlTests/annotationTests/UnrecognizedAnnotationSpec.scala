@@ -12,6 +12,7 @@ import logger.Logger
 import logger.Logger.OutputCaptor
 
 import java.io.{File, PrintWriter}
+import org.json4s.convertToJsonInput
 
 class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
   behavior.of("unrecognized annotations can be carried through serialization and deserialization")
@@ -66,7 +67,7 @@ class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
     val fileNames = setupFiles(addAllowUnrecognizedFlag = false, addAllowUnrecognizedAnno = false)
     val args = makeCommandLineArgs(fileNames)
     val e = intercept[InvalidAnnotationFileException] {
-      FirrtlMain.main(args)
+      FirrtlMain.mainInner(args)
     }
 
     e.getMessage should include(fileNames.inputAnnotations)
@@ -91,7 +92,7 @@ class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
 
   def shouldSucceed(fileNames: TestFileNames): Unit = {
     val args = makeCommandLineArgs(fileNames)
-    FirrtlMain.main(args)
+    FirrtlMain.mainInner(args)
 
     val outputAnnotationText = FileUtils.getText(fileNames.outputAnnotationsFull)
     outputAnnotationText should include("freechips.rocketchip.util.RegFieldDescMappingAnnotation")

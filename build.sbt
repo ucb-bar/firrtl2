@@ -4,8 +4,8 @@ enablePlugins(SiteScaladocPlugin)
 
 lazy val commonSettings = Seq(
   organization := "edu.berkeley.cs",
-  scalaVersion := "2.12.17",
-  crossScalaVersions := Seq("2.13.10", "2.12.17")
+  scalaVersion := "3.2.2",
+  crossScalaVersions := Seq("2.13.10", "3.2.2")
 )
 
 lazy val isAtLeastScala213 = Def.setting {
@@ -16,37 +16,30 @@ lazy val isAtLeastScala213 = Def.setting {
 lazy val firrtlSettings = Seq(
   name := "firrtl",
   version := "1.6-SNAPSHOT",
-  addCompilerPlugin(scalafixSemanticdb),
+  //addCompilerPlugin(scalafixSemanticdb),
   scalacOptions := Seq(
     "-deprecation",
     "-unchecked",
     "-language:reflectiveCalls",
     "-language:existentials",
     "-language:implicitConversions",
-    "-Yrangepos" // required by SemanticDB compiler plugin
+    //"-rewrite",
+    //"-source:3.0-migration",
+    //"-source:3.2-migration",
+    //"-Yrangepos" // required by SemanticDB compiler plugin
   ),
   // Always target Java8 for maximum compatibility
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    //"org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scalatest" %% "scalatest" % "3.2.14" % "test",
     "org.scalatestplus" %% "scalacheck-1-15" % "3.2.11.0" % "test",
-    "com.github.scopt" %% "scopt" % "3.7.1",
-    "net.jcazevedo" %% "moultingyaml" % "0.4.2",
-    "org.json4s" %% "json4s-native" % "4.0.6",
+    "com.github.scopt" %% "scopt" % "4.1.0",
+    //"net.jcazevedo" %% "moultingyaml" % "0.4.2",
+    "org.json4s" %% "json4s-native" % "4.1.0-M2",
     "org.apache.commons" % "commons-text" % "1.10.0",
-    "io.github.alexarchambault" %% "data-class" % "0.2.5",
     "com.lihaoyi" %% "os-lib" % "0.8.1"
   ),
-  // macros for the data-class library
-  libraryDependencies ++= {
-    if (isAtLeastScala213.value) Nil
-    else Seq(compilerPlugin(("org.scalamacros" % "paradise" % "2.1.1").cross(CrossVersion.full)))
-  },
-  scalacOptions ++= {
-    if (isAtLeastScala213.value) Seq("-Ymacro-annotations")
-    else Nil
-  },
   // starting with scala 2.13 the parallel collections are separate from the standard library
   libraryDependencies ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -54,10 +47,8 @@ lazy val firrtlSettings = Seq(
       case _                               => Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4")
     }
   },
-  resolvers ++= Seq(
-    Resolver.sonatypeRepo("snapshots"),
-    Resolver.sonatypeRepo("releases")
-  )
+  resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
+  resolvers ++= Resolver.sonatypeOssRepos("releases")
 )
 
 lazy val mimaSettings = Seq(
@@ -203,7 +194,7 @@ lazy val jqf = (project in file("jqf"))
     libraryDependencies ++= Seq(
       "edu.berkeley.cs.jqf" % "jqf-fuzz" % JQF_VERSION,
       "edu.berkeley.cs.jqf" % "jqf-instrument" % JQF_VERSION,
-      "com.github.scopt" %% "scopt" % "3.7.1"
+      "com.github.scopt" %% "scopt" % "4.1.0"
     )
   )
 
@@ -230,7 +221,7 @@ lazy val fuzzer = (project in file("fuzzer"))
       "com.pholser" % "junit-quickcheck-core" % "0.8",
       "com.pholser" % "junit-quickcheck-generators" % "0.8",
       "edu.berkeley.cs.jqf" % "jqf-fuzz" % JQF_VERSION,
-      "org.scalacheck" %% "scalacheck" % "1.14.3" % Test
+      "org.scalacheck" %% "scalacheck" % "1.17.0" % Test
     ),
     jqfFuzz := (Def.inputTaskDyn {
       val (testClassName, testMethod, otherArgs) = testClassAndMethodParser.parsed

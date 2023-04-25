@@ -61,11 +61,15 @@ class JsonProtocolSpec extends AnyFlatSpec {
   }
 
   "Annotations with non-primitive type parameters" should "not serialize and deserialize without type hints" in {
+    // This test fails under Scala 3: https://github.com/json4s/json4s/issues/1035
+    // The issue is known, but unlikely to be fixed any time soon
+    // assume(scala.util.Properties.versionNumberString.split('.').head.toInt == 2)
     val anno = TypeParameterizedAnnotation(ChildA(1))
     val deserAnno = serializeAndDeserialize(anno)
     assert(anno != deserAnno)
   }
   it should "serialize and deserialize with type hints" in {
+    // assume(scala.util.Properties.versionNumberString.split('.').head.toInt == 2)
     val anno = TypeParameterizedAnnotationWithTypeHints(ChildA(1))
     val deserAnno = serializeAndDeserialize(anno)
     assert(anno == deserAnno)

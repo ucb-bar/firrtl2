@@ -10,7 +10,7 @@ import firrtl.options.Dependency
 /** Transform that removes collisions with reserved keywords
   * @param keywords a set of reserved words
   */
-class RemoveKeywordCollisions(keywords: Set[String]) extends ManipulateNames {
+class RemoveKeywordCollisions(keywords: Set[String]) extends ManipulateNames[RemoveKeywordCollisions] {
 
   private val inlineDelim = "_"
 

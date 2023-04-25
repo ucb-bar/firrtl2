@@ -284,7 +284,7 @@ object ToProto {
             cs.foreach(wb.addConsequent)
             as.foreach(wb.addOtherwise)
             sb.setWhen(wb)
-          case ir.Print(_, string, args, clk, en) =>
+          case ir.Print(_, string, args, clk, en, _) =>
             val pb = Firrtl.Statement.Printf
               .newBuilder()
               .setValue(string.string)
@@ -292,14 +292,14 @@ object ToProto {
               .setEn(convert(en))
             args.foreach(a => pb.addArg(convert(a)))
             sb.setPrintf(pb)
-          case ir.Stop(_, ret, clk, en) =>
+          case ir.Stop(_, ret, clk, en, _) =>
             val stopb = Firrtl.Statement.Stop
               .newBuilder()
               .setReturnValue(ret)
               .setClk(convert(clk))
               .setEn(convert(en))
             sb.setStop(stopb)
-          case ir.Verification(op, _, clk, cond, en, msg) =>
+          case ir.Verification(op, _, clk, cond, en, msg, _) =>
             val vb = Firrtl.Statement.Verification
               .newBuilder()
               .setOp(convert(op))

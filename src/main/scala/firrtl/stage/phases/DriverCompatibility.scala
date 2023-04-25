@@ -11,6 +11,7 @@ import firrtl.proto.FromProto
 import firrtl.options.{InputAnnotationFileAnnotation, OptionsException, Phase, StageOptions, StageUtils}
 import firrtl.options.Viewer
 import firrtl.options.Dependency
+import firrtl.options.StageOptionsView
 
 import scopt.OptionParser
 

@@ -2,10 +2,10 @@
 
 package firrtl.passes
 package memlib
-import net.jcazevedo.moultingyaml._
+//import net.jcazevedo.moultingyaml._
 import java.io.{CharArrayWriter, File, PrintWriter}
 import firrtl.FileUtils
-
+/*
 object CustomYAMLProtocol extends DefaultYamlProtocol {
   // bottom depends on top
   implicit val _pin = yamlFormat1(Pin)
@@ -42,4 +42,4 @@ class YamlFileWriter(file: String) {
     outputFile.write(outputBuffer.toString)
     outputFile.close()
   }
-}
+}*/
