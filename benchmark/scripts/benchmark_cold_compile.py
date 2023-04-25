@@ -73,7 +73,7 @@ def clone_and_build(hashcode):
             assert res.returncode == 0
         res = subprocess.run(['git', '-C', repo, 'checkout', hashcode])
         assert res.returncode == 0
-        res = subprocess.run(['make', '-C', repo, 'build-scala'])
+        res = subprocess.run(['sbt', 'assembly'], cwd=repo)
         assert res.returncode == 0
         res = subprocess.run(['cp', '{}/utils/bin/firrtl.jar'.format(repo), jar])
         assert res.returncode == 0
