@@ -58,12 +58,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Tabby OSS Cad Suite
         uses: ./.github/workflows/setup-oss-cad-suite
-      - name: Setup Scala
-        uses: olafurpg/setup-scala@v10
-        with:
-          java-version: adopt@1.8
-      - name: Cache Scala
-        uses: coursier/cache-action@v5
       - name: Run Formal Equivalence
         # This is here instead of on the whole job because if a job is skipped, so are dependent jobs
         # If this job were skipped, all_tests_passed would be skipped to
