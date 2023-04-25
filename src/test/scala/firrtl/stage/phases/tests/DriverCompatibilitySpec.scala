@@ -44,8 +44,7 @@ class DriverCompatibilitySpec extends AnyFlatSpec with Matchers with PrivateMeth
     (TopNameAnnotation("foo"), "foo"),
     (FirrtlCircuitAnnotation(Parser.parse(simpleCircuit("bar"))), "bar"),
     (FirrtlSourceAnnotation(simpleCircuit("baz")), "baz"),
-    (FirrtlFileAnnotation("src/test/resources/integration/PipeTester.fir"), "PipeTester"),
-    (FirrtlFileAnnotation("src/test/resources/integration/GCDTester.pb"), "GCDTester")
+    (FirrtlFileAnnotation("src/test/resources/integration/PipeTester.fir"), "PipeTester")
   )
 
   behavior.of(s"${DriverCompatibility.getClass.getName}.topName (private method)")
