@@ -206,13 +206,6 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
         args = Array("-X", "sverilog", "-E", "sverilog", "-foaf", "foo.json"),
         files = Seq("Top.sv", "foo.json.anno.json")
       ),
-      /* Test all ProtoBuf emitters */
-      FirrtlMainTest(args = Array("-X", "none", "--emit-circuit-protobuf", "chirrtl"), files = Seq("Top.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-P", "mhigh"), files = Seq("Top.mhi.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-P", "high"), files = Seq("Top.hi.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-P", "middle"), files = Seq("Top.mid.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-P", "low"), files = Seq("Top.lo.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-P", "low-opt"), files = Seq("Top.lo.pb")),
       /* Test all one file per module emitters */
       FirrtlMainTest(args = Array("-X", "none", "-e", "chirrtl"), files = Seq("Top.fir", "Child.fir")),
       FirrtlMainTest(
@@ -239,16 +232,6 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
         args = Array("-X", "sverilog", "-e", "sverilog"),
         files = Seq("Top.sv", "Child.sv")
       ),
-      /* Test all one protobuf per module emitters */
-      FirrtlMainTest(
-        args = Array("-X", "none", "--emit-modules-protobuf", "chirrtl"),
-        files = Seq("Top.pb", "Child.pb")
-      ),
-      FirrtlMainTest(args = Array("-X", "none", "-p", "mhigh"), files = Seq("Top.mhi.pb", "Child.mhi.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-p", "high"), files = Seq("Top.hi.pb", "Child.hi.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-p", "middle"), files = Seq("Top.mid.pb", "Child.mid.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-p", "low"), files = Seq("Top.lo.pb", "Child.lo.pb")),
-      FirrtlMainTest(args = Array("-X", "none", "-p", "low-opt"), files = Seq("Top.lo.pb", "Child.lo.pb")),
       /* Test mixing of -E with -e */
       FirrtlMainTest(
         args = Array("-X", "middle", "-E", "high", "-e", "middle"),
@@ -310,66 +293,6 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
       result shouldBe a[Right[_, _]]
     }
 
-    Scenario("User provides Protocol Buffer input") {
-      val f = new FirrtlMainFixture
-      val td = new TargetDirectoryFixture("protobuf-works")
-
-      And("some Protocol Buffer input")
-      val protobufIn = new File(td.dir + "/Foo.pb")
-      copyResourceToFile("/integration/GCDTester.pb", protobufIn)
-
-      When("the user tries to compile to High FIRRTL")
-      f.stage.main(
-        Array("-i", protobufIn.toString, "-X", "high", "-E", "high", "-td", td.buildDir.toString, "-o", "Foo")
-      )
-
-      Then("the output should be the same as using FIRRTL input")
-      new File(td.buildDir + "/Foo.hi.fir") should (exist)
-    }
-
-    Scenario("User compiles to multiple Protocol Buffers") {
-      val f = new FirrtlMainFixture
-      val td = new TargetDirectoryFixture("multi-protobuf")
-      val c = new SimpleFirrtlCircuitFixture
-      val protobufs = Seq("Top.pb", "Child.pb")
-
-      And("some input multi-module FIRRTL IR")
-      val inputFile: Array[String] = {
-        val in = new File(td.dir, s"${c.main}.fir")
-        val pw = new PrintWriter(in)
-        pw.write(c.input)
-        pw.close()
-        Array("-i", in.toString)
-      }
-
-      When("the user tries to emit a circuit to multiple Protocol Buffer files in the target directory")
-      f.stage.main(
-        inputFile ++ Array("-X", "none", "-p", "chirrtl", "-td", td.buildDir.toString)
-      )
-
-      protobufs.foreach { f =>
-        Then(s"file '$f' should be emitted")
-        val out = new File(td.buildDir + s"/$f")
-        out should (exist)
-      }
-
-      // NOTE the .fir out needs to be a different directory than the multi proto out because
-      // reruns will pick up the .fir and try to parse as .pb
-      When("the user compiles the Protobufs to a single FIRRTL IR")
-      f.stage.main(
-        Array("-I", td.buildDir.toString, "-X", "none", "-E", "chirrtl", "-td", td.dir.toString, "-o", "Foo")
-      )
-
-      Then("one single FIRRTL file should be emitted")
-      val outFile = new File(td.dir + "/Foo.fir")
-      outFile should (exist)
-      And("it should be the same as using FIRRTL input")
-      firrtl.Utils.orderAgnosticEquality(
-        firrtl.Parser.parse(c.input),
-        firrtl.Parser.parseFile(td.dir + "/Foo.fir", firrtl.Parser.IgnoreInfo)
-      ) should be(true)
-    }
-
   }
 
   info("As a FIRRTL command line user")
@@ -426,12 +349,6 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
         args = Array("-i", "foo", "-X", "Verilog"),
         circuit = None,
         stdout = Some("Unknown compiler name 'Verilog'! (Did you misspell it?)"),
-        result = 1
-      ),
-      FirrtlMainTest(
-        args = Array("-I", "test_run_dir/I-DO-NOT-EXIST"),
-        circuit = None,
-        stdout = Some("Directory 'test_run_dir/I-DO-NOT-EXIST' not found!"),
         result = 1
       )
     )

@@ -16,7 +16,6 @@ import logger.LazyLogging
   *   - [[FirrtlOptionsView]], a utility that constructs an [[options.OptionsView OptionsView]] of [[FirrtlOptions]]
   *     from an [[AnnotationSeq]]
   *   - [[FirrtlCli]], the command line options that the [[FirrtlStage]] supports
-  *   - [[FirrtlStageUtils]] containing miscellaneous utilities for [[stage]]
   */
 package object stage {
   implicit object FirrtlOptionsView extends OptionsView[FirrtlOptions] with LazyLogging {

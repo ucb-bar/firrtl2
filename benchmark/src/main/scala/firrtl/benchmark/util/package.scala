@@ -4,14 +4,10 @@ package firrtl
 package benchmark
 
 import firrtl.ir.Circuit
-import scala.util.control.NonFatal
 
 package object util {
-  def filenameToCircuit(filename: String): Circuit = try {
-    proto.FromProto.fromFile(filename)
-  } catch {
-    case NonFatal(_) => Parser.parseFile(filename, Parser.IgnoreInfo)
-  }
+  def filenameToCircuit(filename: String): Circuit =
+    Parser.parseFile(filename, Parser.IgnoreInfo)
 
   def mean(xs: Iterable[Double]): Double = xs.sum / xs.size
 
