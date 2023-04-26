@@ -89,15 +89,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Scala
-        uses: olafurpg/setup-scala@v10
-        with:
-          java-version: adopt@1.8
-      - name: Cache Scala
-        uses: coursier/cache-action@v5
-      - name: Setup GPG (for Publish)
-        uses: olafurpg/setup-gpg@v3
+        uses: actions/checkout@v3
       - name: Publish
         run: sbt ci-release
         env:
