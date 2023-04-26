@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - master
+      - main
       - 1.6.x
       - 1.5.x
       - 1.4.x
