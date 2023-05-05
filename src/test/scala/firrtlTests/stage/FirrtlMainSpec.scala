@@ -9,7 +9,6 @@ import org.scalatest.matchers.should.Matchers
 import java.io.{File, PrintWriter}
 import firrtl.{BuildInfo, FileUtils}
 import firrtl.stage.{FirrtlMain, WarnNoScalaVersionDeprecation}
-import firrtl.stage.transforms.CheckScalaVersion
 import firrtl.util.BackendCompilationUtilities._
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers

@@ -4,14 +4,9 @@ enablePlugins(SiteScaladocPlugin)
 
 lazy val commonSettings = Seq(
   organization := "edu.berkeley.cs",
-  scalaVersion := "2.12.17",
-  crossScalaVersions := Seq("2.13.10", "2.12.17")
+  scalaVersion := "2.13.10",
+  crossScalaVersions := Seq("2.13.10")
 )
-
-lazy val isAtLeastScala213 = Def.setting {
-  import Ordering.Implicits._
-  CrossVersion.partialVersion(scalaVersion.value).exists(_ >= (2, 13))
-}
 
 lazy val firrtlSettings = Seq(
   name := "firrtl",
@@ -33,15 +28,9 @@ lazy val firrtlSettings = Seq(
     "com.github.scopt" %% "scopt" % "4.1.0",
     "org.json4s" %% "json4s-native" % "4.0.6",
     "org.apache.commons" % "commons-text" % "1.10.0",
-    "com.lihaoyi" %% "os-lib" % "0.9.1"
+    "com.lihaoyi" %% "os-lib" % "0.9.1",
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
   ),
-  // starting with scala 2.13 the parallel collections are separate from the standard library
-  libraryDependencies ++= {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, major)) if major <= 12 => Seq()
-      case _                               => Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4")
-    }
-  },
   resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
   resolvers ++= Resolver.sonatypeOssRepos("releases")
 )

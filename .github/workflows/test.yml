@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        scala: [2.13.10, 2.12.17]
+        scala: [2.13.10]
 
     steps:
       - name: Checkout
@@ -30,8 +30,8 @@ jobs:
           java-version: adopt@1.8
       - name: Cache Scala
         uses: coursier/cache-action@v6
-      - name: Check Formatting (Scala 2.12 only)
-        if: startsWith(matrix.scala, '2.12')
+      - name: Check Formatting (Scala 2.13 only)
+        if: startsWith(matrix.scala, '2.13')
         run: sbt ++${{ matrix.scala }} scalafmtCheckAll
       - name: Unidoc
         run: sbt ++${{ matrix.scala }} unidoc

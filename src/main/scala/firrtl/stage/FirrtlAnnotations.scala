@@ -198,7 +198,7 @@ object RunFirrtlTransformAnnotation extends HasShellOptions {
       longOption = "custom-transforms",
       toAnnotationSeq = _.map(txName =>
         try {
-          val tx = Class.forName(txName).asInstanceOf[Class[_ <: Transform]].newInstance()
+          val tx = Class.forName(txName).asInstanceOf[Class[_ <: Transform]].getDeclaredConstructor().newInstance()
           RunFirrtlTransformAnnotation(tx)
         } catch {
           case e: ClassNotFoundException =>
@@ -338,7 +338,6 @@ private[stage] object CurrentFirrtlStateAnnotation extends HasShellOptions {
 
   /** This is just the transforms necessary for resolving types and checking that everything is okay. */
   private val dontSkip: Set[TransformDependency] = Set(
-    Dependency[firrtl.stage.transforms.CheckScalaVersion],
     Dependency(passes.ResolveKinds),
     Dependency(passes.InferTypes),
     Dependency(passes.ResolveFlows)
