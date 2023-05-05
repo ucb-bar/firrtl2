@@ -41,10 +41,6 @@ Usage:
       PassModuleName,
       error("No module name specified for ClockList!" + usage)
     )
-    passOptions.get(InputConfigFileName) match {
-      case Some(x) => error("Unneeded input config file name!" + usage)
-      case None    =>
-    }
     val target = ModuleName(passModule, CircuitName(passCircuit))
     ClockListAnnotation(target, outputConfig)
   }

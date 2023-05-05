@@ -13,7 +13,6 @@ import firrtl.stage.{Forms, RunFirrtlTransformAnnotation}
 import java.io.{CharArrayWriter, PrintWriter}
 
 sealed trait PassOption
-case object InputConfigFileName extends PassOption
 case object OutputConfigFileName extends PassOption
 case object PassCircuitName extends PassOption
 case object PassModuleName extends PassOption
@@ -28,8 +27,6 @@ object PassConfigUtil {
     def nextPassOption(map: PassOptionMap, list: List[String]): PassOptionMap = {
       list match {
         case Nil => map
-        case "-i" :: value :: tail =>
-          nextPassOption(map + (InputConfigFileName -> value), tail)
         case "-o" :: value :: tail =>
           nextPassOption(map + (OutputConfigFileName -> value), tail)
         case "-c" :: value :: tail =>
@@ -44,7 +41,7 @@ object PassConfigUtil {
   }
 }
 
-case class ReplSeqMemAnnotation(inputFileName: String, outputConfig: String) extends NoTargetAnnotation
+case class ReplSeqMemAnnotation(outputConfig: String) extends NoTargetAnnotation
 
 case class GenVerilogMemBehaviorModelAnno(genBlackBox: Boolean) extends NoTargetAnnotation
 
@@ -81,15 +78,12 @@ object ReplSeqMemAnnotation {
   Pass to replace sequential memories with blackboxes + configuration file
 
 Usage:
-  --replSeqMem -c:<circuit>:-i:<filename>:-o:<filename>
+  --replSeqMem -c:<circuit>:-o:<filename>
   *** Note: sub-arguments to --replSeqMem should be delimited by : and not white space!
 
 Required Arguments:
   -o<filename>         Specify the output configuration file
   -c<circuit>          Specify the target circuit
-
-Optional Arguments:
-  -i<filename>         Specify the input configuration file (for additional optimizations)
 """
 
     val passOptions = PassConfigUtil.getPassOptions(t, usage)
@@ -97,8 +91,7 @@ Optional Arguments:
       OutputConfigFileName,
       error("No output config file provided for ReplSeqMem!" + usage)
     )
-    val inputFileName = PassConfigUtil.getPassOptions(t).getOrElse(InputConfigFileName, "")
-    ReplSeqMemAnnotation(inputFileName, outputConfig)
+    ReplSeqMemAnnotation(outputConfig)
   }
 }
 
@@ -132,7 +125,7 @@ class ReplSeqMem extends SeqTransform with HasShellOptions with DependencyAPIMig
         (a: String) => Seq(passes.memlib.ReplSeqMemAnnotation.parse(a), RunFirrtlTransformAnnotation(new ReplSeqMem)),
       helpText = "Blackbox and emit a configuration file for each sequential memory",
       shortOption = Some("frsq"),
-      helpValueName = Some("-c:<circuit>:-i:<file>:-o:<file>")
+      helpValueName = Some("-c:<circuit>:-o:<file>")
     ),
     new ShellOption[String](
       longOption = "gen-mem-verilog",
