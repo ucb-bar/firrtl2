@@ -92,7 +92,6 @@ object CustomRadixTransform extends Transform with DependencyAPIMigration with H
     val annos = state.annotations
     def toVerilogName(target: ReferenceTarget) =
       (target.circuit +: target.tokens.collect { case Instance(i) => i } :+ target.ref).mkString(".")
-    // todo if scalaVersion >= 2.13: use groupMap
     val filters = annos.collect { case a: CustomRadixDefAnnotation => a }
 
     val signals = annos.collect {

@@ -142,13 +142,10 @@ class InstanceGraph(c: Circuit) {
   def getChildrenInstanceOfModule: mutable.LinkedHashMap[String, mutable.LinkedHashSet[(Instance, OfModule)]] =
     childInstances.map(kv => kv._1 -> kv._2.map(_.toTokens))
 
-  // Transforms a TraversableOnce input into an order-preserving map
+  // Transforms an IterableOnce input into an order-preserving map
   // Iterates only once, no intermediate collections
-  // Can possibly be replaced using LinkedHashMap.from(..) or better immutable map in Scala 2.13
-  private def asOrderedMap[K1, K2, V](it: TraversableOnce[K1], f: (K1) => (K2, V)): collection.Map[K2, V] = {
-    val lhmap = new mutable.LinkedHashMap[K2, V]
-    it.foreach { lhmap += f(_) }
-    lhmap
+  private def asOrderedMap[K1, K2, V](it: IterableOnce[K1], f: (K1) => (K2, V)): collection.Map[K2, V] = {
+    mutable.LinkedHashMap.from(it.iterator.map { k => f(k) })
   }
 
   /** Given a circuit, returns a map from module name to a map
