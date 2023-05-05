@@ -741,7 +741,7 @@ case class Print(
   args:   Seq[Expression],
   clk:    Expression,
   en:     Expression,
-  name: String = "")
+  name:   String = "")
     extends Statement
     with HasInfo
     with IsDeclaration
