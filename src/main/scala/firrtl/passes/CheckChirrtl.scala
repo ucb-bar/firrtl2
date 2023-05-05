@@ -5,11 +5,10 @@ package firrtl.passes
 import firrtl.Transform
 import firrtl.ir._
 import firrtl.options.Dependency
-import firrtl.stage.transforms.CheckScalaVersion
 
 object CheckChirrtl extends Pass with CheckHighFormLike {
 
-  override def prerequisites = Dependency[CheckScalaVersion] :: Nil
+  override def prerequisites = Nil
 
   override val optionalPrerequisiteOf = firrtl.stage.Forms.ChirrtlForm ++
     Seq(Dependency(CInferTypes), Dependency(CInferMDir), Dependency(RemoveCHIRRTL))

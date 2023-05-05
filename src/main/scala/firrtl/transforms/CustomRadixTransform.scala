@@ -100,6 +100,7 @@ object CustomRadixTransform extends Transform with DependencyAPIMigration with H
         name -> target
     }
       .groupBy(_._1)
+      .view
       .mapValues(_.map(t => toVerilogName(t._2)))
       .toSeq
       .sortBy(_._1)
