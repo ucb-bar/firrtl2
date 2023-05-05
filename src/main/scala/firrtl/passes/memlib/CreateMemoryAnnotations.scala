@@ -4,10 +4,7 @@ package firrtl
 package passes
 package memlib
 
-import firrtl.Utils.error
 import firrtl.stage.Forms
-
-import java.io.File
 
 class CreateMemoryAnnotations extends Transform with DependencyAPIMigration {
 
@@ -18,14 +15,8 @@ class CreateMemoryAnnotations extends Transform with DependencyAPIMigration {
 
   def execute(state: CircuitState): CircuitState = {
     state.copy(annotations = state.annotations.flatMap {
-      case ReplSeqMemAnnotation(inputFileName, outputConfig) =>
-        Seq(MemLibOutConfigFileAnnotation(outputConfig, Nil)) ++ {
-          if (inputFileName.isEmpty) None
-          else if (new File(inputFileName).exists) {
-            import CustomYAMLProtocol._
-            Some(PinAnnotation(new YamlFileReader(inputFileName).parse[Config].map(_.pin.name)))
-          } else error("Input configuration file does not exist!")
-        }
+      case ReplSeqMemAnnotation(outputConfig) =>
+        Seq(MemLibOutConfigFileAnnotation(outputConfig, Nil))
       case a => Seq(a)
     })
   }

@@ -21,8 +21,8 @@ class GetIncludes extends Phase {
 
   override def invalidates(a: Phase) = false
 
-  /** Read all [[annotations.Annotation]] from a file in JSON or YAML format
-    * @param filename a JSON or YAML file of [[annotations.Annotation]]
+  /** Read all [[annotations.Annotation]] from a file in JSON format
+    * @param filename a JSON file of [[annotations.Annotation]]
     * @throws annotations.AnnotationFileNotFoundException if the file does not exist
     */
   private def readAnnotationsFromFile(
