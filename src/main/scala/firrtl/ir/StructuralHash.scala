@@ -242,8 +242,8 @@ class StructuralHash private (h: Hasher, renameModule: String => String) {
     case Conditionally(_, pred, conseq, alt) => id(22); hash(pred); hash(conseq); id(23); hash(alt); id(24)
     case EmptyStmt                           => // empty statements are ignored
     case Block(stmts)                        => stmts.foreach(hash) // block structure is ignored
-    case Stop(_, ret, clk, en)               => id(25); hash(ret); hash(clk); hash(en)
-    case Print(_, string, args, clk, en)     =>
+    case Stop(_, ret, clk, en, _)            => id(25); hash(ret); hash(clk); hash(en)
+    case Print(_, string, args, clk, en, _)  =>
       // the string is part of the side effect and thus part of the circuit behavior
       id(26); hash(string.string); hash(args.length); args.foreach(hash); hash(clk); hash(en)
     case IsInvalid(_, expr)    => id(27); hash(expr)
@@ -303,7 +303,7 @@ class StructuralHash private (h: Hasher, renameModule: String => String) {
       hash(readUnderWrite.toString)
       hash(maskGran.size); maskGran.foreach(hash)
       hash(memRef.size); memRef.foreach { case (a, b) => hash(a); hash(b) }
-    case Verification(op, _, clk, pred, en, msg) =>
+    case Verification(op, _, clk, pred, en, msg, _) =>
       id(36); hash(StructuralHash.verificationOp(op)); hash(clk); hash(pred); hash(en); hash(msg.string)
     // ids 37 ... 39 are reserved for future Statement nodes
   }
