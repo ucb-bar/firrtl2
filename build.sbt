@@ -16,7 +16,6 @@ lazy val isAtLeastScala213 = Def.setting {
 lazy val firrtlSettings = Seq(
   name := "firrtl",
   version := "2.0-SNAPSHOT",
-  addCompilerPlugin(scalafixSemanticdb),
   scalacOptions := Seq(
     "-deprecation",
     "-unchecked",
@@ -31,11 +30,11 @@ lazy val firrtlSettings = Seq(
     "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scalatest" %% "scalatest" % "3.2.14" % "test",
     "org.scalatestplus" %% "scalacheck-1-15" % "3.2.11.0" % "test",
-    "com.github.scopt" %% "scopt" % "3.7.1",
+    "com.github.scopt" %% "scopt" % "4.1.0",
     "org.json4s" %% "json4s-native" % "4.0.6",
     "org.apache.commons" % "commons-text" % "1.10.0",
     "io.github.alexarchambault" %% "data-class" % "0.2.5",
-    "com.lihaoyi" %% "os-lib" % "0.8.1"
+    "com.lihaoyi" %% "os-lib" % "0.9.1"
   ),
   // macros for the data-class library
   libraryDependencies ++= {
@@ -53,10 +52,8 @@ lazy val firrtlSettings = Seq(
       case _                               => Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4")
     }
   },
-  resolvers ++= Seq(
-    Resolver.sonatypeRepo("snapshots"),
-    Resolver.sonatypeRepo("releases")
-  )
+  resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
+  resolvers ++= Resolver.sonatypeOssRepos("releases")
 )
 
 lazy val mimaSettings = Seq(
