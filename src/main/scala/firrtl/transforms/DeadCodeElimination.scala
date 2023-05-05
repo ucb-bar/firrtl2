@@ -153,9 +153,9 @@ class DeadCodeElimination extends Transform with RegisteredTransform with Depend
         val node = getDeps(loc) match { case Seq(elt) => elt }
         getDeps(expr).foreach(ref => depGraph.addPairWithEdge(node, ref))
       // Simulation constructs are treated as top-level outputs
-      case Stop(_, _, clk, en) =>
+      case Stop(_, _, clk, en, _) =>
         Seq(clk, en).flatMap(getDeps(_)).foreach(ref => depGraph.addPairWithEdge(circuitSink, ref))
-      case Print(_, _, args, clk, en) =>
+      case Print(_, _, args, clk, en, _) =>
         (args :+ clk :+ en).flatMap(getDeps(_)).foreach(ref => depGraph.addPairWithEdge(circuitSink, ref))
       case s: Verification =>
         for (expr <- Seq(s.clk, s.pred, s.en)) {
