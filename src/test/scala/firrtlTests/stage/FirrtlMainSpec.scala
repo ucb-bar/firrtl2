@@ -305,7 +305,7 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
       err should be(empty)
 
       And("the exit code should be 1")
-      result should be(Left(1))
+      result should be(1)
     }
   }
 
@@ -363,7 +363,7 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
       out should include("firrtl.passes.memlib.MemLibOptions")
 
       And("the exit code should be 1")
-      result should be(Left(1))
+      result should be(1)
     }
   }
 
