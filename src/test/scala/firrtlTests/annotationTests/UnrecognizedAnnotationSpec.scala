@@ -66,7 +66,7 @@ class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
     val fileNames = setupFiles(addAllowUnrecognizedFlag = false, addAllowUnrecognizedAnno = false)
     val args = makeCommandLineArgs(fileNames)
     val e = intercept[InvalidAnnotationFileException] {
-      FirrtlMain.main(args)
+      FirrtlMain.mainInner(args)
     }
 
     e.getMessage should include(fileNames.inputAnnotations)
@@ -91,7 +91,7 @@ class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
 
   def shouldSucceed(fileNames: TestFileNames): Unit = {
     val args = makeCommandLineArgs(fileNames)
-    FirrtlMain.main(args)
+    FirrtlMain.mainInner(args)
 
     val outputAnnotationText = FileUtils.getText(fileNames.outputAnnotationsFull)
     outputAnnotationText should include("freechips.rocketchip.util.RegFieldDescMappingAnnotation")

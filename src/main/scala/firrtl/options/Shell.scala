@@ -16,7 +16,10 @@ import java.util.ServiceLoader
 class Shell(val applicationName: String) {
 
   /** Command line argument parser (OptionParser) with modifications */
-  protected val parser = new OptionParser[AnnotationSeq](applicationName) with DuplicateHandling with ExceptOnError
+  protected val parser = new OptionParser[AnnotationSeq](applicationName)
+    with DuplicateHandling
+    with ExceptOnError
+    with DoNotTerminateOnExit
 
   /** Contains all discovered [[RegisteredLibrary]] */
   final lazy val registeredLibraries: Seq[RegisteredLibrary] = {
