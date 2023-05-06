@@ -65,7 +65,6 @@ abstract class Stage extends Phase {
 class StageMain(val stage: Stage) {
 
   /** The main function that serves as this stage's command line interface.
-    *
     * @param args command line arguments
     */
   final def main(args: Array[String]): Unit =
