@@ -215,11 +215,11 @@ class AddDescriptionNodes extends Transform with DependencyAPIMigration {
     val (docs: Seq[DocString] @unchecked, nodocs) = descs.partition {
       case _: DocString => true
       case _ => false
-    }
+    }: @unchecked
     val (attrs: Seq[Attribute] @unchecked, rest) = nodocs.partition {
       case _: Attribute => true
       case _ => false
-    }
+    }: @unchecked
 
     val doc = if (docs.nonEmpty) {
       Seq(DocString(StringLit.unescape(docs.map(_.string.string).mkString("\n\n"))))
