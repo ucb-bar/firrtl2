@@ -31,7 +31,7 @@ case class WidthGeqConstraintAnnotation(loc: ReferenceTarget, exp: ReferenceTarg
               "is not supported by WidthGeqConstraintAnnotation\n" + target.prettyPrint()
           )
       }
-    }
+    }: @unchecked
 
     (newLoc, newExp) match {
       case (Some(l: ReferenceTarget), Some(e: ReferenceTarget)) => Seq(WidthGeqConstraintAnnotation(l, e))
@@ -265,7 +265,7 @@ class InferWidths extends Transform with ResolvedAnnotationPaths with Dependency
           }
 
           leafType
-        }
+        }: @unchecked
 
         //get_constraints_t(locType, expType)
         addTypeConstraints(anno.loc, anno.exp)(locType, expType)

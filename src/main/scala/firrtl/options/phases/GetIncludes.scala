@@ -7,6 +7,7 @@ import firrtl.annotations.{AnnotationFileNotFoundException, JsonProtocol}
 import firrtl.options.{InputAnnotationFileAnnotation, Phase, StageUtils}
 import firrtl.FileUtils
 import firrtl.stage.AllowUnrecognizedAnnotations
+import org.json4s.FileInput
 
 import java.io.File
 import scala.collection.mutable
@@ -31,7 +32,7 @@ class GetIncludes extends Phase {
   ): AnnotationSeq = {
     val file = new File(filename).getCanonicalFile
     if (!file.exists) { throw new AnnotationFileNotFoundException(file) }
-    JsonProtocol.deserialize(file, allowUnrecognizedAnnotations)
+    JsonProtocol.deserialize(FileInput(file), allowUnrecognizedAnnotations)
   }
 
   /** Recursively read all [[Annotation]]s from any [[InputAnnotationFileAnnotation]]s while making sure that each file is

@@ -45,7 +45,7 @@ class ResolveMemoryReference extends Transform with DependencyAPIMigration {
   /** If a candidate memory is identical except for name to another, add an
     *   annotation that references the name of the other memory.
     */
-  def updateMemStmts(
+  private def updateMemStmts(
     mname:        String,
     existingMems: AnnotatedMemories,
     noDedupMap:   Map[String, Set[String]]

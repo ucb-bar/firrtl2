@@ -14,6 +14,7 @@ import firrtl.options.{
   Unserializable,
   Viewer
 }
+import firrtl.options.StageOptionsView
 
 import java.io.{BufferedOutputStream, File, FileOutputStream, PrintWriter}
 

@@ -73,7 +73,7 @@ object CheckWidths extends Pass {
       (w, t) match {
         case (IntWidth(width), _) if width >= MaxWidth =>
           errors.append(new WidthTooBig(info, target.serialize, width))
-        case (w: IntWidth, f: FixedType) if (w.width < 0 && w.width == f.width) =>
+        case (w: IntWidth, f: FixedType) if (w.width < 0 && w.width == f.width.asInstanceOf[IntWidth].width) =>
           errors.append(new NegWidthException(info, target.serialize))
         case (_: IntWidth, _) =>
         case _ =>
