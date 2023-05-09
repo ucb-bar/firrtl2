@@ -34,7 +34,10 @@ object Dependency {
   }
 
   private def isSingleton(obj: AnyRef): Boolean = {
-    reflect.runtime.currentMirror.reflect(obj).symbol.isModuleClass
+    // https://stackoverflow.com/questions/36018355/in-scala-is-there-any-way-to-check-if-an-instance-is-a-singleton-object-or-not
+    // https://stackoverflow.com/questions/37388677/how-to-check-if-a-value-is-a-scala-singleton-object-without-a-static-type?noredirect=1&lq=1
+    // reflect.runtime.currentMirror.reflect(obj).symbol.isModuleClass
+    obj.getClass.getName.endsWith("$")
   }
 }
 

@@ -21,7 +21,6 @@ lazy val firrtlSettings = Seq(
   // Always target Java8 for maximum compatibility
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scalatest" %% "scalatest" % "3.2.14" % "test",
     "org.scalatestplus" %% "scalacheck-1-15" % "3.2.11.0" % "test",
     "com.github.scopt" %% "scopt" % "4.1.0",
