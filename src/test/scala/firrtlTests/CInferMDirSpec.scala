@@ -29,7 +29,7 @@ class CInferMDirSpec extends LowTransformSpec {
       }
       if (!check) {
         errors.append(new PassException("Memory has incorrect port directions!"))
-        errors.trigger
+        errors.trigger()
       }
       c
     }

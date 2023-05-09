@@ -92,17 +92,17 @@ object ReRunResolveAndCheck extends Transform with DependencyAPIMigration with I
 trait LowTransformSpec extends SimpleTransformSpec {
   def emitter = new LowFirrtlEmitter
   def transform: Transform
-  def transforms: Seq[Transform] = transform +: ReRunResolveAndCheck +: Forms.LowForm.map(_.getObject)
+  def transforms: Seq[Transform] = transform +: ReRunResolveAndCheck +: Forms.LowForm.map(_.getObject())
 }
 
 trait MiddleTransformSpec extends SimpleTransformSpec {
   def emitter = new MiddleFirrtlEmitter
   def transform: Transform
-  def transforms: Seq[Transform] = transform +: ReRunResolveAndCheck +: Forms.MidForm.map(_.getObject)
+  def transforms: Seq[Transform] = transform +: ReRunResolveAndCheck +: Forms.MidForm.map(_.getObject())
 }
 
 trait HighTransformSpec extends SimpleTransformSpec {
   def emitter = new HighFirrtlEmitter
   def transform: Transform
-  def transforms = transform +: ReRunResolveAndCheck +: Forms.HighForm.map(_.getObject)
+  def transforms = transform +: ReRunResolveAndCheck +: Forms.HighForm.map(_.getObject())
 }

@@ -26,7 +26,7 @@ class DriverCompatibilitySpec extends AnyFlatSpec with Matchers with PrivateMeth
 
   /* This method wraps some magic that lets you use the private method DriverCompatibility.topName */
   def topName(annotations: AnnotationSeq): Option[String] = {
-    val topName = PrivateMethod[Option[String]]('topName)
+    val topName = PrivateMethod[Option[String]](Symbol("topName"))
     DriverCompatibility.invokePrivate(topName(annotations))
   }
 

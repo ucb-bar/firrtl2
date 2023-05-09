@@ -47,7 +47,7 @@ class ChirrtlMemSpec extends LowFirrtlTransformSpec {
       }
       if (!check) {
         errors.append(new PassException("Enable signal for the read port is incorrect!"))
-        errors.trigger
+        errors.trigger()
       }
       c
     }

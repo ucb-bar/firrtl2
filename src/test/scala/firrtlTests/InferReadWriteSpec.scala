@@ -34,7 +34,7 @@ class InferReadWriteSpec extends SimpleTransformSpec {
       }
       if (!foundReadWrite) {
         errors.append(new InferReadWriteCheckException)
-        errors.trigger
+        errors.trigger()
       }
       c
     }

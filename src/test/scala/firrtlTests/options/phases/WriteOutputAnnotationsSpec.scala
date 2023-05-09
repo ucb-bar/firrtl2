@@ -22,6 +22,7 @@ import firrtl.options.Viewer.view
 import firrtl.options.phases.{GetIncludes, WriteOutputAnnotations}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import firrtl.options.StageOptionsView
 
 class WriteOutputAnnotationsSpec extends AnyFlatSpec with Matchers with firrtl.testutils.Utils {
 

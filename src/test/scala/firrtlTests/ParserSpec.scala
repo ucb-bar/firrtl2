@@ -463,7 +463,7 @@ object SMemTestCircuit {
 class ParserPropSpec extends FirrtlPropSpec {
   // Disable shrinking on error.
   import org.scalacheck.Shrink
-  implicit val noShrinkString = Shrink[String](_ => Stream.empty)
+  implicit val noShrinkString: Shrink[String] = Shrink[String](_ => Stream.empty)
 
   def legalStartChar = Gen.frequency((1, '_'), (20, Gen.alphaChar))
   def legalChar = Gen.frequency((1, Gen.numChar), (1, '$'), (10, legalStartChar))

@@ -10,7 +10,7 @@ import language.implicitConversions
 object Foreachers {
 
   /** Statement Foreachers */
-  private trait StmtForMagnet {
+  trait StmtForMagnet {
     def foreach(stmt: Statement): Unit
   }
   private object StmtForMagnet {
@@ -36,7 +36,7 @@ object Foreachers {
   }
 
   /** Expression Foreachers */
-  private trait ExprForMagnet {
+  trait ExprForMagnet {
     def foreach(expr: Expression): Unit
   }
   private object ExprForMagnet {
@@ -55,7 +55,7 @@ object Foreachers {
   }
 
   /** Type Foreachers */
-  private trait TypeForMagnet {
+  trait TypeForMagnet {
     def foreach(tpe: Type): Unit
   }
   private object TypeForMagnet {
@@ -71,7 +71,7 @@ object Foreachers {
   }
 
   /** Module Foreachers */
-  private trait ModuleForMagnet {
+  trait ModuleForMagnet {
     def foreach(module: DefModule): Unit
   }
   private object ModuleForMagnet {
@@ -93,7 +93,7 @@ object Foreachers {
   }
 
   /** Circuit Foreachers */
-  private trait CircuitForMagnet {
+  trait CircuitForMagnet {
     def foreach(module: Circuit): Unit
   }
   private object CircuitForMagnet {

@@ -12,6 +12,7 @@ import _root_.logger.{LogLevel, LogLevelAnnotation, Logger}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should._
 import org.scalatest.Inside._
+import org.json4s.convertToJsonInput
 
 case class AnAnnotation(
   info:       Info,

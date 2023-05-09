@@ -617,7 +617,7 @@ class TopWiringTests extends MiddleTransformSpec with TopWiringTestsCommon {
           .collectFirst { case EmittedFirrtlCircuitAnnotation(value) => value }
           .get
           .value
-      } catch { case _: Throwable => fail }
+      } catch { case _: Throwable => fail() }
     parse(emitted).serialize should be(parse(input).serialize)
   }
 
