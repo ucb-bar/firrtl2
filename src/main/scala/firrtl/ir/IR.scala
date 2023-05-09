@@ -884,13 +884,13 @@ case object UnknownBound extends Bound {
   def serialize: String = Serializer.serialize(this)
   def map(f: Constraint => Constraint): Constraint = this
   override def reduce(): Constraint = this
-  val children = Vector()
+  lazy val children = Vector()
 }
 case class CalcBound(arg: Constraint) extends Bound {
   def serialize: String = Serializer.serialize(this)
   def map(f: Constraint => Constraint): Constraint = f(arg)
   override def reduce(): Constraint = arg
-  val children = Vector(arg)
+  lazy val children = Vector(arg)
 }
 case class VarBound(name: String) extends IsVar with Bound {
   override def serialize: String = Serializer.serialize(this)
@@ -1039,7 +1039,7 @@ case class IntervalType(lower: Bound, upper: Bound, point: Width) extends Ground
   })
 
   /** If bounds are known, calculates the width, otherwise returns UnknownWidth */
-  lazy val width: Width = (point, lower, upper) match {
+  val width: Width = (point, lower, upper) match {
     case (IntWidth(i), l: IsKnown, u: IsKnown) =>
       IntWidth(Math.max(Utils.getSIntWidth(minAdjusted.get), Utils.getSIntWidth(maxAdjusted.get)))
     case _ => UnknownWidth

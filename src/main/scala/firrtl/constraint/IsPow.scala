@@ -23,7 +23,7 @@ case class IsPow private (child: Constraint, dummyArg: Int) extends Constraint {
     case _ => this
   }
 
-  val children = Vector(child)
+  lazy val children = Vector(child)
 
   override def map(f: Constraint => Constraint): Constraint = IsPow(f(child))
 

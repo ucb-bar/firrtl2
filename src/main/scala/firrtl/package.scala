@@ -7,7 +7,7 @@ package object firrtl {
   private val _dummyForms = firrtl.stage.Forms
 
   implicit def seqToAnnoSeq(xs: Seq[Annotation]): AnnotationSeq = AnnotationSeq(xs)
-  implicit def annoSeqToSeq(as: AnnotationSeq): Seq[Annotation] = as.toSeq
+  implicit def annoSeqToSeq(as: AnnotationSeq):   Seq[Annotation] = as.toSeq
 
   /* Options as annotations compatibility items */
   @deprecated("Use firrtl.options.TargetDirAnnotation", "FIRRTL 1.2")

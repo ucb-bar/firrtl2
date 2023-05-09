@@ -7,7 +7,7 @@ import firrtl.ir._
 // TODO: Implement remaining mappers and recursive mappers
 object Mappers {
   // ********** Port Mappers **********
-  private trait PortMagnet {
+  trait PortMagnet {
     def map(p: Port): Port
   }
   private object PortMagnet {
@@ -23,7 +23,7 @@ object Mappers {
   }
 
   // ********** Stmt Mappers **********
-  private trait StmtMagnet {
+  trait StmtMagnet {
     def map(stmt: Statement): Statement
   }
   private object StmtMagnet {
@@ -49,7 +49,7 @@ object Mappers {
   }
 
   // ********** Expression Mappers **********
-  private trait ExprMagnet {
+  trait ExprMagnet {
     def map(expr: Expression): Expression
   }
   private object ExprMagnet {
@@ -68,7 +68,7 @@ object Mappers {
   }
 
   // ********** Type Mappers **********
-  private trait TypeMagnet {
+  trait TypeMagnet {
     def map(tpe: Type): Type
   }
   private object TypeMagnet {
@@ -84,7 +84,7 @@ object Mappers {
   }
 
   // ********** Width Mappers **********
-  private trait WidthMagnet {
+  trait WidthMagnet {
     def map(width: Width): Width
   }
   private object WidthMagnet {
@@ -100,7 +100,7 @@ object Mappers {
   }
 
   // ********** Module Mappers **********
-  private trait ModuleMagnet {
+  trait ModuleMagnet {
     def map(module: DefModule): DefModule
   }
   private object ModuleMagnet {
@@ -122,7 +122,7 @@ object Mappers {
   }
 
   // ********** Circuit Mappers **********
-  private trait CircuitMagnet {
+  trait CircuitMagnet {
     def map(module: Circuit): Circuit
   }
   private object CircuitMagnet {
