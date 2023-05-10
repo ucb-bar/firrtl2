@@ -280,7 +280,7 @@ class DiGraph[T](private[graph] val edges: LinkedHashMap[T, LinkedHashSet[T]]) {
           if (lowlinks(v) == indices(v)) {
             val scc = new mutable.ArrayBuffer[T]
             var cond = true
-            while(cond) {
+            while (cond) {
               val w = stack.pop()
               onstack -= w
               scc += w
