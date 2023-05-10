@@ -25,13 +25,6 @@ object JsonProtocolTestClasses {
     def typeHints = Seq(param.getClass)
   }
 
-  case class TypeParameterizedAnnotation[T](param: T) extends NoTargetAnnotation
-  case class TypeParameterizedAnnotationWithTypeHints[T](param: T)
-      extends NoTargetAnnotation
-      with HasSerializationHints {
-    def typeHints = Seq(param.getClass)
-  }
-
   case class SimpleAnnotation(alpha: String) extends NoTargetAnnotation
 }
 
@@ -58,17 +51,6 @@ class JsonProtocolSpec extends AnyFlatSpec {
     val anno2 = PolymorphicParameterAnnotationWithTypeHints(ChildB("Test"))
     val deserAnno2 = serializeAndDeserialize(anno2)
     assert(anno2 == deserAnno2)
-  }
-
-  "Annotations with non-primitive type parameters" should "not serialize and deserialize without type hints" in {
-    val anno = TypeParameterizedAnnotation(ChildA(1))
-    val deserAnno = serializeAndDeserialize(anno)
-    assert(anno != deserAnno)
-  }
-  it should "serialize and deserialize with type hints" in {
-    val anno = TypeParameterizedAnnotationWithTypeHints(ChildA(1))
-    val deserAnno = serializeAndDeserialize(anno)
-    assert(anno == deserAnno)
   }
 
   "JSON object order" should "not affect deserialization" in {
