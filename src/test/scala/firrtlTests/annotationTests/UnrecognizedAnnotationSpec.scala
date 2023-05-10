@@ -10,6 +10,7 @@ import firrtl.testutils.FirrtlFlatSpec
 import firrtl.transforms.BlackBoxInlineAnno
 import logger.Logger
 import logger.Logger.OutputCaptor
+import org.json4s.convertToJsonInput
 
 import java.io.{File, PrintWriter}
 

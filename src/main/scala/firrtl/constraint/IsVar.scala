@@ -20,7 +20,7 @@ trait IsVar extends Constraint {
 
   override def reduce() = this
 
-  val children = Vector()
+  lazy val children = Vector()
 }
 
 case class VarCon(name: String) extends IsVar

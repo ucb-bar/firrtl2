@@ -43,7 +43,7 @@ class ReplSeqMemSpec extends SimpleTransformSpec {
     new BlackBoxSourceHelper
   )
 
-  def checkMemConf(circuitState: CircuitState, mems: Set[MemConf]) {
+  def checkMemConf(circuitState: CircuitState, mems: Set[MemConf]) = {
     // Read the mem conf
     val text = circuitState.annotations.collectFirst {
       case a: MemLibOutConfigFileAnnotation => a.getBytes.map(_.toChar).mkString
@@ -695,7 +695,7 @@ circuit Top :
   }
 
   "MemPorts" should "serialize in a deterministic order regardless" in {
-    def compare(seq1: Seq[MemPort]) {
+    def compare(seq1: Seq[MemPort]) = {
       val m1 = MemConf("memconf", 8, 16, seq1.map(s => s -> 1).toMap, None)
       val m2 = MemConf("memconf", 8, 16, seq1.reverse.map(s => s -> 1).toMap, None)
       m1.toString should be(m2.toString)

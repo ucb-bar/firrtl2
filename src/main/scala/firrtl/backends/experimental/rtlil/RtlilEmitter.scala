@@ -15,6 +15,7 @@ import firrtl.options.{CustomFileEmission, Dependency}
 import firrtl.passes.LowerTypes
 import firrtl.passes.MemPortUtils.memPortField
 import firrtl.stage.{FirrtlOptions, TransformManager}
+import firrtl.stage.FirrtlOptionsView
 
 import scala.annotation.tailrec
 import scala.collection.mutable

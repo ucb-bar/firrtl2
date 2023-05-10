@@ -34,7 +34,10 @@ object Dependency {
   }
 
   private def isSingleton(obj: AnyRef): Boolean = {
-    reflect.runtime.currentMirror.reflect(obj).symbol.isModuleClass
+    // https://stackoverflow.com/questions/36018355/in-scala-is-there-any-way-to-check-if-an-instance-is-a-singleton-object-or-not
+    // https://stackoverflow.com/questions/37388677/how-to-check-if-a-value-is-a-scala-singleton-object-without-a-static-type?noredirect=1&lq=1
+    // reflect.runtime.currentMirror.reflect(obj).symbol.isModuleClass
+    obj.getClass.getName.endsWith("$")
   }
 }
 
@@ -55,7 +58,7 @@ case class Dependency[+A <: DependencyAPI[_]](id: Either[Class[_ <: A], A with S
   }
 
   /** Wrap an [[IllegalAccessException]] due to attempted object construction in a [[DependencyManagerException]] */
-  private def safeConstruct[A](a: Class[_ <: A]): A = try { a.newInstance }
+  private def safeConstruct[A](a: Class[_ <: A]): A = try { a.getDeclaredConstructor().newInstance() }
   catch {
     case e: IllegalAccessException =>
       throw new DependencyManagerException(s"Failed to construct '$a'! (Did you try to construct an object?)", e)
@@ -192,7 +195,7 @@ trait DependencyAPI[A <: DependencyAPI[A]] { this: TransformLike[_] =>
   "Use an explicit `override def invalidates` returning false. This will be removed in FIRRTL 1.5.",
   "FIRRTL 1.4"
 )
-trait PreservesAll[A <: DependencyAPI[A]] { this: DependencyAPI[A] =>
+trait PreservesAll[A <: DependencyAPI[A]] { this: DependencyAPI[A] with TransformLike[_] =>
 
   override final def invalidates(a: A): Boolean = false
 

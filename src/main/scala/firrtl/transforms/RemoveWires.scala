@@ -81,7 +81,7 @@ class RemoveWires extends Transform with DependencyAPIMigration {
     Try {
       val ordered = digraph.linearize.reverse
       ordered.map { key =>
-        val WRef(name, _, kind, _) = key.e1
+        val WRef(name, _, kind, _) = key.e1: @unchecked
         kind match {
           case RegKind    => regInfo(key)
           case RandomKind => randInfo(key)

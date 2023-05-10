@@ -424,7 +424,7 @@ object DedupModules extends LazyLogging {
       val instToModule = mutable.HashMap.empty[String, String]
       def markAggregatePorts(expr: Expression): Unit = {
         if (kind(expr) == InstanceKind && hasBundleType(expr.tpe)) {
-          val (WRef(inst, _, _, _), _) = splitRef(expr)
+          val (WRef(inst, _, _, _), _) = splitRef(expr): @unchecked
           dontDedup += instToModule(inst)
         }
       }

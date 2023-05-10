@@ -16,7 +16,7 @@ import firrtl.options.Dependency
   */
 class InlineInstancesTests extends LowTransformSpec {
   def transform = new InlineInstances
-  def inline(mod: String): Annotation = {
+  def inlineAnno(mod: String): Annotation = {
     val parts = mod.split('.')
     val modName = ModuleName(parts.head, CircuitName("Top")) // If this fails, bad input
     val name = if (parts.size == 1) modName else ComponentName(parts.tail.mkString("."), modName)
@@ -47,7 +47,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    i_b <= i_a
         |    b <= i_b
         |    i_a <= a""".stripMargin
-    execute(input, check, Seq(inline("Inline")))
+    execute(input, check, Seq(inlineAnno("Inline")))
   }
 
   "The all instances of Simple" should "be inlined" in {
@@ -79,7 +79,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    b <= i1_b
         |    i0_a <= a
         |    i1_a <= i0_b""".stripMargin
-    execute(input, check, Seq(inline("Simple")))
+    execute(input, check, Seq(inlineAnno("Simple")))
   }
 
   "Only one instance of Simple" should "be inlined" in {
@@ -113,7 +113,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    input a : UInt<32>
         |    output b : UInt<32>
         |    b <= a""".stripMargin
-    execute(input, check, Seq(inline("Top.i0")))
+    execute(input, check, Seq(inlineAnno("Top.i0")))
   }
 
   "All instances of A" should "be inlined" in {
@@ -157,7 +157,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    i_b <= i_a
         |    b <= i_b
         |    i_a <= a""".stripMargin
-    execute(input, check, Seq(inline("A")))
+    execute(input, check, Seq(inlineAnno("A")))
   }
 
   "Non-inlined instances" should "still prepend prefix" in {
@@ -195,7 +195,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    input a : UInt<32>
         |    output b : UInt<32>
         |    b <= a""".stripMargin
-    execute(input, check, Seq(inline("A")))
+    execute(input, check, Seq(inlineAnno("A")))
   }
 
   "A module with nested inlines" should "still prepend prefixes" in {
@@ -219,7 +219,7 @@ class InlineInstancesTests extends LowTransformSpec {
          |  module Bar:
          |    node bar = UInt<1>("h0")
          |""".stripMargin
-    execute(input, check, Seq(inline("Foo"), inline("Foo.bar")))
+    execute(input, check, Seq(inlineAnno("Foo"), inlineAnno("Foo.bar")))
   }
 
   "An inlined module" should "NOT be prefix unique" in {
@@ -239,7 +239,7 @@ class InlineInstancesTests extends LowTransformSpec {
          |    node a_foo = UInt<1>("h0")
          |    node a__bar = UInt<1>("h0")
          |""".stripMargin
-    execute(input, check, Seq(inline("A")))
+    execute(input, check, Seq(inlineAnno("A")))
   }
 
   /* This test is mutually exclusive with the above */
@@ -260,7 +260,7 @@ class InlineInstancesTests extends LowTransformSpec {
          |    node a_foo = UInt<1>("h0")
          |    node a__bar = UInt<1>("h0")
          |""".stripMargin
-    execute(input, check, Seq(inline("A")))
+    execute(input, check, Seq(inlineAnno("A")))
   }
 
   it should "uniquify sanely" in {
@@ -288,7 +288,7 @@ class InlineInstancesTests extends LowTransformSpec {
          |  module Bar:
          |    node bar = UInt<1>("h0")
          |""".stripMargin
-    execute(input, check, Seq(inline("Foo"), inline("Foo.bar")))
+    execute(input, check, Seq(inlineAnno("Foo"), inlineAnno("Foo.bar")))
   }
 
   // ---- Errors ----
@@ -305,7 +305,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |  extmodule A :
         |    input a : UInt<32>
         |    output b : UInt<32>""".stripMargin
-    failingexecute(input, Seq(inline("A")))
+    failingexecute(input, Seq(inlineAnno("A")))
   }
   // 2) ext instance
   "External instance" should "not be inlined" in {
@@ -320,7 +320,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |  extmodule A :
         |    input a : UInt<32>
         |    output b : UInt<32>""".stripMargin
-    failingexecute(input, Seq(inline("A")))
+    failingexecute(input, Seq(inlineAnno("A")))
   }
   // 3) no module
   "Inlined module" should "exist" in {
@@ -330,7 +330,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    input a : UInt<32>
         |    output b : UInt<32>
         |    b <= a""".stripMargin
-    failingexecute(input, Seq(inline("A")))
+    failingexecute(input, Seq(inlineAnno("A")))
   }
   // 4) no inst
   "Inlined instance" should "exist" in {
@@ -340,7 +340,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    input a : UInt<32>
         |    output b : UInt<32>
         |    b <= a""".stripMargin
-    failingexecute(input, Seq(inline("A")))
+    failingexecute(input, Seq(inlineAnno("A")))
   }
 
   "Jack's Bug" should "not fail" in {
@@ -377,7 +377,7 @@ class InlineInstancesTests extends LowTransformSpec {
                   |    input a : UInt<32>
                   |    output b : UInt<32>
                   |    b <= a""".stripMargin
-    execute(input, check, Seq(inline("Inline")))
+    execute(input, check, Seq(inlineAnno("Inline")))
   }
 
   case class DummyAnno(targets: CompleteTarget*) extends Annotation {
@@ -443,8 +443,8 @@ class InlineInstancesTests extends LowTransformSpec {
       input,
       check,
       Seq(
-        inline("Inline"),
-        inline("NestedInline"),
+        inlineAnno("Inline"),
+        inlineAnno("NestedInline"),
         NoCircuitDedupAnnotation,
         DummyAnno(inlined.ref("a")),
         DummyAnno(inlined.ref("b")),
@@ -508,7 +508,7 @@ class InlineInstancesTests extends LowTransformSpec {
       input,
       check,
       Seq(
-        inline("Inline"),
+        inlineAnno("Inline"),
         NoCircuitDedupAnnotation,
         DummyAnno(inlined.ref("assert1"))
       ),
@@ -584,8 +584,8 @@ class InlineInstancesTests extends LowTransformSpec {
       input,
       check,
       Seq(
-        inline("Inline"),
-        inline("NestedInline"),
+        inlineAnno("Inline"),
+        inlineAnno("NestedInline"),
         DummyAnno(inlined.ref("a")),
         DummyAnno(inlined.ref("b")),
         DummyAnno(nestedInlined.ref("a")),
@@ -628,7 +628,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    output b : UInt<32>
         |    b <= a""".stripMargin
 
-    val state = CircuitState(parse(input), ChirrtlForm, Seq(inline("Inline")))
+    val state = CircuitState(parse(input), ChirrtlForm, Seq(inlineAnno("Inline")))
     val manager = new TransformManager(Seq(Dependency[InlineInstances], Dependency(ResolveKinds)))
     val result = manager.execute(state)
 

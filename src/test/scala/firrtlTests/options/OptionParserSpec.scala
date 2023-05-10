@@ -63,7 +63,7 @@ class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.U
   behavior.of("An OptionParser with DoNotTerminateOnExit mixed in")
 
   it should "disable sys.exit for terminate method" in {
-    val parser = new IntParser with DoNotTerminateOnExit
+    val parser = new IntParser with DoNotTerminateOnExit[AnnotationSeq]
 
     // parser.terminate() should never call sys.exit(), if it does, then the JVM will terminate
     info("no exit for failure")
@@ -92,7 +92,7 @@ class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.U
   behavior.of("An OptionParser with ExceptOnError mixed in")
 
   it should "cause an OptionsException on an invalid option" in {
-    val parser = new IntParser with ExceptOnError
+    val parser = new IntParser with ExceptOnError[AnnotationSeq]
     intercept[OptionsException] { parser.parse(Array("--foo"), Seq[Annotation]()) }.getMessage should include(
       "Unknown option"
     )

@@ -7,6 +7,7 @@ import firrtl.annotations._
 import firrtl.testutils.FirrtlCheckers.{containLine, containLines}
 import firrtl.testutils.FirrtlFlatSpec
 import firrtlTests.execution._
+import org.json4s.convertToJsonInput
 
 class MemInitSpec extends FirrtlFlatSpec {
   def compile(circuit: String, annos: AnnotationSeq): CircuitState = {

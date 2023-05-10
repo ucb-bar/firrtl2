@@ -8,6 +8,7 @@ import firrtl.Mappers._
 import firrtl.constraint.{IsFloor, IsKnown, IsMul}
 import firrtl.options.Dependency
 import firrtl.Transform
+import firrtl.Mappers._
 
 /** Replaces IntervalType with SIntType, three AST walks:
   * 1) Align binary points

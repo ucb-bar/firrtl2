@@ -4,8 +4,8 @@ enablePlugins(SiteScaladocPlugin)
 
 lazy val commonSettings = Seq(
   organization := "edu.berkeley.cs",
-  scalaVersion := "2.13.10",
-  crossScalaVersions := Seq("2.13.10")
+  scalaVersion := "3.2.2",
+  crossScalaVersions := Seq("2.13.10", "3.2.2")
 )
 
 lazy val firrtlSettings = Seq(
@@ -16,13 +16,11 @@ lazy val firrtlSettings = Seq(
     "-unchecked",
     "-language:reflectiveCalls",
     "-language:existentials",
-    "-language:implicitConversions",
-    "-Yrangepos" // required by SemanticDB compiler plugin
+    "-language:implicitConversions"
   ),
   // Always target Java8 for maximum compatibility
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     "org.scalatest" %% "scalatest" % "3.2.14" % "test",
     "org.scalatestplus" %% "scalacheck-1-15" % "3.2.11.0" % "test",
     "com.github.scopt" %% "scopt" % "4.1.0",

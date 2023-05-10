@@ -6,7 +6,7 @@ package firrtl.constraint
 trait Constraint {
   def serialize: String
   def map(f: Constraint => Constraint): Constraint
-  val children: Vector[Constraint]
+  def children: Vector[Constraint]
   def reduce(): Constraint
 }
 

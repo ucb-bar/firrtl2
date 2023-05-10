@@ -193,7 +193,7 @@ class InferWidthsWithAnnosSpec extends FirrtlFlatSpec {
 
     // should fail without extra constraint annos due to UninferredWidths
     val exceptions = intercept[PassExceptions] {
-      executeTest(input, "", transforms, failAnnos)
+      executeTest(input, "", transforms(), failAnnos)
     }.exceptions.reverse
 
     val msg = exceptions.head.toString
@@ -201,6 +201,6 @@ class InferWidthsWithAnnosSpec extends FirrtlFlatSpec {
     assert(exceptions.tail.forall(_.isInstanceOf[CheckWidths.UninferredWidth]))
 
     // should pass with extra constraints
-    executeTest(input, output, transforms, successAnnos)
+    executeTest(input, output, transforms(), successAnnos)
   }
 }

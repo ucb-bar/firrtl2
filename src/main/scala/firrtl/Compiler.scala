@@ -17,14 +17,6 @@ import firrtl.options.{Dependency, DependencyAPI, StageUtils, TransformLike}
 import firrtl.stage.Forms
 import firrtl.transforms.DedupAnnotationsTransform
 
-/** Container of all annotations for a Firrtl compiler */
-class AnnotationSeq private (underlying: Seq[Annotation]) {
-  def toSeq: Seq[Annotation] = underlying
-}
-object AnnotationSeq {
-  def apply(xs: Seq[Annotation]): AnnotationSeq = new AnnotationSeq(xs)
-}
-
 /** Current State of the Circuit
   *
   * @constructor Creates a CircuitState object

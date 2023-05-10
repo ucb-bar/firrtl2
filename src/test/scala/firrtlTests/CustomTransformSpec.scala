@@ -12,8 +12,6 @@ import firrtl.transforms.{IdentityTransform, LegalizeAndReductionsTransform}
 import firrtl.testutils._
 import firrtl.transforms.formal.ConvertAsserts
 
-import scala.reflect.runtime
-
 object CustomTransformSpec {
 
   class ReplaceExtModuleTransform extends SeqTransform with FirrtlMatchers {
@@ -163,7 +161,7 @@ class CustomTransformSpec extends FirrtlFlatSpec {
     ).foreach { emitter =>
       val custom = Dependency[IdentityLowForm]
       val tm = new firrtl.stage.transforms.Compiler(custom :: emitter :: Nil)
-      info(s"when using ${emitter.getObject.name}")
+      info(s"when using ${emitter.getObject().name}")
       tm.flattenedTransformOrder
         .map(Dependency.fromTransform)
         .sliding(2)

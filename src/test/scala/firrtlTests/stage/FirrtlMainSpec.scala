@@ -12,6 +12,7 @@ import firrtl.stage.{FirrtlMain, WarnNoScalaVersionDeprecation}
 import firrtl.util.BackendCompilationUtilities._
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
+import firrtl.options.StageOptionsView
 
 /** Testing for the top-level [[FirrtlStage]] via [[FirrtlMain]].
   *
@@ -67,8 +68,8 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
         case None => Array.empty
       }
 
-      p.files.foreach(f => new File(td.buildDir + s"/$f").delete())
-      p.notFiles.foreach(f => new File(td.buildDir + s"/$f").delete())
+      p.files.foreach(f => new File(td.buildDir.getAbsolutePath + s"/$f").delete())
+      p.notFiles.foreach(f => new File(td.buildDir.getAbsolutePath + s"/$f").delete())
 
       When(s"""the user tries to compile with '${p.argsString}'""")
       val (stdout, stderr, result) =
@@ -103,13 +104,13 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
 
       p.files.foreach { f =>
         And(s"file '$f' should be emitted in the target directory")
-        val out = new File(td.buildDir + s"/$f")
+        val out = new File(td.buildDir.getAbsolutePath + s"/$f")
         out should (exist)
       }
 
       p.notFiles.foreach { f =>
         And(s"file '$f' should NOT be emitted in the target directory")
-        val out = new File(td.buildDir + s"/$f")
+        val out = new File(td.buildDir.getAbsolutePath + s"/$f")
         out should not(exist)
       }
     }
@@ -128,7 +129,7 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
     */
   class TargetDirectoryFixture(dirName: String) {
     val dir = new File(s"test_run_dir/FirrtlMainSpec/$dirName")
-    val buildDir = new File(dir + "/build")
+    val buildDir = new File(dir.getAbsolutePath + "/build")
     dir.mkdirs()
   }
 
