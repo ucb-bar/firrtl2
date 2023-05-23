@@ -78,9 +78,6 @@ object VerilogEmitter {
 class VerilogEmitter extends SeqTransform with Emitter {
   import VerilogEmitter._
 
-  def inputForm = LowForm
-  def outputForm = LowForm
-
   override def prerequisites = firrtl.stage.Forms.AssertsRemoved ++
     firrtl.stage.Forms.LowFormOptimized
 

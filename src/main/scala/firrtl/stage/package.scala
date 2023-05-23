@@ -29,7 +29,6 @@ package object stage {
           case OutputFileAnnotation(f)      => c.copy(outputFileName = Some(f))
           case InfoModeAnnotation(i)        => c.copy(infoModeName = i)
           case FirrtlCircuitAnnotation(cir) => c.copy(firrtlCircuit = Some(cir))
-          case a: CompilerAnnotation => logger.warn(s"Use of CompilerAnnotation is deprecated. Ignoring $a"); c
           case WarnNoScalaVersionDeprecation => c
           case PrettyNoExprInlining          => c
           case _: DisableFold => c

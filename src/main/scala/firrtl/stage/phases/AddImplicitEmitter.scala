@@ -3,7 +3,7 @@
 package firrtl.stage.phases
 
 import firrtl.{AnnotationSeq, EmitAnnotation, EmitCircuitAnnotation, Emitter}
-import firrtl.stage.{CompilerAnnotation, RunFirrtlTransformAnnotation}
+import firrtl.stage.{RunFirrtlTransformAnnotation}
 import firrtl.options.{Dependency, Phase}
 
 /** [[firrtl.options.Phase Phase]] that adds a [[firrtl.EmitCircuitAnnotation EmitCircuitAnnotation]] derived from a
@@ -20,16 +20,9 @@ class AddImplicitEmitter extends Phase {
   def transform(annos: AnnotationSeq): AnnotationSeq = {
     val emit = annos.collectFirst { case a: EmitAnnotation => a }
     val emitter = annos.collectFirst { case RunFirrtlTransformAnnotation(e: Emitter) => e }
-    val compiler = annos.collectFirst { case CompilerAnnotation(a) => a }
 
-    if (emit.isEmpty && (compiler.nonEmpty || emitter.nonEmpty)) {
+    if (emit.isEmpty && emitter.nonEmpty) {
       annos.flatMap {
-        case a: CompilerAnnotation =>
-          Seq(
-            a,
-            RunFirrtlTransformAnnotation(compiler.get.emitter),
-            EmitCircuitAnnotation(compiler.get.emitter.getClass)
-          )
         case a @ RunFirrtlTransformAnnotation(e: Emitter) => Seq(a, EmitCircuitAnnotation(e.getClass))
         case a => Some(a)
       }

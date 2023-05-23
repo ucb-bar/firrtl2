@@ -144,29 +144,6 @@ object FirrtlSourceAnnotation extends HasShellOptions {
 
 }
 
-/** helpValueName a [[Compiler]] that should be run
-  *  - set stringly with `-X/--compiler`
-  *  - If unset, a [[CompilerAnnotation]] with the default [[VerilogCompiler]]
-  * @param compiler compiler name
-  */
-@deprecated("Use a RunFirrtlTransformAnnotation targeting a specific Emitter.", "FIRRTL 1.4.0")
-case class CompilerAnnotation(compiler: Compiler = new VerilogCompiler()) extends NoTargetAnnotation with FirrtlOption
-
-@deprecated("Use a RunFirrtlTransformAnnotation targeting a specific Emitter.", "FIRRTL 1.4.0")
-object CompilerAnnotation extends HasShellOptions {
-
-  val options = Seq(
-    new ShellOption[String](
-      longOption = "compiler",
-      toAnnotationSeq = a => Seq(RunFirrtlTransformAnnotation.stringToEmitter(a)),
-      helpText = "The FIRRTL compiler to use (default: verilog)",
-      shortOption = Some("X"),
-      helpValueName = Some("<none|mhigh|high|middle|low|verilog|mverilog|sverilog>")
-    )
-  )
-
-}
-
 /** Holds the unambiguous class name of a [[Transform]] to run
   *  - set with `-fct/--custom-transforms`
   * @param transform the full class name of the transform

@@ -2,13 +2,13 @@
 
 package firrtl.transforms
 
-import firrtl.{CircuitState, DependencyAPIMigration, Transform}
+import firrtl.{CircuitState, Transform}
 import firrtl.analyses.InstanceKeyGraph
 import firrtl.options.Dependency
 import firrtl.stage.Forms
 
 /** Return a circuit where all modules (and external modules) are defined before use. */
-class SortModules extends Transform with DependencyAPIMigration {
+class SortModules extends Transform {
 
   override def prerequisites = Seq(Dependency(firrtl.passes.CheckChirrtl))
   override def optionalPrerequisites = Seq.empty
