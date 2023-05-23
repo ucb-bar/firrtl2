@@ -141,7 +141,7 @@ private case class DescribedMod(
   * @note should only be used by VerilogEmitter, described nodes will
   *       break other transforms.
   */
-class AddDescriptionNodes extends Transform with DependencyAPIMigration {
+class AddDescriptionNodes extends Transform {
 
   override def prerequisites = firrtl.stage.Forms.LowFormMinimumOptimized ++
     Seq(
@@ -153,7 +153,6 @@ class AddDescriptionNodes extends Transform with DependencyAPIMigration {
       Dependency[firrtl.transforms.InlineAcrossCastsTransform],
       Dependency[firrtl.transforms.LegalizeClocksAndAsyncResetsTransform],
       Dependency[firrtl.transforms.FlattenRegUpdate],
-      Dependency(passes.VerilogModulusCleanup),
       Dependency[firrtl.transforms.VerilogRename],
       Dependency(firrtl.passes.VerilogPrep)
     )

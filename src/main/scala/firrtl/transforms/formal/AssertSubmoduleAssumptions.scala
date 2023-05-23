@@ -4,7 +4,7 @@ package firrtl.transforms.formal
 
 import firrtl.ir.{Circuit, Formal, Statement, Verification}
 import firrtl.stage.TransformManager.TransformDependency
-import firrtl.{CircuitState, DependencyAPIMigration, Transform}
+import firrtl.{CircuitState, Transform}
 import firrtl.annotations.NoTargetAnnotation
 import firrtl.options.{PreservesAll, RegisteredTransform, ShellOption}
 
@@ -19,7 +19,6 @@ import firrtl.options.{PreservesAll, RegisteredTransform, ShellOption}
 class AssertSubmoduleAssumptions
     extends Transform
     with RegisteredTransform
-    with DependencyAPIMigration
     with PreservesAll[Transform] {
 
   override def prerequisites:         Seq[TransformDependency] = Seq.empty

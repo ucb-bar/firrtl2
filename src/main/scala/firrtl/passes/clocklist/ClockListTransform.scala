@@ -46,7 +46,7 @@ Usage:
   }
 }
 
-class ClockListTransform extends Transform with DependencyAPIMigration with RegisteredTransform {
+class ClockListTransform extends Transform with RegisteredTransform {
 
   override def prerequisites = Forms.LowForm
   override def optionalPrerequisites = Seq.empty
@@ -72,7 +72,7 @@ class ClockListTransform extends Transform with DependencyAPIMigration with Regi
         val outputFile = new PrintWriter(out)
         val newC = (new ClockList(top, outputFile)).run(state.circuit)
         outputFile.close()
-        CircuitState(newC, state.form, state.annotations)
+        CircuitState(newC, state.annotations)
       case Nil => state
       case seq => error(s"Found illegal clock list annotation(s): $seq")
     }

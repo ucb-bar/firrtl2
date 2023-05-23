@@ -4,7 +4,7 @@ package tutorial
 package lesson2
 
 // Compiler Infrastructure
-import firrtl.{CircuitState, LowForm, Transform}
+import firrtl.{CircuitState, Transform}
 // Firrtl IR classes
 import firrtl.ir.{DefInstance, DefModule, Expression, Mux, Statement}
 // Map functions
@@ -78,8 +78,6 @@ class Ledger {
   *   - Type -> UnknownType
   */
 class AnalyzeCircuit extends Transform {
-  def inputForm = LowForm
-  def outputForm = LowForm
 
   // Called by [[Compiler]] to run your pass.
   def execute(state: CircuitState): CircuitState = {

@@ -24,19 +24,9 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.propspec.AnyPropSpec
 
-class CheckLowForm extends SeqTransform {
-  def inputForm = LowForm
-  def outputForm = LowForm
-  def transforms = Seq(
-    passes.CheckHighForm
-  )
-}
-
 case class RenameTopAnnotation(newTopName: String) extends NoTargetAnnotation
 
 object RenameTop extends Transform {
-  def inputForm = UnknownForm
-  def outputForm = UnknownForm
   override def invalidates(a: Transform) = false
 
   override val optionalPrerequisites = Seq(Dependency[RenameModules])
@@ -76,7 +66,7 @@ trait FirrtlRunners {
   val cppHarnessResourceName: String = "/firrtl/testTop.cpp"
 
   /** Extra transforms to run by default */
-  val extraCheckTransforms = Seq(new CheckLowForm)
+  val extraCheckTransforms = Seq(passes.CheckHighForm)
 
   /** Check equivalence of Firrtl transforms using yosys
     *

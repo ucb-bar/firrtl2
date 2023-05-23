@@ -2,7 +2,7 @@
 
 package firrtl.transforms
 
-import firrtl.{CircuitState, DependencyAPIMigration, Namespace, PrimOps, Transform, Utils, WRef}
+import firrtl.{CircuitState, Namespace, PrimOps, Transform, Utils, WRef}
 import firrtl.ir._
 import firrtl.Mappers._
 import firrtl.options.Dependency
@@ -110,7 +110,7 @@ object FixAddingNegativeLiterals {
   * the literal and thus not all expressions in the add are the same. This is fixed here when we directly
   * subtract the literal instead.
   */
-class FixAddingNegativeLiterals extends Transform with DependencyAPIMigration {
+class FixAddingNegativeLiterals extends Transform {
 
   override def prerequisites = Forms.LowFormMinimumOptimized :+ Dependency[BlackBoxSourceHelper]
 

@@ -114,7 +114,6 @@ object Forms {
         Dependency[firrtl.transforms.InlineAcrossCastsTransform],
         Dependency[firrtl.transforms.LegalizeClocksAndAsyncResetsTransform],
         Dependency[firrtl.transforms.FlattenRegUpdate],
-        Dependency(passes.VerilogModulusCleanup),
         Dependency[firrtl.transforms.VerilogRename],
         Dependency(passes.VerilogPrep),
         Dependency[firrtl.AddDescriptionNodes]

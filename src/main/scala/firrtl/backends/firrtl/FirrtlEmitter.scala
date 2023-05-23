@@ -10,8 +10,7 @@ import scala.collection.mutable
 
 sealed abstract class FirrtlEmitter(form: Seq[TransformDependency], val outputSuffix: String)
     extends Transform
-    with Emitter
-    with DependencyAPIMigration {
+    with Emitter {
   override def prerequisites = form
   override def optionalPrerequisites = Seq.empty
   override def optionalPrerequisiteOf = Seq.empty

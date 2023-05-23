@@ -22,7 +22,7 @@ case class TransitionSystemAnnotation(sys: TransitionSystem) extends NoTargetAnn
 /** Contains code to convert a flat firrtl module into a functional transition system which
   * can then be exported as SMTLib or Btor2 file.
   */
-object FirrtlToTransitionSystem extends Transform with DependencyAPIMigration {
+object FirrtlToTransitionSystem extends Transform {
   override def prerequisites: Seq[Dependency[Transform]] = Forms.LowForm ++
     Seq(
       Dependency(VerilogMemDelays),

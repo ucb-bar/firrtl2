@@ -11,7 +11,6 @@ class FirrtlPhase
     extends PhaseManager(
       targets = Seq(
         Dependency[firrtl.stage.phases.Compiler],
-        Dependency[firrtl.stage.phases.ConvertCompilerAnnotations]
       )
     ) {
 

@@ -82,7 +82,7 @@ object DedupAnnotationsTransform {
 
 /** Deduplicates memory annotations
   */
-class DedupAnnotationsTransform extends Transform with DependencyAPIMigration {
+class DedupAnnotationsTransform extends Transform {
 
   override def prerequisites = Nil
 
@@ -94,7 +94,6 @@ class DedupAnnotationsTransform extends Transform with DependencyAPIMigration {
 
   def execute(state: CircuitState): CircuitState = CircuitState(
     state.circuit,
-    state.form,
     DedupAnnotationsTransform.dedupAnnotations(state.annotations.toSeq, InstanceKeyGraph(state.circuit)),
     state.renames
   )

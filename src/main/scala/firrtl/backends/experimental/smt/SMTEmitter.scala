@@ -13,8 +13,7 @@ import firrtl.stage.{FirrtlOptions, FirrtlOptionsView}
 
 private[firrtl] abstract class SMTEmitter private[firrtl] ()
     extends Transform
-    with Emitter
-    with DependencyAPIMigration {
+    with Emitter {
   override def prerequisites: Seq[Dependency[Transform]] = Seq(Dependency(FirrtlToTransitionSystem))
   override def invalidates(a: Transform): Boolean = false
 
