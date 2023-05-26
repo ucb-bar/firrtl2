@@ -2,17 +2,17 @@
 
 package firrtlTests.stage.phases
 
-import firrtl.Parser
-import firrtl.annotations.NoTargetAnnotation
-import firrtl.options.{OptionsException, Phase, PhasePrerequisiteException}
-import firrtl.stage.{
+import firrtl2.Parser
+import firrtl2.annotations.NoTargetAnnotation
+import firrtl2.options.{OptionsException, Phase, PhasePrerequisiteException}
+import firrtl2.stage.{
   CircuitOption,
   FirrtlCircuitAnnotation,
   FirrtlFileAnnotation,
   FirrtlSourceAnnotation,
   InfoModeAnnotation
 }
-import firrtl.stage.phases.AddCircuit
+import firrtl2.stage.phases.AddCircuit
 
 import java.io.{File, FileWriter}
 import org.scalatest.flatspec.AnyFlatSpec

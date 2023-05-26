@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl.annotations.{Annotation, CircuitName, ComponentName, ModuleName}
-import firrtl.transforms.{Flatten, FlattenAnnotation, NoCircuitDedupAnnotation}
-import firrtl.testutils._
+import firrtl2.annotations.{Annotation, CircuitName, ComponentName, ModuleName}
+import firrtl2.transforms.{Flatten, FlattenAnnotation, NoCircuitDedupAnnotation}
+import firrtl2.testutils._
 
 /**
   * Tests deep inline transformation

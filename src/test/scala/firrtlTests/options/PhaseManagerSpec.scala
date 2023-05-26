@@ -2,8 +2,8 @@
 
 package firrtlTests.options
 
-import firrtl.AnnotationSeq
-import firrtl.options.{Dependency, DependencyManagerException, Phase, PhaseManager}
+import firrtl2.AnnotationSeq
+import firrtl2.options.{Dependency, DependencyManagerException, Phase, PhaseManager}
 
 import java.io.{File, PrintWriter}
 

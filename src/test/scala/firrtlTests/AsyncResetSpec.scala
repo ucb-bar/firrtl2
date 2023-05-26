@@ -2,8 +2,8 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.testutils._
 import FirrtlCheckers._
 
 class AsyncResetSpec extends VerilogTransformSpec {
@@ -276,8 +276,8 @@ class AsyncResetSpec extends VerilogTransformSpec {
     intervalResult should containLine("r <= 4'sh0;")
   }
 
-  "CheckResets" should "NOT raise StackOverflow Exception on Combinational Loops (should be caught by firrtl.transforms.CheckCombLoops)" in {
-    an[firrtl.transforms.CheckCombLoops.CombLoopException] shouldBe thrownBy {
+  "CheckResets" should "NOT raise StackOverflow Exception on Combinational Loops (should be caught by firrtl2.transforms.CheckCombLoops)" in {
+    an[firrtl2.transforms.CheckCombLoops.CombLoopException] shouldBe thrownBy {
       compileBody(s"""
                      |input clock : Clock
                      |input reset : AsyncReset

@@ -2,12 +2,12 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.passes._
-import firrtl.stage.Forms
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.passes._
+import firrtl2.stage.Forms
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 
 class InferReadWriteSpec extends SimpleTransformSpec {
   class InferReadWriteCheckException extends PassException("Readwrite ports are not found!")

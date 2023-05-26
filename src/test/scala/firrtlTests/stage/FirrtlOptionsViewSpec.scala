@@ -2,11 +2,11 @@
 
 package firrtlTests.stage
 
-import firrtl.stage._
+import firrtl2.stage._
 
-import firrtl.{ir, NoneCompiler, Parser}
-import firrtl.options.Viewer.view
-import firrtl.stage.{FirrtlOptions, FirrtlOptionsView}
+import firrtl2.{ir, NoneCompiler, Parser}
+import firrtl2.options.Viewer.view
+import firrtl2.stage.{FirrtlOptions, FirrtlOptionsView}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

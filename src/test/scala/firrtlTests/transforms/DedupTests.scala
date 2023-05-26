@@ -3,11 +3,11 @@
 package firrtlTests
 package transforms
 
-import firrtl._
-import firrtl.RenameMap
-import firrtl.annotations._
-import firrtl.transforms.{DedupModules, NoCircuitDedupAnnotation}
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.RenameMap
+import firrtl2.annotations._
+import firrtl2.transforms.{DedupModules, NoCircuitDedupAnnotation}
+import firrtl2.testutils._
 
 /**
   * Tests inline instances transformation

@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.testutils._
+import firrtl2.testutils._
 
 class NegSpec extends FirrtlFlatSpec {
   "unsigned neg" should "be correct and lint-clean" in {

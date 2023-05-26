@@ -2,11 +2,11 @@
 
 package firrtlTests.annotationTests
 
-import firrtl._
-import firrtl.annotations._
-import firrtl.ir._
-import firrtl.options.Dependency
-import firrtl.transforms.DontTouchAnnotation
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.ir._
+import firrtl2.options.Dependency
+import firrtl2.transforms.DontTouchAnnotation
 import scala.util.Failure
 import _root_.logger.{LogLevel, LogLevelAnnotation, Logger}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -59,7 +59,7 @@ class JsonProtocolSpec extends AnyFlatSpec with Matchers {
   }
 
   "Annotation serialization during logging" should "not throw an exception" in {
-    val compiler = new firrtl.stage.transforms.Compiler(Seq(Dependency[AnnoInjector]))
+    val compiler = new firrtl2.stage.transforms.Compiler(Seq(Dependency[AnnoInjector]))
     val circuit = Parser.parse("""
                                  |circuit test :
                                  |  module test :
@@ -84,7 +84,7 @@ class JsonProtocolSpec extends AnyFlatSpec with Matchers {
     val target = CircuitTarget("Top").module("Foo").ref("x")
     val annos = MyAnno(3) :: DontTouchAnnotation(target) :: Nil
     val res = JsonProtocol.serializeRecover(annos)
-    res should include(""""class":"firrtl.annotations.UnserializeableAnnotation",""")
+    res should include(""""class":"firrtl2.annotations.UnserializeableAnnotation",""")
     res should include(""""error":"Classes defined in method bodies are not supported.",""")
     res should include(""""content":"MyAnno(3)"""")
   }

@@ -2,13 +2,13 @@
 
 package firrtlTests.transforms
 
-import firrtl.PrimOps._
-import firrtl._
-import firrtl.ir.DoPrim
-import firrtl.stage.PrettyNoExprInlining
-import firrtl.transforms.{CombineCats, MaxCatLenAnnotation}
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2.PrimOps._
+import firrtl2._
+import firrtl2.ir.DoPrim
+import firrtl2.stage.PrettyNoExprInlining
+import firrtl2.transforms.{CombineCats, MaxCatLenAnnotation}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.testutils.FirrtlCheckers._
 
 class CombineCatsSpec extends FirrtlFlatSpec {
   private val transforms = Seq(new IRToWorkingIR, new CombineCats)

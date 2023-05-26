@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.annotations._
-import firrtl.testutils.FirrtlCheckers.{containLine, containLines}
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.testutils.FirrtlCheckers.{containLine, containLines}
+import firrtl2.testutils.FirrtlFlatSpec
 import firrtlTests.execution._
 import org.json4s.convertToJsonInput
 
@@ -148,7 +148,7 @@ class MemInitSpec extends FirrtlFlatSpec {
   }
 
   private def jsonAnno(name: String, suffix: String): String =
-    s"""[{"class": "firrtl.annotations.$name", "target": "~MemTest|MemTest>m"$suffix}]"""
+    s"""[{"class": "firrtl2.annotations.$name", "target": "~MemTest|MemTest>m"$suffix}]"""
 
   behavior.of("MemoryInit load from JSON")
   it should "work with MemoryRandomInitAnnotation" in {

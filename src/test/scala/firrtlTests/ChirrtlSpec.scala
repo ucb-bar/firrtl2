@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class ChirrtlSpec extends FirrtlFlatSpec {
   def transforms = Seq(

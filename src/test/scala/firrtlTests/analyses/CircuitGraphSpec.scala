@@ -2,13 +2,13 @@
 
 package firrtlTests.analyses
 
-import firrtl.analyses.CircuitGraph
-import firrtl.annotations.CircuitTarget
-import firrtl.options.Dependency
-import firrtl.passes.ExpandWhensAndCheck
-import firrtl.stage.{Forms, TransformManager}
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.{ChirrtlForm, CircuitState, FileUtils, UnknownForm}
+import firrtl2.analyses.CircuitGraph
+import firrtl2.annotations.CircuitTarget
+import firrtl2.options.Dependency
+import firrtl2.passes.ExpandWhensAndCheck
+import firrtl2.stage.{Forms, TransformManager}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.{ChirrtlForm, CircuitState, FileUtils, UnknownForm}
 
 class CircuitGraphSpec extends FirrtlFlatSpec {
   "CircuitGraph" should "find paths with deep hierarchy quickly" in {
@@ -37,7 +37,7 @@ class CircuitGraphSpec extends FirrtlFlatSpec {
           |""".stripMargin
       (0 until n).foreach { i => input ++= mkChild(i); input ++= "\n" }
       input ++= mkLeaf(n)
-      val circuit = new firrtl.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
+      val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
         .runTransform(
           CircuitState(parse(input.toString()), UnknownForm)
         )

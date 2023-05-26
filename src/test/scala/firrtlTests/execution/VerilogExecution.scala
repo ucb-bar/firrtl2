@@ -3,11 +3,11 @@
 package firrtlTests.execution
 
 import java.io.File
-import firrtl._
-import firrtl.ir._
-import firrtl.stage.{FirrtlCircuitAnnotation, FirrtlStage}
-import firrtl.options.TargetDirAnnotation
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlStage}
+import firrtl2.options.TargetDirAnnotation
+import firrtl2.util.BackendCompilationUtilities._
 
 /**
   * Mixing in this trait causes a SimpleExecutionTest to be run in Verilog simulation.

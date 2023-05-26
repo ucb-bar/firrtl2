@@ -4,15 +4,15 @@ package tutorial
 package lesson2
 
 // Compiler Infrastructure
-import firrtl.{CircuitState, LowForm, Transform}
+import firrtl2.{CircuitState, LowForm, Transform}
 // Firrtl IR classes
-import firrtl.ir.{DefInstance, DefModule, Expression, Mux, Statement}
+import firrtl2.ir.{DefInstance, DefModule, Expression, Mux, Statement}
 // Map functions
-import firrtl.Mappers._
+import firrtl2.Mappers._
 // Scala's mutable collections
 import scala.collection.mutable
 
-/** Ledger tracks [[firrtl.ir.Circuit]] statistics
+/** Ledger tracks [[firrtl2.ir.Circuit]] statistics
   *
   * In this lesson, we want to calculate the number of muxes, not just in a module, but also in any instances it has of
   * other modules, etc.
@@ -60,16 +60,16 @@ class Ledger {
 
 /** AnalyzeCircuit Transform
   *
-  * Walks [[firrtl.ir.Circuit]], and records the number of muxes and instances it finds, per module.
+  * Walks [[firrtl2.ir.Circuit]], and records the number of muxes and instances it finds, per module.
   *
   * While the Firrtl IR specification describes a written format, the AST nodes used internally by the
   * implementation have additional "analysis" fields.
   *
-  * Take a look at [[firrtl.ir.Reference Reference]] to see how a reference to a component name is
+  * Take a look at [[firrtl2.ir.Reference Reference]] to see how a reference to a component name is
   * augmented with relevant type, kind (memory, wire, etc), and flow information.
   *
   * Future lessons will explain the IR's additional fields. For now, it is enough to know that declaring
-  * [[firrtl.stage.Forms.Resolved]] as a prerequisite is a handy shorthand for ensuring that all of these
+  * [[firrtl2.stage.Forms.Resolved]] as a prerequisite is a handy shorthand for ensuring that all of these
   * fields will be populated with accurant information before your transform runs. If you create new IR
   * nodes and do not wish to calculate the proper final values for all these fields, you can populate them
   * with default 'unknown' values.

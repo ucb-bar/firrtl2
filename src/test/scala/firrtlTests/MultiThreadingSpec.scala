@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl.FileUtils
-import firrtl.{ChirrtlForm, CircuitState}
-import firrtl.testutils._
+import firrtl2.FileUtils
+import firrtl2.{ChirrtlForm, CircuitState}
+import firrtl2.testutils._
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -14,17 +14,17 @@ class MultiThreadingSpec extends FirrtlPropSpec {
   // TODO Test with annotations and source locator
   property("The FIRRTL compiler should be thread safe") {
     // Run the compiler we're testing
-    def runCompiler(input: Seq[String], compiler: firrtl.Compiler): String = {
-      val parsedInput = firrtl.Parser.parse(input)
+    def runCompiler(input: Seq[String], compiler: firrtl2.Compiler): String = {
+      val parsedInput = firrtl2.Parser.parse(input)
       val res = compiler.compileAndEmit(CircuitState(parsedInput, ChirrtlForm))
       res.getEmittedCircuit.value
     }
     // The parameters we're testing with
     val compilers = Seq(
-      new firrtl.HighFirrtlCompiler,
-      new firrtl.MiddleFirrtlCompiler,
-      new firrtl.LowFirrtlCompiler,
-      new firrtl.VerilogCompiler
+      new firrtl2.HighFirrtlCompiler,
+      new firrtl2.MiddleFirrtlCompiler,
+      new firrtl2.LowFirrtlCompiler,
+      new firrtl2.VerilogCompiler
     )
     val inputFilePath = s"/integration/GCDTester.fir" // arbitrary
     val numThreads = 64 // arbitrary

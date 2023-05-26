@@ -3,11 +3,11 @@
 package firrtlTests
 package transforms
 
-import firrtl.annotations.{CircuitName, ComponentName, ModuleName}
-import firrtl.transforms.{GroupAnnotation, GroupComponents, NoCircuitDedupAnnotation}
-import firrtl._
-import firrtl.ir._
-import firrtl.testutils._
+import firrtl2.annotations.{CircuitName, ComponentName, ModuleName}
+import firrtl2.transforms.{GroupAnnotation, GroupComponents, NoCircuitDedupAnnotation}
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.testutils._
 
 import FirrtlCheckers._
 

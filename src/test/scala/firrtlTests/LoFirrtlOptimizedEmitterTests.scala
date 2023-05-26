@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.stage._
-import firrtl.util.BackendCompilationUtilities
+import firrtl2._
+import firrtl2.stage._
+import firrtl2.util.BackendCompilationUtilities
 import org.scalatest.flatspec.AnyFlatSpec
 
 class LoFirrtlOptimizedEmitterTests extends AnyFlatSpec {

@@ -2,12 +2,12 @@
 
 package firrtlTests.annotationTests
 
-import firrtl._
-import firrtl.annotations._
-import firrtl.annotations.analysis.DuplicationHelper
-import firrtl.annotations.transforms.{NoSuchTargetException}
-import firrtl.transforms.{DedupedResult, DontTouchAnnotation}
-import firrtl.testutils.{FirrtlMatchers, FirrtlPropSpec}
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.annotations.analysis.DuplicationHelper
+import firrtl2.annotations.transforms.NoSuchTargetException
+import firrtl2.transforms.{DedupedResult, DontTouchAnnotation}
+import firrtl2.testutils.{FirrtlMatchers, FirrtlPropSpec}
 
 object EliminateTargetPathsSpec {
 
@@ -368,7 +368,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     CircuitState(passes.ToWorkingIR.run(Parser.parse(input)), UnknownForm, Nil)
       .resolvePaths(Seq(CircuitTarget("Foo").module("Foo").instOf("bar", "Bar")))
       .annotations
-      .collect { case a: firrtl.annotations.transforms.ResolvePaths => a } should be(empty)
+      .collect { case a: firrtl2.annotations.transforms.ResolvePaths => a } should be(empty)
   }
 
   property("It should rename module annotations") {

@@ -2,16 +2,16 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.transforms._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.transforms._
+import firrtl2.testutils._
 import annotations._
 
 import java.io.File
 import java.nio.file.Paths
-import firrtl.options.Dependency
-import firrtl.stage.FirrtlStage
-import firrtl.util.BackendCompilationUtilities.createTestDirectory
+import firrtl2.options.Dependency
+import firrtl2.stage.FirrtlStage
+import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 
 class CheckCombLoopsSpec extends LeanTransformSpec(Seq(Dependency[CheckCombLoops])) {
   "Loop-free circuit" should "not throw an exception" in {

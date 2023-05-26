@@ -3,8 +3,8 @@
 package firrtlTests
 
 import org.scalatest._
-import firrtl.ir._
-import firrtl.{Parser, Utils}
+import firrtl2.ir._
+import firrtl2.{Parser, Utils}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

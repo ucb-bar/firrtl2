@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.annotations._
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 import logger.{LogLevel, LogLevelAnnotation, Logger}
 
 class PresetSpec extends VerilogTransformSpec {
@@ -14,7 +14,7 @@ class PresetSpec extends VerilogTransformSpec {
 
   def compileBody(modules: ModuleSeq) = {
     val annos =
-      Seq(PresetAnnotation(CircuitTarget("Test").module("Test").ref("reset")), firrtl.transforms.NoDCEAnnotation)
+      Seq(PresetAnnotation(CircuitTarget("Test").module("Test").ref("reset")), firrtl2.transforms.NoDCEAnnotation)
     var str = """
                 |circuit Test :
                 |""".stripMargin

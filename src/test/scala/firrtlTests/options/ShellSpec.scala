@@ -2,8 +2,8 @@
 
 package firrtlTests.options
 
-import firrtl.annotations.NoTargetAnnotation
-import firrtl.options.Shell
+import firrtl2.annotations.NoTargetAnnotation
+import firrtl2.options.Shell
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.testutils._
+import firrtl2.testutils._
 
 class ExtModuleTests extends FirrtlFlatSpec {
   "extmodule" should "serialize and re-parse equivalently" in {

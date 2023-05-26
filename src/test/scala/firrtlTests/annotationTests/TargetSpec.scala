@@ -2,9 +2,9 @@
 
 package firrtlTests.annotationTests
 
-import firrtl.annotations.{CircuitTarget, GenericTarget, ModuleTarget, Target}
-import firrtl.annotations.TargetToken._
-import firrtl.testutils.FirrtlPropSpec
+import firrtl2.annotations.{CircuitTarget, GenericTarget, ModuleTarget, Target}
+import firrtl2.annotations.TargetToken._
+import firrtl2.testutils.FirrtlPropSpec
 
 class TargetSpec extends FirrtlPropSpec {
   def check(comp: Target): Unit = {

@@ -4,19 +4,19 @@ package tutorial
 package lesson1
 
 // Compiler Infrastructure
-import firrtl.{CircuitState, LowForm, Transform, Utils}
+import firrtl2.{CircuitState, LowForm, Transform, Utils}
 // Firrtl IR classes
-import firrtl.ir.{DefModule, Expression, Mux, Statement}
+import firrtl2.ir.{DefModule, Expression, Mux, Statement}
 // Map functions
-import firrtl.Mappers._
+import firrtl2.Mappers._
 // Scala's mutable collections
 import scala.collection.mutable
 
-/** Ledger tracks [[firrtl.ir.Circuit]] statistics
+/** Ledger tracks [[firrtl2.ir.Circuit]] statistics
   *
   * In this lesson, we want to count the number of muxes in each module in our design.
   *
-  * This [[Ledger]] class will be passed along as we walk our circuit, and help us count each [[firrtl.ir.Mux Mux]] we
+  * This [[Ledger]] class will be passed along as we walk our circuit, and help us count each [[firrtl2.ir.Mux Mux]] we
   * find.
   *
   * See [[lesson1.AnalyzeCircuit]]
@@ -46,18 +46,18 @@ class Ledger {
 
 /** AnalyzeCircuit Transform
   *
-  * Walks [[firrtl.ir.Circuit Circuit]], and records the number of muxes it finds, per module.
+  * Walks [[firrtl2.ir.Circuit Circuit]], and records the number of muxes it finds, per module.
   *
   * While some compiler frameworks operate on graphs, we represent a Firrtl circuit using a tree representation:
-  *   - A Firrtl [[firrtl.ir.Circuit Circuit]] contains a sequence of [[firrtl.ir.DefModule DefModule]]s.
-  *   - A [[firrtl.ir.DefModule DefModule]] contains a sequence of [[firrtl.ir.Port Port]]s, and maybe a
-  *     [[firrtl.ir.Statement Statement]].
-  *   - A [[firrtl.ir.Statement Statement]] can contain other [[firrtl.ir.Statement Statement]]s, or
-  *     [[firrtl.ir.Expression Expression]]s.
-  *   - A [[firrtl.ir.Expression Expression]] can contain other [[firrtl.ir.Expression Expression]]s.
+  *   - A Firrtl [[firrtl2.ir.Circuit Circuit]] contains a sequence of [[firrtl2.ir.DefModule DefModule]]s.
+  *   - A [[firrtl2.ir.DefModule DefModule]] contains a sequence of [[firrtl2.ir.Port Port]]s, and maybe a
+  *     [[firrtl2.ir.Statement Statement]].
+  *   - A [[firrtl2.ir.Statement Statement]] can contain other [[firrtl2.ir.Statement Statement]]s, or
+  *     [[firrtl2.ir.Expression Expression]]s.
+  *   - A [[firrtl2.ir.Expression Expression]] can contain other [[firrtl2.ir.Expression Expression]]s.
   *
   * To visit all Firrtl IR nodes in a circuit, we write functions that recursively walk down this tree. To record
-  * statistics, we will pass along the [[Ledger]] class and use it when we come across a [[firrtl.ir.Mux Mux]].
+  * statistics, we will pass along the [[Ledger]] class and use it when we come across a [[firrtl2.ir.Mux Mux]].
   *
   * See the following links for more detailed explanations:
   * Firrtl's IR:
@@ -69,13 +69,13 @@ class Ledger {
   */
 class AnalyzeCircuit extends Transform {
 
-  /** Requires the [[firrtl.ir.Circuit Circuit]] form to be "low" */
+  /** Requires the [[firrtl2.ir.Circuit Circuit]] form to be "low" */
   def inputForm = LowForm
 
-  /** Indicates the output [[firrtl.ir.Circuit Circuit]] form to be "low" */
+  /** Indicates the output [[firrtl2.ir.Circuit Circuit]] form to be "low" */
   def outputForm = LowForm
 
-  /** Called by [[firrtl.Compiler Compiler]] to run your pass. [[firrtl.CircuitState CircuitState]] contains the circuit
+  /** Called by [[firrtl2.Compiler Compiler]] to run your pass. [[firrtl2.CircuitState CircuitState]] contains the circuit
     * and its form, as well as other related data.
     */
   def execute(state: CircuitState): CircuitState = {
@@ -99,7 +99,7 @@ class AnalyzeCircuit extends Transform {
     state
   }
 
-  /** Deeply visits every [[firrtl.ir.Statement Statement]] in m. */
+  /** Deeply visits every [[firrtl2.ir.Statement Statement]] in m. */
   def walkModule(ledger: Ledger)(m: DefModule): DefModule = {
     // Set ledger to current module name
     ledger.setModuleName(m.name)
@@ -111,7 +111,7 @@ class AnalyzeCircuit extends Transform {
     m.map(walkStatement(ledger))
   }
 
-  /** Deeply visits every [[firrtl.ir.Statement Statement]] and [[firrtl.ir.Expression Expression]] in s. */
+  /** Deeply visits every [[firrtl2.ir.Statement Statement]] and [[firrtl2.ir.Expression Expression]] in s. */
   def walkStatement(ledger: Ledger)(s: Statement): Statement = {
 
     /* Execute the function walkExpression(ledger) on every [[firrtl.ir.Expression Expression]] in s.
@@ -127,15 +127,15 @@ class AnalyzeCircuit extends Transform {
     s.map(walkStatement(ledger))
   }
 
-  /** Deeply visits every [[firrtl.ir.Expression Expression]] in e.
+  /** Deeply visits every [[firrtl2.ir.Expression Expression]] in e.
     *   - "post-order traversal"
-    *   - handle e's children [[firrtl.ir.Expression Expression]] before e
+    *   - handle e's children [[firrtl2.ir.Expression Expression]] before e
     */
   def walkExpression(ledger: Ledger)(e: Expression): Expression = {
 
-    /** Execute the function walkExpression(ledger) on every [[firrtl.ir.Expression Expression]] in e.
-      *   - return the new [[firrtl.ir.Expression Expression]] (in this case, its identical to e)
-      *   - if s does not contain [[firrtl.ir.Expression Expression]], map returns e.
+    /** Execute the function walkExpression(ledger) on every [[firrtl2.ir.Expression Expression]] in e.
+      *   - return the new [[firrtl2.ir.Expression Expression]] (in this case, its identical to e)
+      *   - if s does not contain [[firrtl2.ir.Expression Expression]], map returns e.
       */
     val visited = e.map(walkExpression(ledger))
 

@@ -2,11 +2,11 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.stage.{FirrtlCircuitAnnotation, FirrtlSourceAnnotation, FirrtlStage}
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlSourceAnnotation, FirrtlStage}
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 import org.scalacheck.Gen
 
 class ParserSpec extends FirrtlFlatSpec {
@@ -102,8 +102,8 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    input in : UInt<1>
                   |    in <= UInt(0)
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "Version 1.1.1" should "be accepted" in {
@@ -114,8 +114,8 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    input in : UInt<1>
                   |    in <= UInt(0)
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "Version 1.2.0" should "be accepted" in {
@@ -126,8 +126,8 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    input in : UInt<1>
                   |    in <= UInt(0)
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "Version 1.2.1" should "be accepted" in {
@@ -138,8 +138,8 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    input in : UInt<1>
                   |    in <= UInt(0)
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "No version" should "be accepted" in {
@@ -149,8 +149,8 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    input in : { 0 : { 0 : { 0 : UInt<32>, flip 1 : UInt<32> } } }
                   |    in.0.0.1 <= in.0.0.0
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "Version 1.3.0" should "be rejected" in {
@@ -162,7 +162,7 @@ class ParserSpec extends FirrtlFlatSpec {
                     |    input in : UInt<1>
                     |    in <= UInt(0)
         """.stripMargin
-      firrtl.Parser.parse(input)
+      firrtl2.Parser.parse(input)
     }
   }
 
@@ -178,26 +178,26 @@ class ParserSpec extends FirrtlFlatSpec {
                     |    out[1:0] <= in1
                     |    out[3:2] <= in2[1:0]
         """.stripMargin
-      firrtl.Parser.parse(input)
+      firrtl2.Parser.parse(input)
     }
   }
 
   // ********** Memories **********
   "Memories" should "allow arbitrary ordering of fields" in {
     val fields = MemTests.fieldsToSeq(MemTests.fields)
-    val golden = firrtl.Parser.parse((MemTests.prelude ++ fields))
+    val golden = firrtl2.Parser.parse((MemTests.prelude ++ fields))
 
     fields.permutations.foreach { permutation =>
-      val circuit = firrtl.Parser.parse((MemTests.prelude ++ permutation))
+      val circuit = firrtl2.Parser.parse((MemTests.prelude ++ permutation))
       assert(golden === circuit)
     }
   }
 
   it should "have exactly one of each: data-type, depth, read-latency, and write-latency" in {
     import MemTests._
-    def parseWithoutField(s:  String) = firrtl.Parser.parse((prelude ++ fieldsToSeq(fields - s)))
+    def parseWithoutField(s:  String) = firrtl2.Parser.parse((prelude ++ fieldsToSeq(fields - s)))
     def parseWithDuplicate(k: String, v: String) =
-      firrtl.Parser.parse((prelude ++ fieldsToSeq(fields) :+ s"      ${k} => ${v}"))
+      firrtl2.Parser.parse((prelude ++ fieldsToSeq(fields) :+ s"      ${k} => ${v}"))
 
     Seq("data-type", "depth", "read-latency", "write-latency").foreach { field =>
       an[ParameterNotSpecifiedException] should be thrownBy { parseWithoutField(field) }
@@ -208,22 +208,22 @@ class ParserSpec extends FirrtlFlatSpec {
   // ********** Registers **********
   "Registers" should "allow no implicit reset" in {
     import RegTests._
-    firrtl.Parser.parse((prelude :+ reg))
+    firrtl2.Parser.parse((prelude :+ reg))
   }
 
   it should "allow same-line reset" in {
     import RegTests._
-    firrtl.Parser.parse((prelude :+ s"${reg} with : (${reset})" :+ "    wire a : UInt"))
+    firrtl2.Parser.parse((prelude :+ s"${reg} with : (${reset})" :+ "    wire a : UInt"))
   }
 
   it should "allow multi-line reset" in {
     import RegTests._
-    firrtl.Parser.parse((prelude :+ s"${reg} with :\n      (${reset})"))
+    firrtl2.Parser.parse((prelude :+ s"${reg} with :\n      (${reset})"))
   }
 
   it should "allow source locators with same-line reset" in {
     import RegTests._
-    val res = firrtl.Parser.parse((prelude :+ s"${reg} with : (${reset}) $finfo" :+ "    wire a : UInt"))
+    val res = firrtl2.Parser.parse((prelude :+ s"${reg} with : (${reset}) $finfo" :+ "    wire a : UInt"))
     CircuitState(res, Nil) should containTree {
       case DefRegister(`fileInfo`, `regName`, _, _, _, _) => true
     }
@@ -231,7 +231,7 @@ class ParserSpec extends FirrtlFlatSpec {
 
   it should "allow source locators with multi-line reset" in {
     import RegTests._
-    val res = firrtl.Parser.parse((prelude :+ s"${reg} with :\n      (${reset}) $finfo"))
+    val res = firrtl2.Parser.parse((prelude :+ s"${reg} with :\n      (${reset}) $finfo"))
     CircuitState(res, Nil) should containTree {
       case DefRegister(`fileInfo`, `regName`, _, _, _, _) => true
     }
@@ -239,7 +239,7 @@ class ParserSpec extends FirrtlFlatSpec {
 
   it should "allow source locators with no reset" in {
     import RegTests._
-    val res = firrtl.Parser.parse((prelude :+ s"${reg} $finfo"))
+    val res = firrtl2.Parser.parse((prelude :+ s"${reg} $finfo"))
     CircuitState(res, Nil) should containTree {
       case DefRegister(`fileInfo`, `regName`, _, _, _, _) => true
     }
@@ -256,7 +256,7 @@ class ParserSpec extends FirrtlFlatSpec {
         case (lbl, expected) =>
           val line = "    " + stmt + lbl
           val src = (prelude :+ line).mkString("\n") + "\n"
-          val res = firrtl.Parser.parse(src)
+          val res = firrtl2.Parser.parse(src)
           CircuitState(res, Nil) should containTree {
             case s: Stop         => s.name == expected
             case s: Print        => s.name == expected
@@ -270,21 +270,21 @@ class ParserSpec extends FirrtlFlatSpec {
   "Keywords" should "be allowed as Ids" in {
     import KeywordTests._
     keywords.foreach { keyword =>
-      firrtl.Parser.parse((prelude :+ s"      wire ${keyword} : UInt"))
+      firrtl2.Parser.parse((prelude :+ s"      wire ${keyword} : UInt"))
     }
   }
 
   it should "be allowed on lhs in connects" in {
     import KeywordTests._
     keywords.foreach { keyword =>
-      firrtl.Parser.parse((prelude ++ Seq(s"      wire ${keyword} : UInt", s"      ${keyword} <= ${keyword}")))
+      firrtl2.Parser.parse((prelude ++ Seq(s"      wire ${keyword} : UInt", s"      ${keyword} <= ${keyword}")))
     }
   }
 
   they should "be allowed as names for side effecting statements" in {
     import KeywordTests._
     keywords.foreach { keyword =>
-      firrtl.Parser.parse {
+      firrtl2.Parser.parse {
         prelude :+ s"""    assert($keyword, UInt(1), UInt(1), "") : $keyword"""
       }
     }
@@ -300,19 +300,19 @@ class ParserSpec extends FirrtlFlatSpec {
                   |    in.0.1 <= in.0.0
                   |    in2.4.23.bar.123 <= in2.4.23.foo
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   // ********** Literal Formats **********
   "Literals of different bases and signs" should "produce correct values" in {
-    def circuit(lit: String): firrtl.ir.Circuit = {
+    def circuit(lit: String): firrtl2.ir.Circuit = {
       val input = s"""circuit Top :
                      |  module lits:
                      |    output litout : SInt<16>
                      |    litout <= SInt(${lit})
                      |""".stripMargin
-      firrtl.Parser.parse(input)
+      firrtl2.Parser.parse(input)
     }
 
     def check(inFormat: String, ref: Integer): Unit = {
@@ -354,8 +354,8 @@ class ParserSpec extends FirrtlFlatSpec {
                      |    input foo : UInt<32>
                      |    output bar : UInt<32>
         """.stripMargin
-      val c = firrtl.Parser.parse(input)
-      firrtl.Parser.parse(c.serialize)
+      val c = firrtl2.Parser.parse(input)
+      firrtl2.Parser.parse(c.serialize)
     }
   }
 
@@ -372,8 +372,8 @@ class ParserSpec extends FirrtlFlatSpec {
                    |    input foo : UInt<32>
                    |    output bar : UInt<32>
       """.stripMargin
-    val c = firrtl.Parser.parse(input)
-    firrtl.Parser.parse(c.serialize)
+    val c = firrtl2.Parser.parse(input)
+    firrtl2.Parser.parse(c.serialize)
   }
 
   "Parsing errors" should "be reported as normal exceptions" in {
@@ -415,7 +415,7 @@ class ParserSpec extends FirrtlFlatSpec {
          |  module m:
          |    skip
          |""".stripMargin
-    val c = firrtl.Parser.parse(input)
+    val c = firrtl2.Parser.parse(input)
     assert(c.info == ir.FileInfo("a b c"))
   }
 
@@ -426,21 +426,21 @@ class ParserSpec extends FirrtlFlatSpec {
          |    output out :
          |""".stripMargin
     a[SyntaxErrorsException] should be thrownBy {
-      firrtl.Parser.parse(input)
+      firrtl2.Parser.parse(input)
     }
   }
 
   it should "parse smem read-under-write behavior" in {
-    val undefined = firrtl.Parser.parse(SMemTestCircuit.src(""))
+    val undefined = firrtl2.Parser.parse(SMemTestCircuit.src(""))
     assert(SMemTestCircuit.findRuw(undefined) == ReadUnderWrite.Undefined)
 
-    val undefined2 = firrtl.Parser.parse(SMemTestCircuit.src(" undefined"))
+    val undefined2 = firrtl2.Parser.parse(SMemTestCircuit.src(" undefined"))
     assert(SMemTestCircuit.findRuw(undefined2) == ReadUnderWrite.Undefined)
 
-    val old = firrtl.Parser.parse(SMemTestCircuit.src(" old"))
+    val old = firrtl2.Parser.parse(SMemTestCircuit.src(" old"))
     assert(SMemTestCircuit.findRuw(old) == ReadUnderWrite.Old)
 
-    val readNew = firrtl.Parser.parse(SMemTestCircuit.src(" new"))
+    val readNew = firrtl2.Parser.parse(SMemTestCircuit.src(" new"))
     assert(SMemTestCircuit.findRuw(readNew) == ReadUnderWrite.New)
   }
 }
@@ -481,7 +481,7 @@ class ParserPropSpec extends FirrtlPropSpec {
                        |  module Test :
                        |    input $id : UInt<32>
                        |""".stripMargin
-        firrtl.Parser.parse(input.split("\n"))
+        firrtl2.Parser.parse(input.split("\n"))
       }
     }
   }
@@ -499,7 +499,7 @@ class ParserPropSpec extends FirrtlPropSpec {
                          |  module Test :
                          |    input $id : { $field : UInt<32> }
                          |""".stripMargin
-          firrtl.Parser.parse(input.split("\n"))
+          firrtl2.Parser.parse(input.split("\n"))
         }
     }
   }

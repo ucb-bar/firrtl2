@@ -4,8 +4,8 @@ package logger
 
 import java.io.{ByteArrayOutputStream, File, FileOutputStream, PrintStream}
 
-import firrtl.AnnotationSeq
-import firrtl.options.Viewer.view
+import firrtl2.AnnotationSeq
+import firrtl2.options.Viewer.view
 import logger.phases.{AddDefaults, Checks}
 
 import scala.util.DynamicVariable
@@ -318,7 +318,8 @@ object Logger {
     state.classLevels ++= namesToLevel
   }
 
-  /** Set logger options based on the content of an [[firrtl.AnnotationSeq AnnotationSeq]]
+  /** Set logger options based on the content of an [[firrtl2.AnnotationSeq AnnotationSeq]]
+    *
     * @param inputAnnotations annotation sequence containing logger options
     */
   def setOptions(inputAnnotations: AnnotationSeq): Unit = {

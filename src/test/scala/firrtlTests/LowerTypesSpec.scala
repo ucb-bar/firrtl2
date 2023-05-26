@@ -2,15 +2,15 @@
 
 package firrtlTests
 
-import firrtl.Parser
-import firrtl.passes._
-import firrtl.transforms._
-import firrtl._
-import firrtl.annotations._
-import firrtl.options.Dependency
-import firrtl.stage.TransformManager
-import firrtl.testutils._
-import firrtl.util.TestOptions
+import firrtl2.Parser
+import firrtl2.passes._
+import firrtl2.transforms._
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.options.Dependency
+import firrtl2.stage.TransformManager
+import firrtl2.testutils._
+import firrtl2.util.TestOptions
 
 /** Integration style tests for [[LowerTypes]].
   * You can find additional unit test style tests in [[passes.LowerTypesUnitTestSpec]]
@@ -258,7 +258,7 @@ class LowerTypesSpec extends FirrtlFlatSpec {
 
 /** Uniquify used to be its own pass. We ported the tests to run with the combined LowerTypes pass. */
 class LowerTypesUniquifySpec extends FirrtlFlatSpec {
-  private val compiler = new TransformManager(Seq(Dependency(firrtl.passes.LowerTypes)))
+  private val compiler = new TransformManager(Seq(Dependency(firrtl2.passes.LowerTypes)))
 
   private def executeTest(input: String, expected: Seq[String]): Unit =
     executeTest(input, expected, Seq.empty, Seq.empty)

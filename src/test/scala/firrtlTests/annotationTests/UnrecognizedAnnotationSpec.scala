@@ -2,12 +2,12 @@
 
 package firrtlTests.annotationTests
 
-import firrtl.FileUtils
-import firrtl.annotations._
-import firrtl.passes.memlib.ReplSeqMemAnnotation
-import firrtl.stage.FirrtlMain
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.transforms.BlackBoxInlineAnno
+import firrtl2.FileUtils
+import firrtl2.annotations._
+import firrtl2.passes.memlib.ReplSeqMemAnnotation
+import firrtl2.stage.FirrtlMain
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.transforms.BlackBoxInlineAnno
 import logger.Logger
 import logger.Logger.OutputCaptor
 import org.json4s.convertToJsonInput
@@ -27,7 +27,7 @@ class UnrecognizedAnnotationSpec extends FirrtlFlatSpec {
 
     val jsonOutputText = JsonProtocol.serialize(annotations)
 
-    jsonOutputText should include(""""class":"firrtl.transforms.BlackBoxInlineAnno"""")
+    jsonOutputText should include(""""class":"firrtl2.transforms.BlackBoxInlineAnno"""")
     jsonOutputText should include(""""class":"freechips.rocketchip.util.RegFieldDescMappingAnnotation"""")
     jsonOutputText should include(""""class":"freechips.rocketchip.util.SRAMAnnotation"""")
   }
@@ -177,7 +177,7 @@ object UnrecognizedAnnotationTextGenerator {
     val serializedAllowUnrecognized = if (includeAllowUnrecognizedAnnotations) {
       """
         |  {
-        |    "class": "firrtl.stage.AllowUnrecognizedAnnotations$"
+        |    "class": "firrtl2.stage.AllowUnrecognizedAnnotations$"
         |  },""".stripMargin
     } else {
       ""
@@ -185,7 +185,7 @@ object UnrecognizedAnnotationTextGenerator {
 
     s"""|[$serializedAllowUnrecognized
         |  {
-        |    "class": "firrtl.transforms.BlackBoxInlineAnno",
+        |    "class": "firrtl2.transforms.BlackBoxInlineAnno",
         |    "target": "TestHarness.plusarg_reader_27",
         |    "name": "plusarg_reader.v",
         |    "text": "License text"

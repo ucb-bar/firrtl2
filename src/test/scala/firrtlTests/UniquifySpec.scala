@@ -2,14 +2,14 @@
 
 package firrtlTests
 
-import firrtl.Parser
-import firrtl.passes._
-import firrtl._
-import firrtl.annotations._
-import firrtl.annotations.TargetToken._
-import firrtl.transforms.DontTouchAnnotation
-import firrtl.util.TestOptions
-import firrtl.testutils._
+import firrtl2.Parser
+import firrtl2.passes._
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.annotations.TargetToken._
+import firrtl2.transforms.DontTouchAnnotation
+import firrtl2.util.TestOptions
+import firrtl2.testutils._
 
 class UniquifySpec extends FirrtlFlatSpec {
 

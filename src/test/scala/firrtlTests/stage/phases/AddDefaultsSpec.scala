@@ -2,12 +2,12 @@
 
 package firrtlTests.stage.phases
 
-import firrtl.ChirrtlEmitter
-import firrtl.annotations.Annotation
-import firrtl.stage.phases.AddDefaults
-import firrtl.transforms.BlackBoxTargetDirAnno
-import firrtl.stage.{InfoModeAnnotation, RunFirrtlTransformAnnotation}
-import firrtl.options.{Dependency, Phase, TargetDirAnnotation}
+import firrtl2.ChirrtlEmitter
+import firrtl2.annotations.Annotation
+import firrtl2.stage.phases.AddDefaults
+import firrtl2.transforms.BlackBoxTargetDirAnno
+import firrtl2.stage.{InfoModeAnnotation, RunFirrtlTransformAnnotation}
+import firrtl2.options.{Dependency, Phase, TargetDirAnnotation}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -22,8 +22,8 @@ class AddDefaultsSpec extends AnyFlatSpec with Matchers {
       (a: Annotation) => a match { case BlackBoxTargetDirAnno(b) => b == TargetDirAnnotation().directory },
       (a: Annotation) =>
         a match {
-          case RunFirrtlTransformAnnotation(e: firrtl.Emitter) =>
-            Dependency.fromTransform(e) == Dependency[firrtl.VerilogEmitter]
+          case RunFirrtlTransformAnnotation(e: firrtl2.Emitter) =>
+            Dependency.fromTransform(e) == Dependency[firrtl2.VerilogEmitter]
         },
       (a: Annotation) => a match { case InfoModeAnnotation(b) => b == InfoModeAnnotation().modeName }
     )

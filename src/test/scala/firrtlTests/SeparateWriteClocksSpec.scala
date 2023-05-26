@@ -2,11 +2,11 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.passes.memlib.SeparateWriteClocks
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.passes.memlib.SeparateWriteClocks
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 
 class SeparateWriteClocksSpec extends FirrtlFlatSpec {
   def transform(input: String): CircuitState = {

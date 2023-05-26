@@ -4,12 +4,12 @@ package firrtlTests.transforms
 
 import org.scalatest.GivenWhenThen
 
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.testutils.FirrtlCheckers._
 
-import firrtl.{CircuitState, WRef}
-import firrtl.ir.{Connect, DefRegister, IsInvalid, Mux, UIntLiteral}
-import firrtl.stage.{FirrtlCircuitAnnotation, FirrtlSourceAnnotation, FirrtlStage}
+import firrtl2.{CircuitState, WRef}
+import firrtl2.ir.{Connect, DefRegister, IsInvalid, Mux, UIntLiteral}
+import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlSourceAnnotation, FirrtlStage}
 
 class RemoveResetSpec extends FirrtlFlatSpec with GivenWhenThen {
 
@@ -18,7 +18,7 @@ class RemoveResetSpec extends FirrtlFlatSpec with GivenWhenThen {
     (new FirrtlStage)
       .execute(Array("-X", "low"), Seq(FirrtlSourceAnnotation(string)))
       .collectFirst { case FirrtlCircuitAnnotation(a) => a }
-      .map(a => firrtl.CircuitState(a, firrtl.UnknownForm))
+      .map(a => firrtl2.CircuitState(a, firrtl2.UnknownForm))
       .get
   }
 
@@ -154,7 +154,9 @@ class RemoveResetSpec extends FirrtlFlatSpec with GivenWhenThen {
     val outputState = toLowFirrtl(input)
 
     Then("foo has a canonical non-reset declaration after RemoveReset")
-    outputState should containTree { case DefRegister(_, "foo", _, _, firrtl.Utils.zero, WRef("foo", _, _, _)) => true }
+    outputState should containTree {
+      case DefRegister(_, "foo", _, _, firrtl2.Utils.zero, WRef("foo", _, _, _)) => true
+    }
     And("foo is NOT connected to a reset mux")
     outputState shouldNot containTree { case Connect(_, WRef("foo", _, _, _), Mux(_, _, _, _)) => true }
   }

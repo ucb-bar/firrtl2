@@ -2,11 +2,11 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.testutils._
 import FirrtlCheckers._
-import firrtl.Parser.AppendInfo
+import firrtl2.Parser.AppendInfo
 
 class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
   def compile(input: String): CircuitState =
@@ -182,7 +182,7 @@ class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
                   |    output out: UInt<32>
                   |    out <= in @[Top.scala 15:14]
                   |""".stripMargin
-    val circuit = firrtl.Parser.parse(input.split("\n").toIterator, AppendInfo("myfile.fir"))
+    val circuit = firrtl2.Parser.parse(input.split("\n").toIterator, AppendInfo("myfile.fir"))
     val circuitState = CircuitState(circuit, UnknownForm)
     val expectedInfos = Seq(FileInfo(StringLit("Top.scala 15:14")), FileInfo(StringLit("myfile.fir 6:4")))
     circuitState should containTree { case MultiInfo(`expectedInfos`) => true }
@@ -239,7 +239,7 @@ class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
          |    skip
          |""".stripMargin
     def parseInfo(info: String): FileInfo = {
-      firrtl.Parser.parse(input(info)).info.asInstanceOf[FileInfo]
+      firrtl2.Parser.parse(input(info)).info.asInstanceOf[FileInfo]
     }
 
     parseInfo("test\\ntest").escaped should be("test\\ntest")

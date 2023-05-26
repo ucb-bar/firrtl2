@@ -2,12 +2,12 @@
 
 package firrtlTests.interval
 
-import firrtl.Implicits.constraint2bound
-import firrtl.{ChirrtlForm, CircuitState, LowFirrtlCompiler}
-import firrtl.ir._
+import firrtl2.Implicits.constraint2bound
+import firrtl2.{ChirrtlForm, CircuitState, LowFirrtlCompiler}
+import firrtl2.ir._
 
-import firrtl.constraint._
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.constraint._
+import firrtl2.testutils.FirrtlFlatSpec
 
 class IntervalMathSpec extends FirrtlFlatSpec {
   val SumPattern = """.*output sum.*<(\d+)>.*""".r

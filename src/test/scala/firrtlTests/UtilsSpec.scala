@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.Utils
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.Utils
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.flatspec.AnyFlatSpec
 

@@ -2,12 +2,12 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.passes.{CheckHighForm, CheckInitialization, CheckTypes}
-import firrtl.transforms.{CheckCombLoops, InferResets}
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.passes.{CheckHighForm, CheckInitialization, CheckTypes}
+import firrtl2.transforms.{CheckCombLoops, InferResets}
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 
 // TODO
 // - Test nodes in the connection

@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.stage.FirrtlStage
-import firrtl.testutils._
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2._
+import firrtl2.stage.FirrtlStage
+import firrtl2.testutils._
+import firrtl2.util.BackendCompilationUtilities._
 
 import java.io.File
 
@@ -60,11 +60,11 @@ class FPUCompilationTest extends CompilationTest("FPU", "/regress")
 class HwachaSequencerCompilationTest extends CompilationTest("HwachaSequencer", "/regress")
 
 abstract class CommonSubexprEliminationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(firrtl.passes.CommonSubexpressionElimination), name, dir)
+    extends EquivalenceTest(Seq(firrtl2.passes.CommonSubexpressionElimination), name, dir)
 abstract class DeadCodeEliminationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(new firrtl.transforms.DeadCodeElimination), name, dir)
+    extends EquivalenceTest(Seq(new firrtl2.transforms.DeadCodeElimination), name, dir)
 abstract class ConstantPropagationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(new firrtl.transforms.ConstantPropagation), name, dir)
+    extends EquivalenceTest(Seq(new firrtl2.transforms.ConstantPropagation), name, dir)
 abstract class LowFirrtlOptimizationEquivTest(name: String, dir: String)
     extends EquivalenceTest(Seq(new LowFirrtlOptimization), name, dir)
 

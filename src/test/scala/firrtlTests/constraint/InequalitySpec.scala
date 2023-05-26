@@ -2,8 +2,8 @@
 
 package firrtlTests.constraint
 
-import firrtl.constraint._
-import firrtl.ir.Closed
+import firrtl2.constraint._
+import firrtl2.ir.Closed
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

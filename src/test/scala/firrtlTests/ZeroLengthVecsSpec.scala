@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.passes._
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.testutils.FirrtlFlatSpec
 
 class ZeroLengthVecsSpec extends FirrtlFlatSpec {
   val transforms = Seq(ToWorkingIR, ResolveKinds, InferTypes, ResolveFlows, new InferWidths, ZeroLengthVecs, CheckTypes)

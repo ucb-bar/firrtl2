@@ -1,38 +1,38 @@
 [
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"Top.Foo"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"Top.Bar"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"Top.Foo.x"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"Top.Foo.y"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"Top"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"OtherTop"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"OtherTop.Foo.x"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"OtherTop.Bar"
   },
   {
-    "class":"firrtl.passes.InlineAnnotation",
+    "class":"firrtl2.passes.InlineAnnotation",
     "target":"OtherTop.Foo.y"
   }
 ]

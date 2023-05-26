@@ -2,12 +2,12 @@
 
 package firrtlTests.features
 
-import firrtl.{ir, CircuitState, Parser, WDefInstance, WRef, WSubField}
-import firrtl.annotations.{CircuitTarget, IsMember, SingleTargetAnnotation}
-import firrtl.features.{LowerCaseNames, UpperCaseNames}
-import firrtl.options.Dependency
-import firrtl.transforms.ManipulateNamesBlocklistAnnotation
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2.{ir, CircuitState, Parser, WDefInstance, WRef, WSubField}
+import firrtl2.annotations.{CircuitTarget, IsMember, SingleTargetAnnotation}
+import firrtl2.features.{LowerCaseNames, UpperCaseNames}
+import firrtl2.options.Dependency
+import firrtl2.transforms.ManipulateNamesBlocklistAnnotation
+import firrtl2.testutils.FirrtlCheckers._
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -77,7 +77,7 @@ class LetterCaseTransformSpec extends AnyFlatSpec with Matchers {
   behavior.of("LowerCaseNames")
 
   it should "change all names to lowercase" in new CircuitFixture {
-    val tm = new firrtl.stage.transforms.Compiler(Seq(firrtl.options.Dependency[LowerCaseNames]))
+    val tm = new firrtl2.stage.transforms.Compiler(Seq(firrtl2.options.Dependency[LowerCaseNames]))
     val statex = tm.execute(state)
     val expected: Seq[PartialFunction[Any, Boolean]] = Seq(
       { case ir.Circuit(_, _, "foo") => true },
@@ -137,7 +137,7 @@ class LetterCaseTransformSpec extends AnyFlatSpec with Matchers {
   behavior.of("UpperCaseNames")
 
   it should "change all names to uppercase" in new CircuitFixture {
-    val tm = new firrtl.stage.transforms.Compiler(Seq(firrtl.options.Dependency[UpperCaseNames]))
+    val tm = new firrtl2.stage.transforms.Compiler(Seq(firrtl2.options.Dependency[UpperCaseNames]))
     val statex = tm.execute(state)
     val expected: Seq[PartialFunction[Any, Boolean]] = Seq(
       { case ir.Circuit(_, _, "FOO") => true },

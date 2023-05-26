@@ -2,8 +2,8 @@
 
 package firrtlTests
 
-import firrtl.Namespace
-import firrtl.testutils._
+import firrtl2.Namespace
+import firrtl2.testutils._
 
 class NamespaceSpec extends FirrtlFlatSpec {
 

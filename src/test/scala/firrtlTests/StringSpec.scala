@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl.ir.StringLit
-import firrtl.testutils._
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2.ir.StringLit
+import firrtl2.testutils._
+import firrtl2.util.BackendCompilationUtilities._
 
 import java.io._
 import scala.sys.process._

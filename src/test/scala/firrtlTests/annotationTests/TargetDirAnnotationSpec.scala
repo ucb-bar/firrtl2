@@ -3,10 +3,10 @@
 package firrtlTests
 package annotationTests
 
-import firrtl._
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.annotations.{Annotation, NoTargetAnnotation}
-import firrtl.stage.{FirrtlCircuitAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
+import firrtl2._
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.annotations.{Annotation, NoTargetAnnotation}
+import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
 
 case object FoundTargetDirTransformRanAnnotation extends NoTargetAnnotation
 case object FoundTargetDirTransformFoundTargetDirAnnotation extends NoTargetAnnotation

@@ -2,14 +2,14 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir.{Circuit, Connect, FileInfo, MultiInfo, Statement}
-import firrtl.annotations.{Annotation, ReferenceTarget}
-import firrtl.options.Dependency
-import firrtl.passes._
-import firrtl.transforms._
-import firrtl.testutils._
-import firrtl.stage.{PrettyNoExprInlining, TransformManager}
+import firrtl2._
+import firrtl2.ir.{Circuit, Connect, FileInfo, MultiInfo, Statement}
+import firrtl2.annotations.{Annotation, ReferenceTarget}
+import firrtl2.options.Dependency
+import firrtl2.passes._
+import firrtl2.transforms._
+import firrtl2.testutils._
+import firrtl2.stage.{PrettyNoExprInlining, TransformManager}
 
 class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
   val transform = new InlineBooleanExpressions

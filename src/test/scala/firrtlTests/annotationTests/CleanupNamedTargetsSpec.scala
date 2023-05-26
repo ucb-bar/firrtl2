@@ -2,8 +2,8 @@
 
 package firrtlTests.annotationTests
 
-import firrtl.{AnnotationSeq, CircuitState, Parser, UnknownForm}
-import firrtl.annotations.{
+import firrtl2.{AnnotationSeq, CircuitState, Parser, UnknownForm}
+import firrtl2.annotations.{
   CircuitName,
   CircuitTarget,
   ComponentName,
@@ -13,7 +13,7 @@ import firrtl.annotations.{
   SingleTargetAnnotation,
   Target
 }
-import firrtl.annotations.transforms.CleanupNamedTargets
+import firrtl2.annotations.transforms.CleanupNamedTargets
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

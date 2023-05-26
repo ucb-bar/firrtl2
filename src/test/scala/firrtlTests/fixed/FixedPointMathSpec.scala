@@ -2,8 +2,8 @@
 
 package firrtlTests.fixed
 
-import firrtl.{ChirrtlForm, CircuitState, LowFirrtlCompiler}
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.{ChirrtlForm, CircuitState, LowFirrtlCompiler}
+import firrtl2.testutils.FirrtlFlatSpec
 
 class FixedPointMathSpec extends FirrtlFlatSpec {
 

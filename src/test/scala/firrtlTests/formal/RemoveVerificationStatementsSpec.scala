@@ -2,10 +2,10 @@
 
 package firrtlTests.formal
 
-import firrtl.{CircuitState, Parser, Transform, UnknownForm}
-import firrtl.stage.{Forms, TransformManager}
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.transforms.formal.RemoveVerificationStatements
+import firrtl2.{CircuitState, Parser, Transform, UnknownForm}
+import firrtl2.stage.{Forms, TransformManager}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.transforms.formal.RemoveVerificationStatements
 
 class RemoveVerificationStatementsSpec extends FirrtlFlatSpec {
   behavior.of("RemoveVerificationStatements")

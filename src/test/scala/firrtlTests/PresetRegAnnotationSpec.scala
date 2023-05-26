@@ -1,15 +1,15 @@
 package firrtlTests
 
-import firrtl._
-import firrtl.annotations.{CircuitTarget, PresetRegAnnotation}
-import firrtl.options.Dependency
-import firrtl.testutils.LeanTransformSpec
-import firrtl.transforms.PropagatePresetAnnotations
+import firrtl2._
+import firrtl2.annotations.{CircuitTarget, PresetRegAnnotation}
+import firrtl2.options.Dependency
+import firrtl2.testutils.LeanTransformSpec
+import firrtl2.transforms.PropagatePresetAnnotations
 import logger.{LogLevel, LogLevelAnnotation, Logger}
 
 import scala.collection.mutable
 
-/** Tests the use of the [[firrtl.annotations.PresetRegAnnotation]]
+/** Tests the use of the [[firrtl2.annotations.PresetRegAnnotation]]
   * from a pass that needs to create a register with an initial value.
   */
 class PresetRegAnnotationSpec
@@ -50,13 +50,14 @@ class PresetRegAnnotationSpec
   */
 private object MakePresetRegs extends Transform with DependencyAPIMigration {
   // run on lowered firrtl
-  override def prerequisites = Seq(Dependency(firrtl.passes.ExpandWhens), Dependency(firrtl.passes.LowerTypes))
+  override def prerequisites = Seq(Dependency(firrtl2.passes.ExpandWhens), Dependency(firrtl2.passes.LowerTypes))
   override def invalidates(a: Transform) = false
   // since we generate PresetRegAnnotations, we need to run after preset propagation
   override def optionalPrerequisites = Seq(Dependency[PropagatePresetAnnotations])
   // we want to run before the actual Verilog is emitted
   // we want to look at the reset value, which may be removed by the RemoveReset transform.
-  override def optionalPrerequisiteOf = Seq(Dependency[SystemVerilogEmitter], Dependency(firrtl.transforms.RemoveReset))
+  override def optionalPrerequisiteOf =
+    Seq(Dependency[SystemVerilogEmitter], Dependency(firrtl2.transforms.RemoveReset))
 
   override def execute(state: CircuitState): CircuitState = {
     val c = CircuitTarget(state.circuit.main)

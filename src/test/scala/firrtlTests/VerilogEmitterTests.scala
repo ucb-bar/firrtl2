@@ -4,14 +4,14 @@ package firrtlTests
 
 import java.io.File
 
-import firrtl._
-import firrtl.stage._
-import firrtl.annotations._
-import firrtl.passes._
-import firrtl.transforms.{CombineCats, NoDCEAnnotation}
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2._
+import firrtl2.stage._
+import firrtl2.annotations._
+import firrtl2.passes._
+import firrtl2.transforms.{CombineCats, NoDCEAnnotation}
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
+import firrtl2.util.BackendCompilationUtilities._
 
 import scala.sys.process.{Process, ProcessLogger}
 
@@ -369,7 +369,7 @@ class VerilogEmitterSpec extends FirrtlFlatSpec {
     val moduleMap = state.circuit.modules.map(m => m.name -> m).toMap
 
     val module =
-      state.circuit.modules.filter(module => module.name == "Test").collectFirst { case m: firrtl.ir.Module => m }.get
+      state.circuit.modules.filter(module => module.name == "Test").collectFirst { case m: firrtl2.ir.Module => m }.get
 
     val renderer = emitter.getRenderer(module, moduleMap)(writer)
 

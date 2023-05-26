@@ -58,7 +58,7 @@ lazy val testAssemblySettings = Seq(
 lazy val antlrSettings = Seq(
   Antlr4 / antlr4GenVisitor := true,
   Antlr4 / antlr4GenListener := true,
-  Antlr4 / antlr4PackageName := Option("firrtl.antlr"),
+  Antlr4 / antlr4PackageName := Option("firrtl2.antlr"),
   Antlr4 / antlr4Version := "4.9.3",
   Antlr4 / javaSource := (Compile / sourceManaged).value
 )
@@ -101,7 +101,7 @@ lazy val docSettings = Seq(
     // ANTLR-generated classes aren't really part of public API and cause
     // errors in ScalaDoc generation
     "-skip-packages",
-    "firrtl.antlr",
+    "firrtl2.antlr",
     "-Xfatal-warnings",
     "-feature",
     "-diagrams",
@@ -144,7 +144,7 @@ lazy val firrtl = (project in file("."))
   .settings(docSettings)
   .enablePlugins(BuildInfoPlugin)
   .settings(
-    buildInfoPackage := name.value,
+    buildInfoPackage := "firrtl2",
     buildInfoUsePackageAsPath := true,
     buildInfoKeys := Seq[BuildInfoKey](buildInfoPackage, version, scalaVersion, sbtVersion)
   )

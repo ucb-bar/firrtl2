@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.testutils.ExecutionTest
+import firrtl2.testutils.ExecutionTest
 
 // Miscellaneous Feature Checks
 class NestedSubAccessExecutionTest extends ExecutionTest("NestedSubAccessTester", "/features")

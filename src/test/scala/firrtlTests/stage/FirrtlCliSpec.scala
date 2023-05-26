@@ -2,9 +2,9 @@
 
 package firrtlTests.stage
 
-import firrtl.stage.RunFirrtlTransformAnnotation
-import firrtl.options.Shell
-import firrtl.stage.FirrtlCli
+import firrtl2.stage.RunFirrtlTransformAnnotation
+import firrtl2.options.Shell
+import firrtl2.stage.FirrtlCli
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -16,17 +16,17 @@ class FirrtlCliSpec extends AnyFlatSpec with Matchers {
     val shell = new Shell("foo") with FirrtlCli
     val args = Array(
       "--custom-transforms",
-      "firrtl.transforms.BlackBoxSourceHelper,firrtl.transforms.CheckCombLoops",
+      "firrtl2.transforms.BlackBoxSourceHelper,firrtl2.transforms.CheckCombLoops",
       "--custom-transforms",
-      "firrtl.transforms.CombineCats",
+      "firrtl2.transforms.CombineCats",
       "--custom-transforms",
-      "firrtl.transforms.ConstantPropagation"
+      "firrtl2.transforms.ConstantPropagation"
     )
     val expected = Seq(
-      classOf[firrtl.transforms.BlackBoxSourceHelper],
-      classOf[firrtl.transforms.CheckCombLoops],
-      classOf[firrtl.transforms.CombineCats],
-      classOf[firrtl.transforms.ConstantPropagation]
+      classOf[firrtl2.transforms.BlackBoxSourceHelper],
+      classOf[firrtl2.transforms.CheckCombLoops],
+      classOf[firrtl2.transforms.CombineCats],
+      classOf[firrtl2.transforms.ConstantPropagation]
     )
 
     shell

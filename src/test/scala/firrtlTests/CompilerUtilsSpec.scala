@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.CompilerUtils.mergeTransforms
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.CompilerUtils.mergeTransforms
+import firrtl2.testutils._
 
 class CompilerUtilsSpec extends FirrtlFlatSpec {
 

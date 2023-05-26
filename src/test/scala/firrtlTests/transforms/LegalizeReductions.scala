@@ -2,10 +2,10 @@
 
 package firrtlTests.transforms
 
-import firrtl._
-import firrtl.ir.StringLit
-import firrtl.testutils._
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2._
+import firrtl2.ir.StringLit
+import firrtl2.testutils._
+import firrtl2.util.BackendCompilationUtilities._
 import org.scalatest.flatspec.AnyFlatSpec
 
 import java.io.File
@@ -54,8 +54,8 @@ circuit $name :
   }
 
   private def executeTest(test: Test): Unit = {
-    import firrtl.stage._
-    import firrtl.options.TargetDirAnnotation
+    import firrtl2.stage._
+    import firrtl2.options.TargetDirAnnotation
     val prefix = test.name
     val testDir = createTestDirectory(s"LegalizeReductions.$prefix")
     // Run FIRRTL
