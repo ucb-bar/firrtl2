@@ -2,9 +2,9 @@
 
 package firrtlTests.options.phases
 
-import firrtl.AnnotationSeq
-import firrtl.options.{OptionsException, OutputAnnotationFileAnnotation, Phase, TargetDirAnnotation}
-import firrtl.options.phases.Checks
+import firrtl2.AnnotationSeq
+import firrtl2.options.{OptionsException, OutputAnnotationFileAnnotation, Phase, TargetDirAnnotation}
+import firrtl2.options.phases.Checks
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.testutils._
+import firrtl2.testutils._
 
 class SimpleExtModuleExecutionTest extends ExecutionTest("SimpleExtModuleTester", "/blackboxes", Seq("SimpleExtModule"))
 class MultiExtModuleExecutionTest

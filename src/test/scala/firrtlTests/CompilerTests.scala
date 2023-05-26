@@ -2,12 +2,12 @@
 
 package firrtlTests
 
-import firrtl.CircuitState
+import firrtl2.CircuitState
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import firrtl.ir.Circuit
-import firrtl.options.Dependency
-import firrtl.testutils.LeanTransformSpec
+import firrtl2.ir.Circuit
+import firrtl2.options.Dependency
+import firrtl2.testutils.LeanTransformSpec
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -18,7 +18,7 @@ import org.scalatest.matchers.should.Matchers
   * the compiler is executed. The output of the compiler
   * should be compared against the check string.
   */
-abstract class CompilerSpec(emitter: Dependency[firrtl.Emitter]) extends LeanTransformSpec(Seq(emitter)) {
+abstract class CompilerSpec(emitter: Dependency[firrtl2.Emitter]) extends LeanTransformSpec(Seq(emitter)) {
   def input: String
   def getOutput: String = compile(input).getEmittedCircuit.value
 }
@@ -31,7 +31,7 @@ abstract class CompilerSpec(emitter: Dependency[firrtl.Emitter]) extends LeanTra
   * is parsed again and compared (in-memory) to the parsed
   * input.
   */
-class HighFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl.HighFirrtlEmitter]) with Matchers {
+class HighFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl2.HighFirrtlEmitter]) with Matchers {
   val input =
     """circuit Top :
   module Top :
@@ -52,7 +52,7 @@ class HighFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl.HighFirrtlEm
   * a lowered (to MidForm) version of the input circuit. The output is
   * string compared to the correct lowered circuit.
   */
-class MiddleFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl.MiddleFirrtlEmitter]) with Matchers {
+class MiddleFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl2.MiddleFirrtlEmitter]) with Matchers {
   val input =
     """
 circuit Top :
@@ -87,7 +87,7 @@ circuit Top :
   * a lowered version of the input circuit. The output is
   * string compared to the correct lowered circuit.
   */
-class LowFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl.LowFirrtlEmitter]) with Matchers {
+class LowFirrtlCompilerSpec extends CompilerSpec(Dependency[firrtl2.LowFirrtlEmitter]) with Matchers {
   val input =
     """
 circuit Top :
@@ -116,7 +116,7 @@ circuit Top :
   * the corresponding Verilog. The output is string compared
   * to the correct Verilog.
   */
-class VerilogCompilerSpec extends CompilerSpec(Dependency[firrtl.VerilogEmitter]) with Matchers {
+class VerilogCompilerSpec extends CompilerSpec(Dependency[firrtl2.VerilogEmitter]) with Matchers {
   val input = """circuit Top :
                 |  module Top :
                 |    input a : UInt<1>[2]
@@ -137,7 +137,7 @@ class VerilogCompilerSpec extends CompilerSpec(Dependency[firrtl.VerilogEmitter]
   }
 }
 
-class MinimumVerilogCompilerSpec extends CompilerSpec(Dependency[firrtl.MinimumVerilogEmitter]) with Matchers {
+class MinimumVerilogCompilerSpec extends CompilerSpec(Dependency[firrtl2.MinimumVerilogEmitter]) with Matchers {
   val input = """|circuit Top:
                  |  module Top:
                  |    output b: UInt<1>[3]

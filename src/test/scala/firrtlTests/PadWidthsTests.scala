@@ -2,12 +2,12 @@
 
 package firrtlTests
 
-import firrtl.CircuitState
-import firrtl.options.Dependency
-import firrtl.stage.{Forms, TransformManager}
-import firrtl.testutils.LeanTransformSpec
+import firrtl2.CircuitState
+import firrtl2.options.Dependency
+import firrtl2.stage.{Forms, TransformManager}
+import firrtl2.testutils.LeanTransformSpec
 
-class PadWidthsTests extends LeanTransformSpec(Seq(Dependency(firrtl.passes.PadWidths))) {
+class PadWidthsTests extends LeanTransformSpec(Seq(Dependency(firrtl2.passes.PadWidths))) {
   behavior.of("PadWidths pass")
 
   it should "pad widths inside a mux" in {
@@ -127,7 +127,7 @@ class PadWidthsTests extends LeanTransformSpec(Seq(Dependency(firrtl.passes.PadW
     val result = compile(input)
 
     // we serialize the result in order to rerun width inference
-    val resultFir = firrtl.Parser.parse(result.circuit.serialize)
+    val resultFir = firrtl2.Parser.parse(result.circuit.serialize)
     val newWidths = resolvedCompiler.runTransform(CircuitState(resultFir, Seq()))
 
     // the newly loaded circuit should look the same in serialized form (if this fails, the test has a bug)

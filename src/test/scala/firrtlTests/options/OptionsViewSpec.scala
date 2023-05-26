@@ -2,9 +2,9 @@
 
 package firrtlTests.options
 
-import firrtl.options.OptionsView
-import firrtl.AnnotationSeq
-import firrtl.annotations.{Annotation, NoTargetAnnotation}
+import firrtl2.options.OptionsView
+import firrtl2.AnnotationSeq
+import firrtl2.annotations.{Annotation, NoTargetAnnotation}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -55,7 +55,7 @@ class OptionsViewSpec extends AnyFlatSpec with Matchers {
   behavior.of("Viewer")
 
   it should "implicitly view annotations as the specified type" in {
-    import firrtl.options.Viewer._
+    import firrtl2.options.Viewer._
 
     /* Some empty annotations */
     val annos = Seq[Annotation]()

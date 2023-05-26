@@ -2,11 +2,11 @@
 
 package firrtlTests.annotationTests
 
-import firrtl.analyses.InstanceKeyGraph.InstanceKey
-import firrtl.annotations._
-import firrtl.annotations.TargetToken._
-import firrtl.annotations.TargetUtils._
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.analyses.InstanceKeyGraph.InstanceKey
+import firrtl2.annotations._
+import firrtl2.annotations.TargetToken._
+import firrtl2.annotations.TargetUtils._
+import firrtl2.testutils.FirrtlFlatSpec
 
 class TargetUtilsSpec extends FirrtlFlatSpec {
 

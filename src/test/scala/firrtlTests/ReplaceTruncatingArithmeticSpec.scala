@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2._
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
 
 class ReplaceTruncatingArithmeticSpec extends FirrtlFlatSpec {
   def compile(input: String): CircuitState =

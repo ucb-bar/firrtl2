@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl.testutils._
-import firrtl.ir.Circuit
-import firrtl.options.Dependency
-import firrtl.passes.memlib.VerilogMemDelays
+import firrtl2.testutils._
+import firrtl2.ir.Circuit
+import firrtl2.options.Dependency
+import firrtl2.passes.memlib.VerilogMemDelays
 
 class VerilogMemDelaySpec extends LeanTransformSpec(Seq(Dependency(VerilogMemDelays))) {
   behavior.of("VerilogMemDelaySpec")

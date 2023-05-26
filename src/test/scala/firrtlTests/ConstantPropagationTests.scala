@@ -2,12 +2,12 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.passes._
-import firrtl.transforms._
-import firrtl.testutils._
-import firrtl.annotations.Annotation
-import firrtl.stage.DisableFold
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.transforms._
+import firrtl2.testutils._
+import firrtl2.annotations.Annotation
+import firrtl2.stage.DisableFold
 
 class ConstantPropagationSpec extends FirrtlFlatSpec {
   val transforms: Seq[Transform] =

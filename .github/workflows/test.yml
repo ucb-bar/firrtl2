@@ -40,7 +40,7 @@ jobs:
         if: startsWith(matrix.scala, '2.13')
         run: |
           benchmark/scripts/benchmark_cold_compile.py -N 2 --designs regress/ICache.fir --versions HEAD
-          benchmark/scripts/find_heap_bound.py -- -cp firrtl*jar firrtl.stage.FirrtlMain -i regress/ICache.fir -o out -X verilog
+          benchmark/scripts/find_heap_bound.py -- -cp firrtl*jar firrtl2.stage.FirrtlMain -i regress/ICache.fir -o out -X verilog
       - name: Test
         run: sbt ++${{ matrix.scala }} test
       - name: Binary compatibility

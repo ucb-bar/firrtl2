@@ -2,12 +2,12 @@
 
 package firrtlTests.analyses
 
-import firrtl.annotations.TargetToken.OfModule
-import firrtl.analyses.InstanceGraph
-import firrtl.graph.DiGraph
-import firrtl.WDefInstance
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2.annotations.TargetToken.OfModule
+import firrtl2.analyses.InstanceGraph
+import firrtl2.graph.DiGraph
+import firrtl2.WDefInstance
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class InstanceGraphTests extends FirrtlFlatSpec {
   private def getEdgeSet(graph: DiGraph[String]): collection.Map[String, collection.Set[String]] = {

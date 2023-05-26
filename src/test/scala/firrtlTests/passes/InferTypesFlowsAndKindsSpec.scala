@@ -2,11 +2,11 @@
 
 package firrtlTests.passes
 
-import firrtl.ir.SubField
-import firrtl.options.Dependency
-import firrtl.stage.TransformManager
-import firrtl.{InstanceKind, MemKind, NodeKind, PortKind, RegKind, WireKind}
-import firrtl.{ir, passes, CircuitState, SinkFlow, SourceFlow}
+import firrtl2.ir.SubField
+import firrtl2.options.Dependency
+import firrtl2.stage.TransformManager
+import firrtl2.{InstanceKind, MemKind, NodeKind, PortKind, RegKind, WireKind}
+import firrtl2.{ir, passes, CircuitState, SinkFlow, SourceFlow}
 import org.scalatest.flatspec.AnyFlatSpec
 
 /** Tests the combined results of ResolveKinds, InferTypes and ResolveFlows */
@@ -15,7 +15,7 @@ class InferTypesFlowsAndKindsSpec extends AnyFlatSpec {
     Seq(Dependency(passes.ResolveKinds), Dependency(passes.InferTypes), Dependency(passes.ResolveFlows))
   private val manager = new TransformManager(deps)
   private def infer(src: String): ir.Circuit =
-    manager.execute(CircuitState(firrtl.Parser.parse(src), Seq())).circuit
+    manager.execute(CircuitState(firrtl2.Parser.parse(src), Seq())).circuit
   private def getNodes(s: ir.Statement): Seq[(String, ir.Expression)] = s match {
     case ir.DefNode(_, name, value)   => Seq((name, value))
     case ir.Block(stmts)              => stmts.flatMap(getNodes)

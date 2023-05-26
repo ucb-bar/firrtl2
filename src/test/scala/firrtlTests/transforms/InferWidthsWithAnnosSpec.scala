@@ -2,12 +2,12 @@
 
 package firrtlTests.transforms
 
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl._
-import firrtl.passes._
-import firrtl.passes.wiring.{SinkAnnotation, SourceAnnotation, WiringTransform}
-import firrtl.annotations._
-import firrtl.annotations.TargetToken.{Field, Index}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.passes.wiring.{SinkAnnotation, SourceAnnotation, WiringTransform}
+import firrtl2.annotations._
+import firrtl2.annotations.TargetToken.{Field, Index}
 
 class InferWidthsWithAnnosSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, check: String, transforms: Seq[Transform], annotations: Seq[Annotation]) = {

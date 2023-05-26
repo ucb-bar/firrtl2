@@ -2,8 +2,8 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.testutils._
 import FirrtlCheckers._
 
 class MemSpec extends FirrtlPropSpec with FirrtlMatchers {

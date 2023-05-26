@@ -2,8 +2,8 @@
 
 package firrtlTests.execution
 
-import firrtl._
-import firrtl.ir._
+import firrtl2._
+import firrtl2.ir._
 
 class ParserHelperException(val pe: ParserException, input: String)
     extends FirrtlUserException(s"Got error ${pe.toString} while parsing input:\n${input}")

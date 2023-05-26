@@ -2,20 +2,20 @@
 
 package firrtlTests.transforms
 
-import firrtl.annotations._
-import firrtl.transforms._
-import firrtl._
-import firrtl.FileUtils
-import firrtl.testutils.LowTransformSpec
-import firrtl.stage._
-import firrtl.options.Dependency
+import firrtl2.annotations._
+import firrtl2.transforms._
+import firrtl2._
+import firrtl2.FileUtils
+import firrtl2.testutils.LowTransformSpec
+import firrtl2.stage._
+import firrtl2.options.Dependency
 import java.io.File
-import firrtl.util.BackendCompilationUtilities.createTestDirectory
+import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 import _root_.logger._
 
 class ChangeBlackBoxTargetDir extends Transform with DependencyAPIMigration {
   override def prerequisites =
-    Dependency[firrtl.passes.memlib.ReplSeqMem] +: Forms.LowFormOptimized
+    Dependency[firrtl2.passes.memlib.ReplSeqMem] +: Forms.LowFormOptimized
   override def optionalPrerequisiteOf = Forms.BackendEmitters
   override def invalidates(a: Transform): Boolean = false
 

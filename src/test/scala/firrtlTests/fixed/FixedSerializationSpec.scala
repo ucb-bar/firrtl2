@@ -3,7 +3,7 @@
 package firrtlTests
 package fixed
 
-import firrtl.ir
+import firrtl2.ir
 import org.scalatest.flatspec.AnyFlatSpec
 
 class FixedSerializationSpec extends AnyFlatSpec {

@@ -2,9 +2,9 @@
 
 package firrtlTests.formal
 
-import firrtl._
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.transforms.formal.ConvertAsserts
+import firrtl2._
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.transforms.formal.ConvertAsserts
 
 class ConvertAssertsSpec extends FirrtlFlatSpec {
   val preamble =

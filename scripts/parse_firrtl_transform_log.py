@@ -141,7 +141,7 @@ if __name__ == "__main__":
     if len(transforms) == 0:
         print("{} does not contain a FIRRTL Transform log!".format(args.file))
         sys.exit(-1)
-    top = Transform("firrtl.stage.transforms.Compiler", transforms, None)
+    top = Transform("firrtl2.stage.transforms.Compiler", transforms, None)
     if args.strip_time:
         top = remove_time(top)
     pretty = pretty_transform(top)

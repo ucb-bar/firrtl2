@@ -2,12 +2,12 @@
 
 package firrtlTests.transforms
 
-import firrtl.annotations.ReferenceTarget
-import firrtl.annotations.TargetToken.{Instance, OfModule}
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.stage.{FirrtlCircuitAnnotation, FirrtlStage}
-import firrtl.transforms.{CustomRadixApplyAnnotation, CustomRadixDefAnnotation}
-import firrtl.util.BackendCompilationUtilities
+import firrtl2.annotations.ReferenceTarget
+import firrtl2.annotations.TargetToken.{Instance, OfModule}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlStage}
+import firrtl2.transforms.{CustomRadixApplyAnnotation, CustomRadixDefAnnotation}
+import firrtl2.util.BackendCompilationUtilities
 
 class CustomRadixTransformSpec extends FirrtlFlatSpec {
   behavior.of("CustomRadix")
@@ -88,7 +88,7 @@ class CustomRadixTransformSpec extends FirrtlFlatSpec {
       |""".stripMargin
 
   val annotations = Seq(
-    FirrtlCircuitAnnotation(firrtl.Parser.parse(fir)),
+    FirrtlCircuitAnnotation(firrtl2.Parser.parse(fir)),
     CustomRadixDefAnnotation("EnumExample", Seq(0, 1, 2, 100, 101).map(x => BigInt(x) -> s"e$x"), 7)
   ) ++ Seq(
     ("M1", Seq(), "in"),

@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.Mappers._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.Mappers._
+import firrtl2.testutils._
 import FirrtlCheckers._
 
 import collection.mutable
@@ -155,7 +155,7 @@ class RemoveWiresSpec extends FirrtlFlatSpec {
                                 |w <= tail(add(r, a), 1)
                                 |c <= n""".stripMargin)
     // Check declaration before use is maintained
-    firrtl.passes.CheckHighForm.execute(result)
+    firrtl2.passes.CheckHighForm.execute(result)
   }
 
   it should "order registers with async reset correctly" in {
@@ -171,7 +171,7 @@ class RemoveWiresSpec extends FirrtlFlatSpec {
                                 |out <= r
                                 |""".stripMargin)
     // Check declaration before use is maintained
-    firrtl.passes.CheckHighForm.execute(result)
+    firrtl2.passes.CheckHighForm.execute(result)
   }
 
   it should "order registers respecting initializations" in {
@@ -185,7 +185,7 @@ class RemoveWiresSpec extends FirrtlFlatSpec {
                                  |bar <= y
                                  |""".stripMargin)
     // Check declaration before use is maintained
-    firrtl.passes.CheckHighForm.execute(result)
+    firrtl2.passes.CheckHighForm.execute(result)
   }
 
   it should "give nodes made from invalid wires the correct type" in {

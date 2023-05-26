@@ -2,14 +2,14 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.passes._
-import firrtl.transforms._
-import firrtl.annotations._
-import firrtl.passes.memlib.SimpleTransform
-import firrtl.stage.FirrtlStage
-import firrtl.testutils._
-import firrtl.util.BackendCompilationUtilities.createTestDirectory
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.transforms._
+import firrtl2.annotations._
+import firrtl2.passes.memlib.SimpleTransform
+import firrtl2.stage.FirrtlStage
+import firrtl2.testutils._
+import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 
 import java.io.File
 import java.nio.file.Paths

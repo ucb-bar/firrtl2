@@ -2,11 +2,11 @@
 
 package firrtlTests.stage.phases
 
-import firrtl.{EmitAllModulesAnnotation, EmitCircuitAnnotation, HighFirrtlEmitter, VerilogCompiler}
-import firrtl.annotations.NoTargetAnnotation
-import firrtl.options.Phase
-import firrtl.stage.{CompilerAnnotation, RunFirrtlTransformAnnotation}
-import firrtl.stage.phases.AddImplicitEmitter
+import firrtl2.{EmitAllModulesAnnotation, EmitCircuitAnnotation, HighFirrtlEmitter, VerilogCompiler}
+import firrtl2.annotations.NoTargetAnnotation
+import firrtl2.options.Phase
+import firrtl2.stage.{CompilerAnnotation, RunFirrtlTransformAnnotation}
+import firrtl2.stage.phases.AddImplicitEmitter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

@@ -4,11 +4,11 @@ package firrtlTests.options.phases
 
 import java.io.{File, PrintWriter}
 
-import firrtl.AnnotationSeq
-import firrtl.annotations.{AnnotationFileNotFoundException, JsonProtocol, NoTargetAnnotation}
-import firrtl.options.phases.GetIncludes
-import firrtl.options.{InputAnnotationFileAnnotation, Phase}
-import firrtl.util.BackendCompilationUtilities
+import firrtl2.AnnotationSeq
+import firrtl2.annotations.{AnnotationFileNotFoundException, JsonProtocol, NoTargetAnnotation}
+import firrtl2.options.phases.GetIncludes
+import firrtl2.options.{InputAnnotationFileAnnotation, Phase}
+import firrtl2.util.BackendCompilationUtilities
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -18,7 +18,7 @@ case object C extends NoTargetAnnotation
 case object D extends NoTargetAnnotation
 case object E extends NoTargetAnnotation
 
-class GetIncludesSpec extends AnyFlatSpec with Matchers with firrtl.testutils.Utils {
+class GetIncludesSpec extends AnyFlatSpec with Matchers with firrtl2.testutils.Utils {
 
   val dir = new File("test_run_dir/GetIncludesSpec")
   dir.mkdirs()

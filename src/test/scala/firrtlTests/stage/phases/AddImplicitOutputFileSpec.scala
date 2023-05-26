@@ -2,10 +2,10 @@
 
 package firrtlTests.stage.phases
 
-import firrtl.{ChirrtlEmitter, EmitAllModulesAnnotation, Parser}
-import firrtl.options.Phase
-import firrtl.stage.{FirrtlCircuitAnnotation, OutputFileAnnotation}
-import firrtl.stage.phases.AddImplicitOutputFile
+import firrtl2.{ChirrtlEmitter, EmitAllModulesAnnotation, Parser}
+import firrtl2.options.Phase
+import firrtl2.stage.{FirrtlCircuitAnnotation, OutputFileAnnotation}
+import firrtl2.stage.phases.AddImplicitOutputFile
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

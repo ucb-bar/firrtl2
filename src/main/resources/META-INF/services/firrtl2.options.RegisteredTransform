@@ -1,0 +1,6 @@
+firrtl2.transforms.DeadCodeElimination
+firrtl2.transforms.CheckCombLoops
+firrtl2.passes.InlineInstances
+firrtl2.passes.clocklist.ClockListTransform
+firrtl2.transforms.formal.AssertSubmoduleAssumptions
+firrtl2.transforms.ConstantPropagation

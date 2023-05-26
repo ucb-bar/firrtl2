@@ -2,8 +2,8 @@
 
 package firrtlTests.options.phases
 
-import firrtl.options.{Phase, TargetDirAnnotation}
-import firrtl.options.phases.AddDefaults
+import firrtl2.options.{Phase, TargetDirAnnotation}
+import firrtl2.options.phases.AddDefaults
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

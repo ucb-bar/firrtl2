@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class WidthSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Transform]) = {
@@ -38,7 +38,7 @@ class WidthSpec extends FirrtlFlatSpec {
     LiteralWidthCheck(4, Some(3), 4)
   )
   for (LiteralWidthCheck(lit, uwo, sw) <- litChecks) {
-    import firrtl.ir.{IntWidth, SIntLiteral, UIntLiteral}
+    import firrtl2.ir.{IntWidth, SIntLiteral, UIntLiteral}
     s"$lit" should s"have signed width $sw" in {
       SIntLiteral(lit).width should equal(IntWidth(sw))
     }

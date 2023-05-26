@@ -3,16 +3,16 @@
 package firrtlTests
 
 import java.io.{File, FileWriter}
-import firrtl.annotations._
-import firrtl._
-import firrtl.FileUtils
-import firrtl.options.{Dependency, InputAnnotationFileAnnotation}
-import firrtl.transforms.OptimizableExtModuleAnnotation
-import firrtl.passes.InlineAnnotation
-import firrtl.passes.memlib.PinAnnotation
-import firrtl.stage.{FirrtlSourceAnnotation, FirrtlStage}
-import firrtl.util.BackendCompilationUtilities
-import firrtl.testutils._
+import firrtl2.annotations._
+import firrtl2._
+import firrtl2.FileUtils
+import firrtl2.options.{Dependency, InputAnnotationFileAnnotation}
+import firrtl2.transforms.OptimizableExtModuleAnnotation
+import firrtl2.passes.InlineAnnotation
+import firrtl2.passes.memlib.PinAnnotation
+import firrtl2.stage.{FirrtlSourceAnnotation, FirrtlStage}
+import firrtl2.util.BackendCompilationUtilities
+import firrtl2.testutils._
 import org.scalatest.matchers.should.Matchers
 
 object AnnotationTests {
@@ -591,7 +591,7 @@ class JsonAnnotationTests extends AnnotationTests {
   "Non-array annotation file" should "give a reasonable error message" in {
     val anno = """
                  |{
-                 |  "class":"firrtl.transforms.DontTouchAnnotation",
+                 |  "class":"firrtl2.transforms.DontTouchAnnotation",
                  |  "target":"test.test.y"
                  |}
                  |""".stripMargin

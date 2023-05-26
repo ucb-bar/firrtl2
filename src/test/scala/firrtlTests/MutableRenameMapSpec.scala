@@ -2,13 +2,13 @@
 
 package firrtlTests
 
-import firrtl.RenameMap
-import firrtl.renamemap.MutableRenameMap
-import firrtl.RenameMap.IllegalRenameException
-import firrtl.annotations._
-import firrtl.annotations.TargetToken.{Instance, OfModule}
-import firrtl.analyses.InstanceKeyGraph
-import firrtl.testutils._
+import firrtl2.RenameMap
+import firrtl2.renamemap.MutableRenameMap
+import firrtl2.RenameMap.IllegalRenameException
+import firrtl2.annotations._
+import firrtl2.annotations.TargetToken.{Instance, OfModule}
+import firrtl2.analyses.InstanceKeyGraph
+import firrtl2.testutils._
 
 class MutableRenameMapSpec extends FirrtlFlatSpec {
   val cir = CircuitTarget("Top")
@@ -166,7 +166,7 @@ class MutableRenameMapSpec extends FirrtlFlatSpec {
           t.instOf("a", "A" + idx)
         }
         .ref("ref")
-      val (millis, rename) = firrtl.Utils.time(renames.get(deepTarget))
+      val (millis, rename) = firrtl2.Utils.time(renames.get(deepTarget))
     //rename should be(None)
     }
   }

@@ -2,17 +2,17 @@
 
 package firrtlTests.transforms
 
-import firrtl.{ir, CircuitState, FirrtlUserException, Namespace, Parser, RenameMap}
-import firrtl.annotations.CircuitTarget
-import firrtl.options.Dependency
-import firrtl.testutils.FirrtlCheckers._
-import firrtl.transforms.{
+import firrtl2.{ir, CircuitState, FirrtlUserException, Namespace, Parser, RenameMap}
+import firrtl2.annotations.CircuitTarget
+import firrtl2.options.Dependency
+import firrtl2.testutils.FirrtlCheckers._
+import firrtl2.transforms.{
   ManipulateNames,
   ManipulateNamesAllowlistAnnotation,
   ManipulateNamesAllowlistResultAnnotation,
   ManipulateNamesBlocklistAnnotation
 }
-import firrtl.renamemap.MutableRenameMap
+import firrtl2.renamemap.MutableRenameMap
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -48,7 +48,7 @@ class ManipulateNamesSpec extends AnyFlatSpec with Matchers {
     val `~Foo|Foo/bar2:Bar` = `~Foo|Foo`.instOf("bar2", "Bar")
     val `~Foo|Bar` = `~Foo`.module("Bar")
     val `~Foo|Bar>a` = `~Foo|Bar`.ref("a")
-    val tm = new firrtl.stage.transforms.Compiler(Seq(Dependency[AddPrefix]))
+    val tm = new firrtl2.stage.transforms.Compiler(Seq(Dependency[AddPrefix]))
   }
 
   behavior.of("ManipulateNames")
@@ -177,7 +177,7 @@ class ManipulateNamesSpec extends AnyFlatSpec with Matchers {
       ManipulateNamesAllowlistAnnotation(Seq(Seq(`~Foo|Bar>a`)), Dependency[AddSuffix])
     )
     val state = CircuitState(Parser.parse(input), annotations)
-    override val tm = new firrtl.stage.transforms.Compiler(Seq(Dependency[AddPrefix], Dependency[AddSuffix]))
+    override val tm = new firrtl2.stage.transforms.Compiler(Seq(Dependency[AddPrefix], Dependency[AddSuffix]))
     val statex = tm.execute(state)
     val expected: Seq[PartialFunction[Any, Boolean]] = Seq(
       { case ir.Circuit(_, _, "prefix_Foo") => true },

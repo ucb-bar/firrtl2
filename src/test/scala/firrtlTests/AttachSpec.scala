@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir.Circuit
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.ir.Circuit
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class InoutVerilogSpec extends FirrtlFlatSpec {
 

@@ -4,19 +4,19 @@ package firrtlTests.transforms
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
-import firrtl.testutils.FirrtlMatchers
+import firrtl2.testutils.FirrtlMatchers
 import java.io.File
 
-import firrtl.graph.DiGraph
-import firrtl.analyses.InstanceKeyGraph
-import firrtl.annotations.CircuitTarget
-import firrtl.annotations.TargetToken.OfModule
-import firrtl.transforms._
-import firrtl.transforms.MustDeduplicateTransform._
-import firrtl.transforms.MustDeduplicateTransform.DisjointChildren._
-import firrtl.util.BackendCompilationUtilities.createTestDirectory
-import firrtl.stage.{FirrtlSourceAnnotation, RunFirrtlTransformAnnotation}
-import firrtl.options.{TargetDirAnnotation}
+import firrtl2.graph.DiGraph
+import firrtl2.analyses.InstanceKeyGraph
+import firrtl2.annotations.CircuitTarget
+import firrtl2.annotations.TargetToken.OfModule
+import firrtl2.transforms._
+import firrtl2.transforms.MustDeduplicateTransform._
+import firrtl2.transforms.MustDeduplicateTransform.DisjointChildren._
+import firrtl2.util.BackendCompilationUtilities.createTestDirectory
+import firrtl2.stage.{FirrtlSourceAnnotation, RunFirrtlTransformAnnotation}
+import firrtl2.options.TargetDirAnnotation
 import logger.{LogLevel, LogLevelAnnotation, Logger}
 
 class MustDedupSpec extends AnyFeatureSpec with FirrtlMatchers with GivenWhenThen {
@@ -62,7 +62,7 @@ class MustDedupSpec extends AnyFeatureSpec with FirrtlMatchers with GivenWhenThe
       )
 
       a[DeduplicationFailureException] shouldBe thrownBy {
-        (new firrtl.stage.FirrtlPhase).transform(annos)
+        (new firrtl2.stage.FirrtlPhase).transform(annos)
       }
 
       reportDir should exist
@@ -261,7 +261,7 @@ class MustDedupSpec extends AnyFeatureSpec with FirrtlMatchers with GivenWhenThe
         bdedup
       )
 
-      (new firrtl.stage.FirrtlPhase).transform(annos)
+      (new firrtl2.stage.FirrtlPhase).transform(annos)
     }
   }
 
@@ -294,7 +294,7 @@ class MustDedupSpec extends AnyFeatureSpec with FirrtlMatchers with GivenWhenThe
         bdedup
       )
 
-      val resAnnos = (new firrtl.stage.FirrtlPhase).transform(annos)
+      val resAnnos = (new firrtl2.stage.FirrtlPhase).transform(annos)
       resAnnos.collectFirst { case a: MustDeduplicateTransform => a } should be(None)
     }
   }

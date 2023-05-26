@@ -4,14 +4,14 @@ package firrtlTests
 package transforms
 
 import java.io._
-import firrtl._
-import firrtl.ir.{GroundType, IntWidth, Type}
-import firrtl.Parser
-import firrtl.annotations.{CircuitName, ComponentName, ModuleName, Target}
-import firrtl.stage.FirrtlStage
-import firrtl.transforms.TopWiring._
-import firrtl.testutils._
-import firrtl.util.BackendCompilationUtilities.createTestDirectory
+import firrtl2._
+import firrtl2.ir.{GroundType, IntWidth, Type}
+import firrtl2.Parser
+import firrtl2.annotations.{CircuitName, ComponentName, ModuleName, Target}
+import firrtl2.stage.FirrtlStage
+import firrtl2.transforms.TopWiring._
+import firrtl2.testutils._
+import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 
 trait TopWiringTestsCommon extends FirrtlRunners {
 
@@ -602,7 +602,7 @@ class TopWiringTests extends MiddleTransformSpec with TopWiringTestsCommon {
     }
     val args = Array(
       "--custom-transforms",
-      "firrtl.transforms.TopWiring.TopWiringTransform",
+      "firrtl2.transforms.TopWiring.TopWiringTransform",
       "--input-file",
       inputFile,
       "--compiler",

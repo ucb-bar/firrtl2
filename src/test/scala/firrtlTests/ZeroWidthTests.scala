@@ -2,10 +2,10 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.options.Dependency
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.options.Dependency
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class ZeroWidthTests extends LeanTransformSpec(Seq(Dependency(ZeroWidth))) {
   // =============================

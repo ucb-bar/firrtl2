@@ -3,9 +3,9 @@
 package firrtlTests
 package fixed
 
-import firrtl._
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class RemoveFixedTypeSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Transform]) = {

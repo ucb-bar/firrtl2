@@ -2,16 +2,16 @@
 
 package firrtlTests.options
 
-import firrtl.AnnotationSeq
-import firrtl.annotations.{Annotation, NoTargetAnnotation}
-import firrtl.options.{DoNotTerminateOnExit, DuplicateHandling, ExceptOnError, OptionsException}
+import firrtl2.AnnotationSeq
+import firrtl2.annotations.{Annotation, NoTargetAnnotation}
+import firrtl2.options.{DoNotTerminateOnExit, DuplicateHandling, ExceptOnError, OptionsException}
 
 import scopt.OptionParser
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl.testutils.Utils {
+class OptionParserSpec extends AnyFlatSpec with Matchers with firrtl2.testutils.Utils {
 
   case class IntAnnotation(x: Int) extends NoTargetAnnotation {
     def extract: Int = x

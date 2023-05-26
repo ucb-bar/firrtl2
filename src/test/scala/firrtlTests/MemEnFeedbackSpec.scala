@@ -2,8 +2,8 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2._
+import firrtl2.testutils.FirrtlFlatSpec
 
 // Tests long-standing bug from #1179, VerilogMemDelays producing combinational loops in corner case
 abstract class MemEnFeedbackSpec extends FirrtlFlatSpec {

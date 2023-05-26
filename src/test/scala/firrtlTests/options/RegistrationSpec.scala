@@ -6,10 +6,10 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import java.util.ServiceLoader
 
-import firrtl.options.{RegisteredLibrary, RegisteredTransform, ShellOption}
-import firrtl.passes.Pass
-import firrtl.ir.Circuit
-import firrtl.annotations.NoTargetAnnotation
+import firrtl2.options.{RegisteredLibrary, RegisteredTransform, ShellOption}
+import firrtl2.passes.Pass
+import firrtl2.ir.Circuit
+import firrtl2.annotations.NoTargetAnnotation
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

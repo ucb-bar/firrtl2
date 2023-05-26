@@ -36,7 +36,7 @@ def parseargs():
     parser.add_argument('--jvms', type=str, nargs='+', default=['java'],
                         help='JVMs to use')
     parser.add_argument('--cmd', type=str,
-                        default='-cp {jar} firrtl.stage.FirrtlMain -i {design} -o out -X verilog',
+                        default='-cp {jar} firrtl2.stage.FirrtlMain -i {design} -o out -X verilog',
                         help='Command to run, will sub {jar} and {design}')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--versions', type=str, nargs='+', default=['HEAD'],
@@ -61,8 +61,8 @@ def get_version_hashes(versions):
     return hashes
 
 def clone_and_build(hashcode):
-    repo = 'firrtl.{}'.format(hashcode)
-    jar = 'firrtl.{}.jar'.format(hashcode)
+    repo = 'firrtl2.{}'.format(hashcode)
+    jar = 'firrtl2.{}.jar'.format(hashcode)
     if os.path.exists(jar):
         print('{} already exists, skipping jar creation'.format(jar))
     else :

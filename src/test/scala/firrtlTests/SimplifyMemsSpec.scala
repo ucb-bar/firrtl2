@@ -2,8 +2,8 @@
 
 package firrtlTests
 
-import firrtl.transforms._
-import firrtl._
+import firrtl2.transforms._
+import firrtl2._
 
 import CompilerUtils.getLoweringTransforms
 

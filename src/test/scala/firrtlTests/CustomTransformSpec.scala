@@ -2,15 +2,15 @@
 
 package firrtlTests
 
-import firrtl.ir.Circuit
-import firrtl._
-import firrtl.passes.Pass
-import firrtl.ir._
-import firrtl.stage.{FirrtlSourceAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
-import firrtl.options.Dependency
-import firrtl.transforms.{IdentityTransform, LegalizeAndReductionsTransform}
-import firrtl.testutils._
-import firrtl.transforms.formal.ConvertAsserts
+import firrtl2.ir.Circuit
+import firrtl2._
+import firrtl2.passes.Pass
+import firrtl2.ir._
+import firrtl2.stage.{FirrtlSourceAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
+import firrtl2.options.Dependency
+import firrtl2.transforms.{IdentityTransform, LegalizeAndReductionsTransform}
+import firrtl2.testutils._
+import firrtl2.transforms.formal.ConvertAsserts
 
 object CustomTransformSpec {
 
@@ -160,7 +160,7 @@ class CustomTransformSpec extends FirrtlFlatSpec {
       Dependency[SystemVerilogEmitter]
     ).foreach { emitter =>
       val custom = Dependency[IdentityLowForm]
-      val tm = new firrtl.stage.transforms.Compiler(custom :: emitter :: Nil)
+      val tm = new firrtl2.stage.transforms.Compiler(custom :: emitter :: Nil)
       info(s"when using ${emitter.getObject().name}")
       tm.flattenedTransformOrder
         .map(Dependency.fromTransform)

@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl.{CircuitState, Transform, UnknownForm}
-import firrtl.passes._
-import firrtl.testutils._
+import firrtl2.{CircuitState, Transform, UnknownForm}
+import firrtl2.passes._
+import firrtl2.testutils._
 
 class CheckInitializationSpec extends FirrtlFlatSpec {
   private val passes = Seq(

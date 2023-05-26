@@ -2,8 +2,8 @@
 
 package logger
 
-import firrtl.annotations.{Annotation, NoTargetAnnotation}
-import firrtl.options.{HasShellOptions, ShellOption}
+import firrtl2.annotations.{Annotation, NoTargetAnnotation}
+import firrtl2.options.{HasShellOptions, ShellOption}
 
 /** An annotation associated with a Logger command line option */
 sealed trait LoggerOption { this: Annotation => }

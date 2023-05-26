@@ -2,9 +2,9 @@
 
 package firrtlTests.transforms
 
-import firrtl.{ir, CircuitState, Parser}
-import firrtl.transforms.SortModules
-import firrtl.traversals.Foreachers._
+import firrtl2.{ir, CircuitState, Parser}
+import firrtl2.transforms.SortModules
+import firrtl2.traversals.Foreachers._
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

@@ -2,8 +2,8 @@
 
 package firrtlTests.execution
 
-import firrtl._
-import firrtl.ir._
+import firrtl2._
+import firrtl2.ir._
 
 object DUTRules {
   val dutName = "dut"

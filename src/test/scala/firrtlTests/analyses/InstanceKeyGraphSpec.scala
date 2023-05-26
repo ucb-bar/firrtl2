@@ -2,11 +2,11 @@
 
 package firrtlTests.analyses
 
-import firrtl.analyses.InstanceKeyGraph
-import firrtl.analyses.InstanceKeyGraph.InstanceKey
-import firrtl.annotations.TargetToken.OfModule
-import firrtl.graph.DiGraph
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.analyses.InstanceKeyGraph
+import firrtl2.analyses.InstanceKeyGraph.InstanceKey
+import firrtl2.annotations.TargetToken.OfModule
+import firrtl2.graph.DiGraph
+import firrtl2.testutils.FirrtlFlatSpec
 
 class InstanceKeyGraphSpec extends FirrtlFlatSpec {
   behavior.of("InstanceKeyGraph.graph")

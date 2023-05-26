@@ -2,9 +2,9 @@
 
 package firrtlTests
 
-import firrtl.transforms.InlineAcrossCastsTransform
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.testutils.FirrtlCheckers._
+import firrtl2.transforms.InlineAcrossCastsTransform
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.testutils.FirrtlCheckers._
 
 class InlineAcrossCastsEquivalenceSpec extends FirrtlFlatSpec {
   /*

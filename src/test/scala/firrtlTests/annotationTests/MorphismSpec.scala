@@ -2,10 +2,10 @@
 
 package firrtlTests.annotationTests
 
-import firrtl._
-import firrtl.annotations.{Annotation, CircuitTarget, CompleteTarget, DeletedAnnotation}
-import firrtl.annotations.transforms.{DupedResult, ResolvePaths}
-import firrtl.transforms.DedupedResult
+import firrtl2._
+import firrtl2.annotations.{Annotation, CircuitTarget, CompleteTarget, DeletedAnnotation}
+import firrtl2.annotations.transforms.{DupedResult, ResolvePaths}
+import firrtl2.transforms.DedupedResult
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should._
 
@@ -95,8 +95,8 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
     val g: Seq[Transform]
 
     val setup: Seq[Transform] = Seq(
-      firrtl.passes.ToWorkingIR,
-      new firrtl.ResolveAndCheck
+      firrtl2.passes.ToWorkingIR,
+      new firrtl2.ResolveAndCheck
     )
 
     val cleanup: Seq[Transform] = Seq(
@@ -167,8 +167,8 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
     val f: Seq[Transform]
 
     val setup: Seq[Transform] = Seq(
-      firrtl.passes.ToWorkingIR,
-      new firrtl.ResolveAndCheck
+      firrtl2.passes.ToWorkingIR,
+      new firrtl2.ResolveAndCheck
     )
 
     val cleanup: Seq[Transform] = Seq(
@@ -300,11 +300,11 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
 
   // NOTE: equivalience is defined structurally in this case
   trait RightInverseEliminateTargetsFixture extends RightInverseFixture with DefaultExample {
-    override val f: Seq[Transform] = Seq(new firrtl.transforms.DedupModules)
-    override val g: Seq[Transform] = Seq(new firrtl.annotations.transforms.EliminateTargetPaths)
+    override val f: Seq[Transform] = Seq(new firrtl2.transforms.DedupModules)
+    override val g: Seq[Transform] = Seq(new firrtl2.annotations.transforms.EliminateTargetPaths)
   }
   trait IdempotencyEliminateTargetsFixture extends IdempotencyFixture with DefaultExample {
-    override val f: Seq[Transform] = Seq(new firrtl.annotations.transforms.EliminateTargetPaths)
+    override val f: Seq[Transform] = Seq(new firrtl2.annotations.transforms.EliminateTargetPaths)
   }
 
   it should "invert DedupModules with no annotations" in new RightInverseEliminateTargetsFixture {
@@ -440,12 +440,12 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
   behavior.of("DedupModules")
 
   trait RightInverseDedupModulesFixture extends RightInverseFixture with DefaultExample {
-    override val f: Seq[Transform] = Seq(new firrtl.annotations.transforms.EliminateTargetPaths)
-    override val g: Seq[Transform] = Seq(new firrtl.transforms.DedupModules)
+    override val f: Seq[Transform] = Seq(new firrtl2.annotations.transforms.EliminateTargetPaths)
+    override val g: Seq[Transform] = Seq(new firrtl2.transforms.DedupModules)
   }
 
   trait IdempotencyDedupModulesFixture extends IdempotencyFixture with DefaultExample {
-    override val f: Seq[Transform] = Seq(new firrtl.transforms.DedupModules)
+    override val f: Seq[Transform] = Seq(new firrtl2.transforms.DedupModules)
   }
 
   it should "invert EliminateTargetPaths with no annotations" in new RightInverseDedupModulesFixture {

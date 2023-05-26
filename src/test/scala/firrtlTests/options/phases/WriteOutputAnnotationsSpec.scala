@@ -4,9 +4,9 @@ package firrtlTests.options.phases
 
 import java.io.File
 
-import firrtl.AnnotationSeq
-import firrtl.annotations.{DeletedAnnotation, NoTargetAnnotation}
-import firrtl.options.{
+import firrtl2.AnnotationSeq
+import firrtl2.annotations.{DeletedAnnotation, NoTargetAnnotation}
+import firrtl2.options.{
   BufferedCustomFileEmission,
   CustomFileEmission,
   InputAnnotationFileAnnotation,
@@ -18,13 +18,13 @@ import firrtl.options.{
   TargetDirAnnotation,
   WriteDeletedAnnotation
 }
-import firrtl.options.Viewer.view
-import firrtl.options.phases.{GetIncludes, WriteOutputAnnotations}
+import firrtl2.options.Viewer.view
+import firrtl2.options.phases.{GetIncludes, WriteOutputAnnotations}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import firrtl.options.StageOptionsView
+import firrtl2.options.StageOptionsView
 
-class WriteOutputAnnotationsSpec extends AnyFlatSpec with Matchers with firrtl.testutils.Utils {
+class WriteOutputAnnotationsSpec extends AnyFlatSpec with Matchers with firrtl2.testutils.Utils {
 
   val dir = "test_run_dir/WriteOutputAnnotationSpec"
 

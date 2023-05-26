@@ -2,11 +2,11 @@
 
 package firrtlTests.formal
 
-import firrtl.{ir, CircuitState, SystemVerilogCompiler}
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.{ir, CircuitState, SystemVerilogCompiler}
+import firrtl2.testutils.FirrtlFlatSpec
 import logger.{LogLevel, Logger}
-import firrtl.options.Dependency
-import firrtl.stage.TransformManager
+import firrtl2.options.Dependency
+import firrtl2.stage.TransformManager
 
 class VerificationSpec extends FirrtlFlatSpec {
   behavior.of("Formal")
@@ -80,7 +80,7 @@ class VerificationSpec extends FirrtlFlatSpec {
   }
 
   "VerificationStatements" should "end up at the bottom of the circuit like other simulation statements" in {
-    val compiler = new TransformManager(Seq(Dependency(firrtl.passes.ExpandWhens)))
+    val compiler = new TransformManager(Seq(Dependency(firrtl2.passes.ExpandWhens)))
     val in =
       """circuit m :
         |  module m :
@@ -90,7 +90,7 @@ class VerificationSpec extends FirrtlFlatSpec {
         |    b <= a
         |    assert(clock, eq(a, b), UInt<1>("h1"), "")
         |""".stripMargin
-    val afterExpandWhens = compiler.transform(CircuitState(firrtl.Parser.parse(in), Seq())).circuit.serialize
+    val afterExpandWhens = compiler.transform(CircuitState(firrtl2.Parser.parse(in), Seq())).circuit.serialize
     val lastLine = afterExpandWhens.split("\n").last
     assert(lastLine.trim.startsWith("assert"))
   }

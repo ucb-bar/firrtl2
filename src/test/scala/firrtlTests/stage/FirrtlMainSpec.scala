@@ -7,19 +7,19 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.io.{File, PrintWriter}
-import firrtl.{BuildInfo, FileUtils}
-import firrtl.stage.{FirrtlMain, WarnNoScalaVersionDeprecation}
-import firrtl.util.BackendCompilationUtilities._
+import firrtl2.{BuildInfo, FileUtils}
+import firrtl2.stage.{FirrtlMain, WarnNoScalaVersionDeprecation}
+import firrtl2.util.BackendCompilationUtilities._
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.matchers.should.Matchers
-import firrtl.options.StageOptionsView
+import firrtl2.options.StageOptionsView
 
 /** Testing for the top-level [[FirrtlStage]] via [[FirrtlMain]].
   *
   * This test uses the [[org.scalatest.FeatureSpec FeatureSpec]] intentionally as this test exercises the top-level
   * interface and is more suitable to an Acceptance Testing style.
   */
-class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers with firrtl.testutils.Utils {
+class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers with firrtl2.testutils.Utils {
 
   /** Parameterizes one test of [[FirrtlMain]]. Running the [[FirrtlMain]] `main` with certain args should produce
     * certain files and not produce others.
@@ -313,7 +313,7 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
   info("As a FIRRTL command line user")
   info("I want to receive helpful error and warnings message")
   Feature("FirrtlMain input validation") {
-    /* Note: most input validation occurs inside firrtl.stage.phases.Checks. This seeks to validate command line
+    /* Note: most input validation occurs inside firrtl2.stage.phases.Checks. This seeks to validate command line
      * behavior.
      */
 
@@ -358,10 +358,10 @@ class FirrtlMainSpec extends AnyFeatureSpec with GivenWhenThen with Matchers wit
       val (out, _, result) = grabStdOutErr { f.stage.mainInner(Array("--show-registrations")) }
 
       Then("stdout should show registered transforms")
-      out should include("firrtl.passes.InlineInstances")
+      out should include("firrtl2.passes.InlineInstances")
 
       And("stdout should show registered libraries")
-      out should include("firrtl.passes.memlib.MemLibOptions")
+      out should include("firrtl2.passes.memlib.MemLibOptions")
 
       And("the exit code should be 1")
       result should be(1)

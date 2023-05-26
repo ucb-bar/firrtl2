@@ -3,12 +3,12 @@
 package firrtlTests
 package interval
 
-import firrtl._
-import firrtl.ir.Circuit
-import firrtl.passes._
-import firrtl.passes.CheckTypes.InvalidConnect
-import firrtl.passes.CheckWidths.DisjointSqueeze
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2._
+import firrtl2.ir.Circuit
+import firrtl2.passes._
+import firrtl2.passes.CheckTypes.InvalidConnect
+import firrtl2.passes.CheckWidths.DisjointSqueeze
+import firrtl2.testutils.FirrtlFlatSpec
 
 class IntervalSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Transform]) = {

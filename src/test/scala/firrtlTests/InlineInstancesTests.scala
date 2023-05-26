@@ -2,14 +2,14 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.annotations._
-import firrtl.passes.{InlineAnnotation, InlineInstances, ResolveKinds}
-import firrtl.transforms.NoCircuitDedupAnnotation
-import firrtl.testutils._
-import firrtl.testutils.FirrtlCheckers._
-import firrtl.stage.TransformManager
-import firrtl.options.Dependency
+import firrtl2._
+import firrtl2.annotations._
+import firrtl2.passes.{InlineAnnotation, InlineInstances, ResolveKinds}
+import firrtl2.transforms.NoCircuitDedupAnnotation
+import firrtl2.testutils._
+import firrtl2.testutils.FirrtlCheckers._
+import firrtl2.stage.TransformManager
+import firrtl2.options.Dependency
 
 /**
   * Tests inline instances transformation

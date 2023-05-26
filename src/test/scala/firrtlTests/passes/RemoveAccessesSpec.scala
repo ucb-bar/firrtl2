@@ -3,11 +3,11 @@
 package firrtlTests
 package passes
 
-import firrtl._
-import firrtl.testutils._
-import firrtl.stage.TransformManager
-import firrtl.options.Dependency
-import firrtl.passes._
+import firrtl2._
+import firrtl2.testutils._
+import firrtl2.stage.TransformManager
+import firrtl2.options.Dependency
+import firrtl2.passes._
 
 class RemoveAccessesSpec extends FirrtlFlatSpec {
   def compile(input: String): String = {

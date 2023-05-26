@@ -5,11 +5,11 @@ grammar FIRRTL;
 tokens { INDENT, DEDENT }
 
 @lexer::header {
-import firrtl.LexerHelper;
+import firrtl2.LexerHelper;
 }
 
 @lexer::members {
-  private final LexerHelper denter = new firrtl.LexerHelper()
+  private final LexerHelper denter = new firrtl2.LexerHelper()
   {
     @Override
     public Token pullToken() {

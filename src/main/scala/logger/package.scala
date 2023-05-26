@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import firrtl.AnnotationSeq
-import firrtl.options.OptionsView
+import firrtl2.AnnotationSeq
+import firrtl2.options.OptionsView
 
 package object logger {
 

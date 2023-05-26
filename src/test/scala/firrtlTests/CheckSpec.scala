@@ -3,9 +3,9 @@
 package firrtlTests
 
 import org.scalatest._
-import firrtl.{CircuitState, Parser, Transform, UnknownForm}
-import firrtl.ir.Circuit
-import firrtl.passes.{
+import firrtl2.{CircuitState, Parser, Transform, UnknownForm}
+import firrtl2.ir.Circuit
+import firrtl2.passes.{
   CheckFlows,
   CheckHighForm,
   CheckTypes,
@@ -431,7 +431,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input)
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }
@@ -549,7 +549,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input)
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }
@@ -570,7 +570,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input)
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }
@@ -610,7 +610,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input)
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }
@@ -631,7 +631,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input)
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }
@@ -653,7 +653,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input("UInt<1>", "AsyncReset"))
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
     info("exception thrown for 'UInt<1>' compared to 'Reset'")
@@ -661,7 +661,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
       try {
         checkHighInput(input("UInt<1>", "Reset"))
       } catch {
-        case e: firrtl.passes.PassExceptions => throw e.exceptions.head
+        case e: firrtl2.passes.PassExceptions => throw e.exceptions.head
       }
     }
   }

@@ -2,15 +2,15 @@
 
 package logger.phases
 
-import firrtl.AnnotationSeq
-import firrtl.annotations.Annotation
-import firrtl.options.{Dependency, Phase}
+import firrtl2.AnnotationSeq
+import firrtl2.annotations.Annotation
+import firrtl2.options.{Dependency, Phase}
 
 import logger.{LogFileAnnotation, LogLevelAnnotation, LoggerException}
 
 import scala.collection.mutable
 
-/** Check that an [[firrtl.AnnotationSeq AnnotationSeq]] has all necessary [[firrtl.annotations.Annotation Annotation]]s
+/** Check that an [[firrtl2.AnnotationSeq AnnotationSeq]] has all necessary [[firrtl2.annotations.Annotation Annotation]]s
   * for a [[Logger]]
   */
 object Checks extends Phase {
@@ -19,8 +19,9 @@ object Checks extends Phase {
   override def optionalPrerequisiteOf = Seq.empty
   override def invalidates(a: Phase) = false
 
-  /** Ensure that an [[firrtl.AnnotationSeq AnnotationSeq]] has necessary [[Logger]] [[firrtl.annotations.Annotation
+  /** Ensure that an [[firrtl2.AnnotationSeq AnnotationSeq]] has necessary [[Logger]] [[firrtl2.annotations.Annotation
     * Annotation]]s
+    *
     * @param annotations input annotations
     * @return input annotations unmodified
     * @throws logger.LoggerException

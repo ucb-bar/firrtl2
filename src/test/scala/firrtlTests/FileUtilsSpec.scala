@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.FileUtils
+import firrtl2.FileUtils
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

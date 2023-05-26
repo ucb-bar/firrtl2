@@ -2,13 +2,13 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.transforms.FlattenRegUpdate
-import firrtl.annotations.NoTargetAnnotation
-import firrtl.stage.transforms.Compiler
-import firrtl.options.Dependency
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.transforms.FlattenRegUpdate
+import firrtl2.annotations.NoTargetAnnotation
+import firrtl2.stage.transforms.Compiler
+import firrtl2.options.Dependency
+import firrtl2.testutils._
 import FirrtlCheckers._
 import scala.util.matching.Regex
 

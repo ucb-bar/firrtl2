@@ -2,9 +2,9 @@
 
 package firrtlTests.annotationTests
 
-import firrtl.RenameMap
-import firrtl.annotations._
-import firrtl.testutils.FirrtlFlatSpec
+import firrtl2.RenameMap
+import firrtl2.annotations._
+import firrtl2.testutils.FirrtlFlatSpec
 
 object AnnotationSpec {
   case class TestAnno(pairs: List[(String, ReferenceTarget)]) extends Annotation {

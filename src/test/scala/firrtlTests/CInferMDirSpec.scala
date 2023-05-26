@@ -2,11 +2,11 @@
 
 package firrtlTests
 
-import firrtl._
-import firrtl.ir._
-import firrtl.passes._
-import firrtl.transforms._
-import firrtl.testutils._
+import firrtl2._
+import firrtl2.ir._
+import firrtl2.passes._
+import firrtl2.transforms._
+import firrtl2.testutils._
 
 class CInferMDirSpec extends LowTransformSpec {
   object CInferMDirCheckPass extends Pass {

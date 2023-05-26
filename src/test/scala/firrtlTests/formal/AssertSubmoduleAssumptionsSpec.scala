@@ -2,10 +2,10 @@
 
 package firrtlTests.formal
 
-import firrtl.{CircuitState, Parser, Transform, UnknownForm}
-import firrtl.testutils.FirrtlFlatSpec
-import firrtl.transforms.formal.AssertSubmoduleAssumptions
-import firrtl.stage.{Forms, TransformManager}
+import firrtl2.{CircuitState, Parser, Transform, UnknownForm}
+import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.transforms.formal.AssertSubmoduleAssumptions
+import firrtl2.stage.{Forms, TransformManager}
 
 class AssertSubmoduleAssumptionsSpec extends FirrtlFlatSpec {
   behavior.of("AssertSubmoduleAssumptions")

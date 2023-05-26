@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl.testutils._
+import firrtl2.testutils._
 
 class VerilogEquivalenceSpec extends FirrtlFlatSpec {
   "mul followed by cat" should "be correct" in {

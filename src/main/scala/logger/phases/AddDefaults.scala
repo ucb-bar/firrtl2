@@ -2,8 +2,8 @@
 
 package logger.phases
 
-import firrtl.AnnotationSeq
-import firrtl.options.Phase
+import firrtl2.AnnotationSeq
+import firrtl2.options.Phase
 
 import logger.{LogLevelAnnotation, LoggerOption}
 

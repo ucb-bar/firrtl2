@@ -4,10 +4,10 @@ package firrtlTests.stage.phases
 
 import scala.collection.mutable
 
-import firrtl.{Compiler => _, _}
-import firrtl.options.Phase
-import firrtl.stage.{CompilerAnnotation, FirrtlCircuitAnnotation, Forms, RunFirrtlTransformAnnotation}
-import firrtl.stage.phases.Compiler
+import firrtl2.{Compiler => _, _}
+import firrtl2.options.Phase
+import firrtl2.stage.{CompilerAnnotation, FirrtlCircuitAnnotation, Forms, RunFirrtlTransformAnnotation}
+import firrtl2.stage.phases.Compiler
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
