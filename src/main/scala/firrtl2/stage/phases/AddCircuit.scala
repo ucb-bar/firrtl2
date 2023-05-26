@@ -23,7 +23,7 @@ import firrtl2.options.{Dependency, Phase, PhasePrerequisiteException}
   *
   * @note '''This must be run after [[AddDefaults]] as this [[firrtl2.options.Phase Phase]] depends on the existence of
   *       an [[InfoModeAnnotation]].'''.
-  * @define infoModeException firrtl.options.PhasePrerequisiteException if no [[InfoModeAnnotation]] is present
+  * @define infoModeException firrtl2.options.PhasePrerequisiteException if no [[InfoModeAnnotation]] is present
   */
 class AddCircuit extends Phase {
 
