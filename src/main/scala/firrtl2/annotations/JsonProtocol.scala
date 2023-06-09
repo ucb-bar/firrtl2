@@ -4,11 +4,10 @@ package firrtl2
 package annotations
 
 import firrtl2.ir._
+import firrtl2.logger.LazyLogging
 import firrtl2.stage.AllowUnrecognizedAnnotations
-import logger.LazyLogging
 
 import scala.util.{Failure, Success, Try}
-
 import org.json4s._
 import org.json4s.native.JsonMethods._
 import org.json4s.native.Serialization

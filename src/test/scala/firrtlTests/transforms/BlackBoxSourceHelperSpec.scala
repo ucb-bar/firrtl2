@@ -9,9 +9,10 @@ import firrtl2.FileUtils
 import firrtl2.testutils.LowTransformSpec
 import firrtl2.stage._
 import firrtl2.options.Dependency
+
 import java.io.File
 import firrtl2.util.BackendCompilationUtilities.createTestDirectory
-import _root_.logger._
+import firrtl2.logger.{LogLevel, LogLevelAnnotation}
 
 class ChangeBlackBoxTargetDir extends Transform with DependencyAPIMigration {
   override def prerequisites =

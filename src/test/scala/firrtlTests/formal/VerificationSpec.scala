@@ -2,9 +2,9 @@
 
 package firrtlTests.formal
 
+import firrtl2.logger.{LogLevel, Logger}
 import firrtl2.{ir, CircuitState, SystemVerilogCompiler}
 import firrtl2.testutils.FirrtlFlatSpec
-import logger.{LogLevel, Logger}
 import firrtl2.options.Dependency
 import firrtl2.stage.TransformManager
 

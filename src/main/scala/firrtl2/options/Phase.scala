@@ -3,8 +3,7 @@
 package firrtl2.options
 
 import firrtl2.AnnotationSeq
-
-import logger.LazyLogging
+import firrtl2.logger.LazyLogging
 
 import scala.collection.mutable.LinkedHashSet
 

@@ -3,8 +3,7 @@
 package firrtl2.stage.transforms
 
 import firrtl2.Transform
-
-import logger.Logger
+import firrtl2.logger.Logger
 
 /** A [[firrtl2.Transform]] that "wraps" a second [[firrtl2.Transform Transform]] to do some work before and after the
   * second [[firrtl2.Transform Transform]].

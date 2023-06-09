@@ -2,18 +2,15 @@
 
 package firrtl2
 
-import logger._
 import java.io.Writer
-
 import scala.collection.mutable
 import scala.collection.immutable.VectorBuilder
-import scala.util.Try
-import scala.util.control.NonFatal
 import firrtl2.annotations._
 import firrtl2.ir.Circuit
 import firrtl2.Utils.throwInternalError
 import firrtl2.annotations.transforms.{EliminateTargetPaths, ResolvePaths}
-import firrtl2.options.{Dependency, DependencyAPI, StageUtils, TransformLike}
+import firrtl2.logger.{LazyLogging, Logger}
+import firrtl2.options.{Dependency, DependencyAPI, TransformLike}
 import firrtl2.stage.Forms
 import firrtl2.transforms.DedupAnnotationsTransform
 

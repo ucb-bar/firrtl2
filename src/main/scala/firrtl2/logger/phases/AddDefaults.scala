@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
-package logger.phases
+package firrtl2.logger.phases
 
 import firrtl2.AnnotationSeq
+import firrtl2.logger.{LogLevelAnnotation, LoggerOption}
 import firrtl2.options.Phase
-
-import logger.{LogLevelAnnotation, LoggerOption}
 
 /** Add default logger [[Annotation]]s */
 private[logger] class AddDefaults extends Phase {

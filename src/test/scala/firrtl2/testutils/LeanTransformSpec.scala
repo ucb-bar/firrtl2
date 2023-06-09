@@ -2,11 +2,11 @@
 
 package firrtl2.testutils
 
+import firrtl2.logger.LazyLogging
 import firrtl2.{ir, AnnotationSeq, CircuitState, EmitCircuitAnnotation}
 import firrtl2.options.Dependency
 import firrtl2.passes.RemoveEmpty
 import firrtl2.stage.TransformManager.TransformDependency
-import logger.LazyLogging
 import org.scalatest.flatspec.AnyFlatSpec
 
 class VerilogTransformSpec extends LeanTransformSpec(Seq(Dependency[firrtl2.VerilogEmitter]))

@@ -4,11 +4,11 @@ package firrtl2
 
 import org.antlr.v4.runtime._
 import org.antlr.v4.runtime.atn._
-import logger.LazyLogging
 import firrtl2.ir._
 import firrtl2.parser.Listener
 import firrtl2.Utils.time
 import firrtl2.antlr._
+import firrtl2.logger.LazyLogging
 
 import scala.util.control.NonFatal
 

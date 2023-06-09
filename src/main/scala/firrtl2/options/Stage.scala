@@ -3,8 +3,7 @@
 package firrtl2.options
 
 import firrtl2.AnnotationSeq
-
-import logger.Logger
+import firrtl2.logger.Logger
 
 /** A [[Stage]] represents one stage in the FIRRTL hardware compiler framework. A [[Stage]] is, conceptually, a
   * [[Phase]] that includes a command line interface.

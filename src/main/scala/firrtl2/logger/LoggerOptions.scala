@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
-package logger
+package firrtl2.logger
 
 /** Internal options used to control the logging in programs that are part of the Chisel stack
   *
-  * @param globalLogLevel the verbosity of logging (default: [[logger.LogLevel.None]])
+  * @param globalLogLevel the verbosity of logging (default: [[LogLevel.None]])
   * @param classLogLevels the individual verbosity of logging for specific classes
   * @param logToFile      if true, log to a file
   * @param logClassNames  indicates logging verbosity on a class-by-class basis

@@ -2,11 +2,11 @@
 
 package firrtl2.backends.experimental.smt.end2end
 
+import firrtl2.logger.LazyLogging
 import java.io.File
 
 import firrtl2.stage.{FirrtlStage, OutputFileAnnotation}
 import firrtl2.util.BackendCompilationUtilities
-import logger.LazyLogging
 import org.scalatest.flatspec.AnyFlatSpec
 
 import scala.sys.process.{Process, ProcessLogger}

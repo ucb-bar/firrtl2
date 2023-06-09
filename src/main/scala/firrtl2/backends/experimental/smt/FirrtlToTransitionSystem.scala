@@ -6,6 +6,7 @@ package firrtl2.backends.experimental.smt
 import firrtl2.annotations.{MemoryInitAnnotation, NoTargetAnnotation, PresetRegAnnotation}
 import firrtl2._
 import firrtl2.backends.experimental.smt.random._
+import firrtl2.logger.LazyLogging
 import firrtl2.options.Dependency
 import firrtl2.passes.MemPortUtils.memPortField
 import firrtl2.passes.PassException
@@ -13,7 +14,6 @@ import firrtl2.passes.memlib.VerilogMemDelays
 import firrtl2.stage.Forms
 import firrtl2.stage.TransformManager.TransformDependency
 import firrtl2.transforms.{EnsureNamedStatements, PropagatePresetAnnotations}
-import logger.LazyLogging
 
 import scala.collection.mutable
 

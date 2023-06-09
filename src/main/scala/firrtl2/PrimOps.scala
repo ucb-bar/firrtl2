@@ -2,10 +2,10 @@
 
 package firrtl2
 
-import logger.LazyLogging
 import firrtl2.ir._
 import Implicits.{constraint2bound, constraint2width, width2constraint}
 import firrtl2.constraint._
+import firrtl2.logger.LazyLogging
 
 /** Definitions and Utility functions for [[ir.PrimOp]]s */
 object PrimOps extends LazyLogging {

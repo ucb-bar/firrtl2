@@ -14,7 +14,7 @@ import scala.util.matching.Regex
 import Implicits.{constraint2bound, constraint2width, width2constraint}
 import firrtl2.constraint.{IsMax, IsMin}
 import firrtl2.annotations.{ReferenceTarget, TargetToken}
-import _root_.logger.LazyLogging
+import firrtl2.logger.LazyLogging
 
 object seqCat {
   def apply(args: Seq[Expression]): Expression = args.length match {

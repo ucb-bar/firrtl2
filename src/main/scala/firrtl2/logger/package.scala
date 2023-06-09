@@ -1,3 +1,5 @@
+package firrtl2
+
 // SPDX-License-Identifier: Apache-2.0
 
 import firrtl2.AnnotationSeq

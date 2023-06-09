@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-package logger
+package firrtl2.logger
 
 import firrtl2.annotations.{Annotation, NoTargetAnnotation}
 import firrtl2.options.{HasShellOptions, ShellOption}
