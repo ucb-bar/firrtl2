@@ -11,13 +11,13 @@ import firrtl2.graph.DiGraph
 import firrtl2.analyses.InstanceKeyGraph
 import firrtl2.annotations.CircuitTarget
 import firrtl2.annotations.TargetToken.OfModule
+import firrtl2.logger.{LogLevel, LogLevelAnnotation, Logger}
 import firrtl2.transforms._
 import firrtl2.transforms.MustDeduplicateTransform._
 import firrtl2.transforms.MustDeduplicateTransform.DisjointChildren._
 import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 import firrtl2.stage.{FirrtlSourceAnnotation, RunFirrtlTransformAnnotation}
 import firrtl2.options.TargetDirAnnotation
-import logger.{LogLevel, LogLevelAnnotation, Logger}
 
 class MustDedupSpec extends AnyFeatureSpec with FirrtlMatchers with GivenWhenThen {
 

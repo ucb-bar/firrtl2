@@ -5,10 +5,10 @@ package firrtl2.backends.experimental.smt.end2end
 import firrtl2.annotations.{Annotation, CircuitTarget, PresetAnnotation}
 import firrtl2.backends.experimental.smt.random.{InvalidToRandomPass, UndefinedMemoryBehaviorPass}
 import firrtl2.backends.experimental.smt.{Btor2Emitter, SMTLibEmitter}
+import firrtl2.logger.{LazyLogging, LogLevel, LogLevelAnnotation}
 import firrtl2.options.{Dependency, TargetDirAnnotation}
 import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlStage, OutputFileAnnotation, RunFirrtlTransformAnnotation}
 import firrtl2.util.BackendCompilationUtilities.timeStamp
-import logger.{LazyLogging, LogLevel, LogLevelAnnotation}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import os._

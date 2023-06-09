@@ -8,7 +8,7 @@ import firrtl2.ir._
 import firrtl2.options.Dependency
 import firrtl2.transforms.DontTouchAnnotation
 import scala.util.Failure
-import _root_.logger.{LogLevel, LogLevelAnnotation, Logger}
+import firrtl2.logger.{LogLevel, LogLevelAnnotation, Logger}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should._
 import org.scalatest.Inside._

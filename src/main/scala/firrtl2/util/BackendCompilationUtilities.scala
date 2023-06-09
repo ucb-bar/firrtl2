@@ -7,9 +7,8 @@ import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-import logger.LazyLogging
-
 import firrtl2.FileUtils
+import firrtl2.logger.LazyLogging
 
 import scala.sys.process.{ProcessBuilder, ProcessLogger, _}
 

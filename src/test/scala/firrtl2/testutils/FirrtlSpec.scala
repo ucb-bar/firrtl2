@@ -5,8 +5,6 @@ package firrtl2.testutils
 import java.io._
 import scala.sys.process._
 
-import logger.{LazyLogging, LogLevel, LogLevelAnnotation}
-
 import org.scalatest._
 import org.scalatestplus.scalacheck._
 
@@ -17,6 +15,7 @@ import firrtl2.options.Dependency
 import firrtl2.stage.{FirrtlFileAnnotation, InfoModeAnnotation, RunFirrtlTransformAnnotation}
 import firrtl2.analyses.{GetNamespace, ModuleNamespaceAnnotation}
 import firrtl2.annotations._
+import firrtl2.logger.{LazyLogging, LogLevel, LogLevelAnnotation}
 import firrtl2.transforms.{DontTouchAnnotation, NoDedupAnnotation, RenameModules}
 import firrtl2.renamemap.MutableRenameMap
 import firrtl2.util.BackendCompilationUtilities

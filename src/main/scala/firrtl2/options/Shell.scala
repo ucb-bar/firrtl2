@@ -3,8 +3,7 @@
 package firrtl2.options
 
 import firrtl2.AnnotationSeq
-
-import logger.{ClassLogLevelAnnotation, LogClassNamesAnnotation, LogFileAnnotation, LogLevelAnnotation}
+import firrtl2.logger.{ClassLogLevelAnnotation, LogClassNamesAnnotation, LogFileAnnotation, LogLevelAnnotation}
 
 import scopt.OptionParser
 

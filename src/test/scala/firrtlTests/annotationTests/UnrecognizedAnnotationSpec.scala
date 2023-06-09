@@ -4,12 +4,12 @@ package firrtlTests.annotationTests
 
 import firrtl2.FileUtils
 import firrtl2.annotations._
+import firrtl2.logger.Logger
 import firrtl2.passes.memlib.ReplSeqMemAnnotation
 import firrtl2.stage.FirrtlMain
 import firrtl2.testutils.FirrtlFlatSpec
 import firrtl2.transforms.BlackBoxInlineAnno
-import logger.Logger
-import logger.Logger.OutputCaptor
+import Logger.OutputCaptor
 import org.json4s.convertToJsonInput
 
 import java.io.{File, PrintWriter}

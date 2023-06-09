@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-package logger
+package firrtl2.logger
 
 import java.io.{ByteArrayOutputStream, File, FileOutputStream, PrintStream}
-
 import firrtl2.AnnotationSeq
+import firrtl2.logger.phases.{AddDefaults, Checks}
 import firrtl2.options.Viewer.view
-import logger.phases.{AddDefaults, Checks}
 
 import scala.util.DynamicVariable
 

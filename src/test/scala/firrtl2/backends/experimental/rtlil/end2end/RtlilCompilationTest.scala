@@ -2,9 +2,9 @@
 
 package firrtl2.backends.experimental.rtlil.end2end
 
+import firrtl2.logger.LazyLogging
 import firrtl2.stage.{FirrtlStage, OutputFileAnnotation}
 import firrtl2.util.BackendCompilationUtilities
-import logger.LazyLogging
 import org.scalatest.flatspec.AnyFlatSpec
 
 import java.io.File

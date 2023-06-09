@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-package logger.phases
+package firrtl2.logger.phases
 
 import firrtl2.AnnotationSeq
 import firrtl2.annotations.Annotation
+import firrtl2.logger.{LogFileAnnotation, LogLevelAnnotation, LoggerException}
 import firrtl2.options.{Dependency, Phase}
-
-import logger.{LogFileAnnotation, LogLevelAnnotation, LoggerException}
 
 import scala.collection.mutable
 

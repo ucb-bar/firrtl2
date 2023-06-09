@@ -2,8 +2,8 @@
 
 package loggertests
 
-import logger.Logger.OutputCaptor
-import logger.{LazyLogging, LogLevel, Logger}
+import firrtl2.logger.{LazyLogging, LogLevel, Logger}
+import firrtl2.logger.Logger.OutputCaptor
 import org.scalatest.OneInstancePerTest
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
