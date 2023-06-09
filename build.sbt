@@ -26,7 +26,7 @@ lazy val firrtlSettings = Seq(
     "com.github.scopt" %% "scopt" % "4.1.0",
     "org.json4s" %% "json4s-native" % "4.0.6",
     "org.apache.commons" % "commons-text" % "1.10.0",
-    "com.lihaoyi" %% "os-lib" % "0.9.1",
+    "com.lihaoyi" %% "os-lib" % "0.8.1",
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
   ),
   resolvers ++= Resolver.sonatypeOssRepos("snapshots"),
