@@ -8,7 +8,7 @@ import firrtl2.passes.Pass
 import firrtl2.ir._
 import firrtl2.stage.{FirrtlSourceAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
 import firrtl2.options.Dependency
-import firrtl2.transforms.{IdentityTransform, LegalizeAndReductionsTransform}
+import firrtl2.transforms.{LegalizeAndReductionsTransform}
 import firrtl2.testutils._
 import firrtl2.transforms.formal.ConvertAsserts
 
@@ -99,10 +99,6 @@ object CustomTransformSpec {
     }
   }
 
-  class IdentityLowForm extends IdentityTransform(LowForm) {
-    override val name = ">>>>> IdentityLowForm <<<<<"
-  }
-
   object Foo {
     class A extends Transform {
       def inputForm = HighForm
@@ -149,25 +145,6 @@ class CustomTransformSpec extends FirrtlFlatSpec {
         new ReplaceExtModuleTransform
       )
     )
-  }
-
-  they should "run right before the emitter* when inputForm=LowForm" in {
-
-    Seq(
-      Dependency[LowFirrtlEmitter],
-      Dependency[MinimumVerilogEmitter],
-      Dependency[VerilogEmitter],
-      Dependency[SystemVerilogEmitter]
-    ).foreach { emitter =>
-      val custom = Dependency[IdentityLowForm]
-      val tm = new firrtl2.stage.transforms.Compiler(custom :: emitter :: Nil)
-      info(s"when using ${emitter.getObject().name}")
-      tm.flattenedTransformOrder
-        .map(Dependency.fromTransform)
-        .sliding(2)
-        .toList should contain(Seq(custom, emitter))
-    }
-
   }
 
   they should "work if placed inside an object" in {

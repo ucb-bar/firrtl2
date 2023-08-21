@@ -270,7 +270,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Connecting analog types" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -285,7 +285,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Declaring register with analog types" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -299,7 +299,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Declaring memory with analog types" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -318,7 +318,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Declaring node with analog types" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -332,7 +332,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Attaching a non-analog expression" should "not be ok" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -352,7 +352,7 @@ class AttachAnalogSpec extends FirrtlFlatSpec {
   }
 
   "Inequal attach widths" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes, new InferWidths, CheckWidths)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes, new InferWidths, CheckWidths)
     val input =
       """circuit Unit :
         |  module Unit :

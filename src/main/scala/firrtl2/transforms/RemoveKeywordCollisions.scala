@@ -39,8 +39,7 @@ class VerilogRename extends RemoveKeywordCollisions(v_keywords) {
       Dependency[InlineBitExtractionsTransform],
       Dependency[InlineAcrossCastsTransform],
       Dependency[LegalizeClocksAndAsyncResetsTransform],
-      Dependency[FlattenRegUpdate],
-      Dependency(passes.VerilogModulusCleanup)
+      Dependency[FlattenRegUpdate]
     )
 
   override def optionalPrerequisites = firrtl2.stage.Forms.LowFormOptimized

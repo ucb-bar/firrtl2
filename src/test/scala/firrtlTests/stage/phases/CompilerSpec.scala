@@ -41,8 +41,7 @@ class CompilerSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "compile multiple FirrtlCircuitAnnotations" in new Fixture {
-    val (nc, hfc, mfc, lfc, vc, svc) = (
-      new NoneCompiler,
+    val (hfc, mfc, lfc, vc, svc) = (
       new HighFirrtlCompiler,
       new MiddleFirrtlCompiler,
       new LowFirrtlCompiler,
@@ -63,7 +62,6 @@ class CompilerSpec extends AnyFlatSpec with Matchers {
       CompilerAnnotation(hfc),
       /* First compiler group, use NoneCompiler */
       FirrtlCircuitAnnotation(Parser.parse(chirrtl("a"))),
-      CompilerAnnotation(nc),
       RunFirrtlTransformAnnotation(ce),
       EmitCircuitAnnotation(ce.getClass),
       /* Second compiler group, use default HighFirrtlCompiler */
