@@ -109,7 +109,6 @@ stmt
   | 'inst' id 'of' id info?
   | 'node' id '=' exp info?
   | ref '<=' exp info?
-  | ref '<-' exp info?
   | ref 'is' 'invalid' info?
   | when
   | 'stop(' exp exp intLit ')' stmtName? info?

@@ -443,7 +443,6 @@ class Visitor(infoMode: InfoMode) extends AbstractParseTreeVisitor[FirrtlNode] w
       case _ =>
         ctx.getChild(1).getText match {
           case "<=" => Connect(info, visitRef(ctx.ref), visitExp(ctx_exp(0)))
-          case "<-" => PartialConnect(info, visitRef(ctx.ref), visitExp(ctx_exp(0)))
           case "is" => IsInvalid(info, visitRef(ctx.ref))
           case "mport" =>
             CDefMPort(

@@ -192,8 +192,6 @@ object LowerTypes extends Transform with DependencyAPIMigration {
       // We can get multiple refs on the lhs because of ground-type memory ports like "clk" which can get duplicated.
       val lhs = symbols.getReferences(loc.asInstanceOf[RefLikeExpression])
       Block(lhs.map(loc => Connect(info, loc, rhs)))
-    case p: PartialConnect =>
-      throw new RuntimeException(s"LowerTypes expects PartialConnects to be resolved! $p")
     case IsInvalid(info, expr) =>
       if (!expr.tpe.isInstanceOf[GroundType]) {
         throw new RuntimeException(s"LowerTypes expects IsInvalids to have been expanded! ${expr.tpe.serialize}")

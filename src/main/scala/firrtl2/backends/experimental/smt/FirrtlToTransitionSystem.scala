@@ -210,8 +210,6 @@ private class ModuleToTransitionSystem(
       }
     case s: ir.Conditionally =>
       error(s"When conditions are not supported. Please run ExpandWhens: ${s.serialize}")
-    case s: ir.PartialConnect =>
-      error(s"PartialConnects are not supported. Please run ExpandConnects: ${s.serialize}")
     case s: ir.Attach =>
       error(s"Analog wires are not supported in the SMT backend: ${s.serialize}")
     case s: ir.Stop =>

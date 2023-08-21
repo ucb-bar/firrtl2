@@ -105,9 +105,6 @@ object CheckFlows extends Pass {
           s.args.foreach(check_flow(info, mname, flows, SourceFlow))
           check_flow(info, mname, flows, SourceFlow)(s.en)
           check_flow(info, mname, flows, SourceFlow)(s.clk)
-        case (s: PartialConnect) =>
-          check_flow(info, mname, flows, SinkFlow)(s.loc)
-          check_flow(info, mname, flows, SourceFlow)(s.expr)
         case (s: Conditionally) =>
           check_flow(info, mname, flows, SourceFlow)(s.pred)
         case (s: Stop) =>

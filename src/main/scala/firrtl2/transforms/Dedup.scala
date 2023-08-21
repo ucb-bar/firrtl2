@@ -436,9 +436,6 @@ object DedupModules extends LazyLogging {
           case Connect(_, lhs, rhs) =>
             markAggregatePorts(lhs)
             markAggregatePorts(rhs)
-          case PartialConnect(_, lhs, rhs) =>
-            markAggregatePorts(lhs)
-            markAggregatePorts(rhs)
           case _ =>
         }
       }

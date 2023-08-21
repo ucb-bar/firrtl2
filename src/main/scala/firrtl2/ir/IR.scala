@@ -328,7 +328,7 @@ abstract class Expression extends FirrtlNode {
 /** Represents reference-like expression nodes: SubField, SubIndex, SubAccess and Reference
   * The following fields can be cast to RefLikeExpression in every well formed firrtl AST:
   * - SubField.expr, SubIndex.expr, SubAccess.expr
-  * - IsInvalid.expr, Connect.loc, PartialConnect.loc
+  * - IsInvalid.expr, Connect.loc
   * - Attach.exprs
   */
 sealed trait RefLikeExpression extends Expression { def flow: Flow }
@@ -667,21 +667,7 @@ case class Block(stmts: Seq[Statement]) extends Statement with UseSerializer {
   def foreachString(f: String => Unit):           Unit = ()
   def foreachInfo(f:   Info => Unit):             Unit = ()
 }
-case class PartialConnect(info: Info, loc: Expression, expr: Expression)
-    extends Statement
-    with HasInfo
-    with UseSerializer {
-  def mapStmt(f:     Statement => Statement):   Statement = this
-  def mapExpr(f:     Expression => Expression): Statement = PartialConnect(info, f(loc), f(expr))
-  def mapType(f:     Type => Type):             Statement = this
-  def mapString(f:   String => String):         Statement = this
-  def mapInfo(f:     Info => Info):             Statement = this.copy(info = f(info))
-  def foreachStmt(f: Statement => Unit):        Unit = ()
-  def foreachExpr(f: Expression => Unit): Unit = { f(loc); f(expr) }
-  def foreachType(f:   Type => Unit):   Unit = ()
-  def foreachString(f: String => Unit): Unit = ()
-  def foreachInfo(f:   Info => Unit):   Unit = f(info)
-}
+
 case class Connect(info: Info, loc: Expression, expr: Expression) extends Statement with HasInfo with UseSerializer {
   def mapStmt(f:     Statement => Statement):   Statement = this
   def mapExpr(f:     Expression => Expression): Statement = Connect(info, f(loc), f(expr))

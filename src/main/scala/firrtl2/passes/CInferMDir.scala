@@ -53,10 +53,6 @@ object CInferMDir extends Pass {
       infer_mdir_e(mports, MRead)(sx.expr)
       infer_mdir_e(mports, MWrite)(sx.loc)
       sx
-    case sx: PartialConnect =>
-      infer_mdir_e(mports, MRead)(sx.expr)
-      infer_mdir_e(mports, MWrite)(sx.loc)
-      sx
     case sx => sx.map(infer_mdir_s(mports)).map(infer_mdir_e(mports, MRead))
   }
 

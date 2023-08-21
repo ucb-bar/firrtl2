@@ -38,8 +38,6 @@ object ResolveFlows extends Pass {
       IsInvalid(info, resolve_e(SinkFlow)(expr))
     case Connect(info, loc, expr) =>
       Connect(info, resolve_e(SinkFlow)(loc), resolve_e(SourceFlow)(expr))
-    case PartialConnect(info, loc, expr) =>
-      PartialConnect(info, resolve_e(SinkFlow)(loc), resolve_e(SourceFlow)(expr))
     case sx => sx.map(resolve_e(SourceFlow)).map(resolve_s)
   }
 

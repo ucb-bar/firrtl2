@@ -59,20 +59,6 @@ class InferBinaryPoints extends Pass {
           }
       }
       c
-    case pc: PartialConnect =>
-      val ls = get_valid_points(pc.loc.tpe, pc.expr.tpe, Default, Default)
-      val locs = create_exps(pc.loc)
-      val exps = create_exps(pc.expr)
-      ls.foreach {
-        case (x, y) =>
-          val loc = locs(x)
-          val exp = exps(y)
-          to_flip(flow(loc)) match {
-            case Default => addTypeConstraints(Target.asTarget(mt)(loc), Target.asTarget(mt)(exp))(loc.tpe, exp.tpe)
-            case Flip    => addTypeConstraints(Target.asTarget(mt)(exp), Target.asTarget(mt)(loc))(exp.tpe, loc.tpe)
-          }
-      }
-      pc
     case r: DefRegister =>
       addTypeConstraints(mt.ref(r.name), Target.asTarget(mt)(r.init))(r.tpe, r.init.tpe)
       r

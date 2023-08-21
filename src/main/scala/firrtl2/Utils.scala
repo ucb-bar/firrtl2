@@ -630,17 +630,16 @@ object Utils extends LazyLogging {
     case ex       => throwInternalError(s"flow: shouldn't be here - $e")
   }
   def get_flow(s: Statement): Flow = s match {
-    case sx: DefWire        => DuplexFlow
-    case sx: DefRegister    => DuplexFlow
-    case sx: DefNode        => SourceFlow
-    case sx: DefInstance    => SourceFlow
-    case sx: DefMemory      => SourceFlow
-    case sx: Block          => UnknownFlow
-    case sx: Connect        => UnknownFlow
-    case sx: PartialConnect => UnknownFlow
-    case sx: Stop           => UnknownFlow
-    case sx: Print          => UnknownFlow
-    case sx: IsInvalid      => UnknownFlow
+    case sx: DefWire     => DuplexFlow
+    case sx: DefRegister => DuplexFlow
+    case sx: DefNode     => SourceFlow
+    case sx: DefInstance => SourceFlow
+    case sx: DefMemory   => SourceFlow
+    case sx: Block       => UnknownFlow
+    case sx: Connect     => UnknownFlow
+    case sx: Stop        => UnknownFlow
+    case sx: Print       => UnknownFlow
+    case sx: IsInvalid   => UnknownFlow
     case EmptyStmt => UnknownFlow
   }
   def get_flow(p: Port): Flow = if (p.direction == Input) SourceFlow else SinkFlow
