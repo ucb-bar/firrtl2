@@ -40,25 +40,4 @@ class ZeroLengthVecsSpec extends FirrtlFlatSpec {
         |""".stripMargin
     (parse(exec(input))) should be(parse(check))
   }
-
-  "ZeroLengthVecs" should "handle intervals correctly" in {
-    val input =
-      """circuit bar :
-        |  module bar :
-        |    input i : Interval[3,4].0[0]
-        |    input sel : UInt<1>
-        |    output o : Interval[3,4].0
-        |    o <= i[sel]
-        |""".stripMargin
-    val check =
-      """circuit bar :
-        |  module bar :
-        |    input i : Interval[3,4].0[0]
-        |    input sel : UInt<1>
-        |    output o : Interval[3,4].0
-        |    o <= validif(UInt<1>(0), clip(asInterval(SInt<1>(0), 0, 0, 0), i[sel]))
-        |""".stripMargin
-    (parse(exec(input))) should be(parse(check))
-  }
-
 }

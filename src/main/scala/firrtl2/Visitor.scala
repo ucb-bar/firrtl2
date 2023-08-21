@@ -186,55 +186,20 @@ class Visitor(infoMode: InfoMode) extends AbstractParseTreeVisitor[FirrtlNode] w
       case term: TerminalNode =>
         term.getText match {
           case "UInt" =>
-            if (ctx.getChildCount > 1) UIntType(getWidth(ctx.intLit(0)))
+            if (ctx.getChildCount > 1) UIntType(getWidth(ctx.intLit))
             else UIntType(UnknownWidth)
           case "SInt" =>
-            if (ctx.getChildCount > 1) SIntType(getWidth(ctx.intLit(0)))
+            if (ctx.getChildCount > 1) SIntType(getWidth(ctx.intLit))
             else SIntType(UnknownWidth)
-          case "Fixed" =>
-            ctx.intLit.size match {
-              case 0 => FixedType(UnknownWidth, UnknownWidth)
-              case 1 =>
-                ctx.getChild(2).getText match {
-                  case "<" => FixedType(UnknownWidth, getWidth(ctx.intLit(0)))
-                  case _   => FixedType(getWidth(ctx.intLit(0)), UnknownWidth)
-                }
-              case 2 => FixedType(getWidth(ctx.intLit(0)), getWidth(ctx.intLit(1)))
-            }
-          case "Interval" =>
-            ctx.boundValue.size match {
-              case 0 =>
-                val point = ctx.intLit.size match {
-                  case 0 => UnknownWidth
-                  case 1 => IntWidth(string2BigInt(ctx.intLit(0).getText))
-                }
-                IntervalType(UnknownBound, UnknownBound, point)
-              case 2 =>
-                val lower = ((ctx.lowerBound.getText, ctx.boundValue(0).getText): @unchecked) match {
-                  case (_, "?") => UnknownBound
-                  case ("(", v) => Open(string2BigDecimal(v))
-                  case ("[", v) => Closed(string2BigDecimal(v))
-                }
-                val upper = ((ctx.upperBound.getText, ctx.boundValue(1).getText): @unchecked) match {
-                  case (_, "?") => UnknownBound
-                  case (")", v) => Open(string2BigDecimal(v))
-                  case ("]", v) => Closed(string2BigDecimal(v))
-                }
-                val point = ctx.intLit.size match {
-                  case 0 => UnknownWidth
-                  case 1 => IntWidth(string2BigInt(ctx.intLit(0).getText))
-                }
-                IntervalType(lower, upper, point)
-            }
           case "Clock"      => ClockType
           case "AsyncReset" => AsyncResetType
           case "Reset"      => ResetType
           case "Analog" =>
-            if (ctx.getChildCount > 1) AnalogType(getWidth(ctx.intLit(0)))
+            if (ctx.getChildCount > 1) AnalogType(getWidth(ctx.intLit))
             else AnalogType(UnknownWidth)
           case "{" => BundleType(ctx.field.asScala.map(visitField).toSeq)
         }
-      case typeContext: TypeContext => new VectorType(visitType(ctx.`type`), string2Int(ctx.intLit(0).getText))
+      case typeContext: TypeContext => new VectorType(visitType(ctx.`type`), string2Int(ctx.intLit.getText))
     }
   }
 
@@ -244,7 +209,7 @@ class Visitor(infoMode: InfoMode) extends AbstractParseTreeVisitor[FirrtlNode] w
     ctx.getChild(0) match {
       case typeContext: TypeContext =>
         val tpe = visitType(ctx.`type`)
-        val size = string2BigInt(ctx.intLit(0).getText)
+        val size = string2BigInt(ctx.intLit().getText)
         (tpe, size)
       case _ =>
         throw new ParserException(s"[$loc] Must provide cmem or smem with vector type, got ${ctx.getText}")

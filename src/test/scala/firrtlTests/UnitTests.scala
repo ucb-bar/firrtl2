@@ -77,28 +77,6 @@ class UnitTests extends FirrtlFlatSpec {
     }
   }
 
-  "Partial connection two bundle types whose relative flips don't match but leaf node directions do" should "connect correctly" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes, ResolveFlows, ExpandConnects)
-    val input =
-      """circuit Unit :
-        |  module Unit :
-        |    wire x : { flip a: { b: UInt<32> } }
-        |    wire y : { a: { flip b: UInt<32> } }
-        |    x <- y""".stripMargin
-    val check =
-      """circuit Unit :
-        |  module Unit :
-        |    wire x : { flip a: { b: UInt<32> } }
-        |    wire y : { a: { flip b: UInt<32> } }
-        |    y.a.b <= x.a.b""".stripMargin
-    val c_result = passes.foldLeft(parse(input)) { (c: Circuit, p: Pass) =>
-      p.run(c)
-    }
-    val writer = new StringWriter()
-    (new HighFirrtlEmitter).emit(CircuitState(c_result, HighForm), writer)
-    (parse(writer.toString())) should be(parse(check))
-  }
-
   val splitExpTestCode =
     """
       |circuit Unit :
@@ -268,22 +246,6 @@ class UnitTests extends FirrtlFlatSpec {
         |  module Unit :
         |    skip""".stripMargin
     executeTest(input, check, passes)
-  }
-
-  "Partial connecting incompatable types" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, ResolveKinds, InferTypes, CheckTypes)
-    val input =
-      """circuit Unit :
-        |  module Unit :
-        |    input foo : { bar : UInt<32> }
-        |    output bar : UInt<32>
-        |    bar <- foo
-        |""".stripMargin
-    intercept[PassException] {
-      passes.foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
-      }
-    }
   }
 
   "Conditional connection of clocks" should "throw an exception" in {

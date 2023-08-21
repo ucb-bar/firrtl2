@@ -58,8 +58,6 @@ dir
 type 
   : 'UInt' ('<' intLit '>')?
   | 'SInt' ('<' intLit '>')?
-  | 'Fixed' ('<' intLit '>')? ('<' '<' intLit '>' '>')?
-  | 'Interval' (lowerBound boundValue boundValue upperBound)? ('.' intLit)?
   | 'Clock'
   | 'AsyncReset'
   | 'Reset'
@@ -211,23 +209,6 @@ intLit
   | BinaryLit
   ;
 
-lowerBound
-  : '['
-  | '('
-  ;
-
-upperBound
-  : ']'
-  | ')'
-  ;
-
-boundValue
-  : '?'
-  | DoubleLit
-  | UnsignedInt
-  | SignedInt
-  ;
-
 // Keywords that are also legal ids
 keywordAsId
   : 'circuit'
@@ -242,8 +223,6 @@ keywordAsId
   | 'Reset'
   | 'AsyncReset'
   | 'Analog'
-  | 'Fixed'
-  | 'Interval'
   | 'flip'
   | 'wire'
   | 'reg'
@@ -302,8 +281,6 @@ primop
   | 'asAsyncReset('
   | 'asSInt('
   | 'asClock('
-  | 'asFixedPoint('
-  | 'asInterval('
   | 'shl('
   | 'shr('
   | 'dshl('
@@ -321,12 +298,6 @@ primop
   | 'bits('
   | 'head('
   | 'tail('
-  | 'incp('
-  | 'decp('
-  | 'setp('
-  | 'wrap('
-  | 'clip('
-  | 'squz('
   ;
 
 /*------------------------------------------------------------------

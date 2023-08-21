@@ -27,5 +27,3 @@ object ResolveKindsBenchmark extends PassBenchmark(() => ResolveKinds)
 object CheckHighFormBenchmark extends PassBenchmark(() => CheckHighForm)
 
 object CheckWidthsBenchmark extends PassBenchmark(() => CheckWidths)
-
-object InferBinaryPointsBenchmark extends PassBenchmark(() => new InferBinaryPoints)

@@ -28,21 +28,18 @@ class InferResetsSpec extends FirrtlFlatSpec {
                             |    output v : UInt<1>
                             |    output w : SInt<1>
                             |    output x : Clock
-                            |    output y : Fixed<1><<0>>
                             |    output z : AsyncReset
                             |    wire r : Reset
                             |    r <= a
                             |    v <= asUInt(r)
                             |    w <= asSInt(r)
                             |    x <= asClock(r)
-                            |    y <= asFixedPoint(r, 0)
                             |    z <= asAsyncReset(r)""".stripMargin)
     result should containLine("wire r : UInt<1>")
     result should containLine("r <= a")
     result should containLine("v <= asUInt(r)")
     result should containLine("w <= asSInt(r)")
     result should containLine("x <= asClock(r)")
-    result should containLine("y <= asSInt(r)")
     result should containLine("z <= asAsyncReset(r)")
   }
 
@@ -99,9 +96,7 @@ class InferResetsSpec extends FirrtlFlatSpec {
          |circuit top :
          |  module top :
          |    output fizz : { flip foo : { a : AsyncReset, flip b: Reset }[2], bar : { a : Reset, flip b: AsyncReset }[2] }
-         |    output buzz : { flip foo : { a : AsyncReset, c: UInt<1>, flip b: Reset }[2], bar : { a : Reset, flip b: AsyncReset, c: UInt<8> }[2] }
          |    fizz.bar <= fizz.foo
-         |    buzz.bar <- buzz.foo
          |""".stripMargin,
       new LowFirrtlCompiler
     )
@@ -113,14 +108,6 @@ class InferResetsSpec extends FirrtlFlatSpec {
     result should containTree { case Port(_, "fizz_bar_0_b", Input, AsyncResetType) => true }
     result should containTree { case Port(_, "fizz_bar_1_a", Output, AsyncResetType) => true }
     result should containTree { case Port(_, "fizz_bar_1_b", Input, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_foo_0_a", Input, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_foo_0_b", Output, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_foo_1_a", Input, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_foo_1_b", Output, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_bar_0_a", Output, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_bar_0_b", Input, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_bar_1_a", Output, AsyncResetType) => true }
-    result should containTree { case Port(_, "buzz_bar_1_b", Input, AsyncResetType) => true }
   }
 
   it should "not crash if a ResetType has no drivers" in {
@@ -263,8 +250,8 @@ class InferResetsSpec extends FirrtlFlatSpec {
                              |    input in : UInt<1>
                              |    output out : UInt<1>
                              |    wire w : Reset
-                             |    w <- in
-                             |    out <- w
+                             |    w <= in
+                             |    out <= w
                              |""".stripMargin)
     result3 should containTree { case DefWire(_, "w", BoolType) => true }
   }

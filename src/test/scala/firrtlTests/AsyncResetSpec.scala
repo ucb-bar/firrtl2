@@ -27,12 +27,12 @@ class AsyncResetSpec extends VerilogTransformSpec {
     result should containLine("always @(posedge clock or posedge reset) begin")
   }
 
-  it should "work in nested and flipped aggregates with regular and partial connect" in {
+  it should "work in nested and flipped aggregates with regular connect" in {
     val result = compileBody(s"""
                                 |output fizz : { flip foo : { a : AsyncReset, flip b: AsyncReset }[2], bar : { a : AsyncReset, flip b: AsyncReset }[2] }
                                 |output buzz : { flip foo : { a : AsyncReset, flip b: AsyncReset }[2], bar : { a : AsyncReset, flip b: AsyncReset }[2] }
                                 |fizz.bar <= fizz.foo
-                                |buzz.bar <- buzz.foo
+                                |buzz.bar <= buzz.foo
                                 |""".stripMargin)
 
     result should containLine("assign fizz_foo_0_b = fizz_bar_0_b;")
@@ -48,23 +48,18 @@ class AsyncResetSpec extends VerilogTransformSpec {
   it should "support casting to other types" in {
     val result = compileBody(s"""
                                 |input a : AsyncReset
-                                |output u : Interval[0, 1].0
                                 |output v : UInt<1>
                                 |output w : SInt<1>
                                 |output x : Clock
-                                |output y : Fixed<1><<0>>
                                 |output z : AsyncReset
-                                |u <= asInterval(a, 0, 1, 0)
                                 |v <= asUInt(a)
                                 |w <= asSInt(a)
                                 |x <= asClock(a)
-                                |y <= asFixedPoint(a, 0)
                                 |z <= asAsyncReset(a)
                                 |""".stripMargin)
     result should containLine("assign v = a;")
     result should containLine("assign w = a;")
     result should containLine("assign x = a;")
-    result should containLine("assign y = a;")
     result should containLine("assign z = a;")
   }
 
@@ -73,27 +68,19 @@ class AsyncResetSpec extends VerilogTransformSpec {
                                 |input a : UInt<1>
                                 |input b : SInt<1>
                                 |input c : Clock
-                                |input d : Fixed<1><<0>>
                                 |input e : AsyncReset
-                                |input f : Interval[0, 0].0
                                 |output u : AsyncReset
                                 |output v : AsyncReset
                                 |output w : AsyncReset
-                                |output x : AsyncReset
                                 |output y : AsyncReset
-                                |output z : AsyncReset
                                 |u <= asAsyncReset(a)
                                 |v <= asAsyncReset(b)
                                 |w <= asAsyncReset(c)
-                                |x <= asAsyncReset(d)
-                                |y <= asAsyncReset(e)
-                                |z <= asAsyncReset(f)""".stripMargin)
+                                |y <= asAsyncReset(e)""".stripMargin)
     result should containLine("assign u = a;")
     result should containLine("assign v = b;")
     result should containLine("assign w = c;")
-    result should containLine("assign x = d;")
     result should containLine("assign y = e;")
-    result should containLine("assign z = f;")
   }
 
   "Non-literals" should "NOT be allowed as reset values for AsyncReset" in {
@@ -252,28 +239,6 @@ class AsyncResetSpec extends VerilogTransformSpec {
     sintResult should containLine("always @(posedge clock or posedge reset) begin")
     sintResult should containLine("r <= 4'sh0;")
     sintResult should containLine("r2 <= -4'sh1;")
-
-    val fixedResult = compileBody(s"""
-                                     |input clock : Clock
-                                     |input reset : AsyncReset
-                                     |input x : Fixed<2><<0>>
-                                     |output z : Fixed<2><<0>>
-                                     |reg r : Fixed<2><<0>>, clock with : (reset => (reset, asFixedPoint(UInt(2), 0)))
-                                     |r <= x
-                                     |z <= r""".stripMargin)
-    fixedResult should containLine("always @(posedge clock or posedge reset) begin")
-    fixedResult should containLine("r <= 2'sh2;")
-
-    val intervalResult = compileBody(s"""
-                                        |input clock : Clock
-                                        |input reset : AsyncReset
-                                        |input x : Interval[0, 4].0
-                                        |output z : Interval[0, 4].0
-                                        |reg r : Interval[0, 4].0, clock with : (reset => (reset, asInterval(UInt(0), 0, 0, 0)))
-                                        |r <= x
-                                        |z <= r""".stripMargin)
-    intervalResult should containLine("always @(posedge clock or posedge reset) begin")
-    intervalResult should containLine("r <= 4'sh0;")
   }
 
   "CheckResets" should "NOT raise StackOverflow Exception on Combinational Loops (should be caught by firrtl2.transforms.CheckCombLoops)" in {

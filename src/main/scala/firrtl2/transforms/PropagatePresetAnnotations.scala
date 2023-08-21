@@ -13,7 +13,7 @@ import scala.collection.mutable
 object PropagatePresetAnnotations {
   @deprecated("This message will be removed in the next release.", "FIRRTL 1.5")
   val advice =
-    "Please Note that a Preset-annotated AsyncReset shall NOT be casted to other types with any of the following functions: asInterval, asUInt, asSInt, asClock, asFixedPoint, asAsyncReset."
+    "Please Note that a Preset-annotated AsyncReset shall NOT be casted to other types with any of the following functions: asUInt, asSInt, asClock, asAsyncReset."
   @deprecated("This exception will no longer be thrown.", "FIRRTL 1.5")
   case class TreeCleanUpOrphanException(message: String)
       extends FirrtlUserException(s"Node left an orphan during tree cleanup: $message $advice")
@@ -345,8 +345,8 @@ class PropagatePresetAnnotations extends Transform with DependencyAPIMigration {
             }
           case DoPrim(op, args, _, _) =>
             op match {
-              case AsInterval | AsUInt | AsSInt | AsClock | AsFixedPoint | AsAsyncReset => getRef(args.head)
-              case _                                                                    => Target(None, None, Seq.empty)
+              case AsUInt | AsSInt | AsClock | AsAsyncReset => getRef(args.head)
+              case _                                        => Target(None, None, Seq.empty)
             }
           case _ => Target(None, None, Seq.empty)
         }
