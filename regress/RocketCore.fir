@@ -58,7 +58,7 @@ circuit RocketCore :
     ibuf.io is invalid
     ibuf.clock <= clock
     ibuf.reset <= reset
-    ibuf.io.imem <- io.imem.resp @[Rocket.scala 168:16]
+    ibuf.io.imem <= io.imem.resp @[Rocket.scala 168:16]
     ibuf.io.kill <= take_pc @[Rocket.scala 169:16]
     wire id_ctrl : {legal : UInt<1>, fp : UInt<1>, rocc : UInt<1>, branch : UInt<1>, jal : UInt<1>, jalr : UInt<1>, rxs2 : UInt<1>, rxs1 : UInt<1>, sel_alu2 : UInt<2>, sel_alu1 : UInt<2>, sel_imm : UInt<3>, alu_dw : UInt<1>, alu_fn : UInt<4>, mem : UInt<1>, mem_cmd : UInt<5>, mem_type : UInt<3>, rfs1 : UInt<1>, rfs2 : UInt<1>, rfs3 : UInt<1>, wfd : UInt<1>, div : UInt<1>, wxd : UInt<1>, csr : UInt<3>, fence_i : UInt<1>, fence : UInt<1>, amo : UInt<1>, dp : UInt<1>} @[Rocket.scala 172:21]
     id_ctrl is invalid @[Rocket.scala 172:21]
@@ -684,8 +684,8 @@ circuit RocketCore :
     bpu.io is invalid
     bpu.clock <= clock
     bpu.reset <= reset
-    bpu.io.status <- csr.io.status @[Rocket.scala 216:17]
-    bpu.io.bp <- csr.io.bp @[Rocket.scala 217:13]
+    bpu.io.status <= csr.io.status @[Rocket.scala 216:17]
+    bpu.io.bp <= csr.io.bp @[Rocket.scala 217:13]
     bpu.io.pc <= ibuf.io.pc @[Rocket.scala 218:13]
     bpu.io.ea <= mem_reg_wdata @[Rocket.scala 219:13]
     node id_xcpt_if = or(ibuf.io.inst[0].bits.pf0, ibuf.io.inst[0].bits.pf1) @[Rocket.scala 221:45]
@@ -849,11 +849,11 @@ circuit RocketCore :
       skip @[Rocket.scala 280:18]
     ex_reg_btb_hit <= ibuf.io.inst[0].bits.btb_hit @[Rocket.scala 281:18]
     when ibuf.io.inst[0].bits.btb_hit : @[Rocket.scala 282:39]
-      ex_reg_btb_resp <- ibuf.io.btb_resp @[Rocket.scala 282:57]
+      ex_reg_btb_resp <= ibuf.io.btb_resp @[Rocket.scala 282:57]
       skip @[Rocket.scala 282:39]
     node _T_3729 = eq(ctrl_killd, UInt<1>("h00")) @[Rocket.scala 284:9]
     when _T_3729 : @[Rocket.scala 284:22]
-      ex_ctrl <- id_ctrl @[Rocket.scala 285:13]
+      ex_ctrl <= id_ctrl @[Rocket.scala 285:13]
       ex_reg_rvc <= ibuf.io.inst[0].bits.rvc @[Rocket.scala 286:16]
       ex_ctrl.csr <= id_csr @[Rocket.scala 287:17]
       when id_xcpt : @[Rocket.scala 288:20]
@@ -1152,7 +1152,7 @@ circuit RocketCore :
       mem_reg_cause <= ex_cause @[Rocket.scala 357:34]
       skip @[Rocket.scala 357:18]
     when ex_pc_valid : @[Rocket.scala 359:22]
-      mem_ctrl <- ex_ctrl @[Rocket.scala 360:14]
+      mem_ctrl <= ex_ctrl @[Rocket.scala 360:14]
       mem_reg_rvc <= ex_reg_rvc @[Rocket.scala 361:17]
       node _T_4065 = eq(ex_ctrl.mem_cmd, UInt<1>("h00")) @[Consts.scala 35:31]
       node _T_4067 = eq(ex_ctrl.mem_cmd, UInt<3>("h06")) @[Consts.scala 35:48]
@@ -1176,7 +1176,7 @@ circuit RocketCore :
       mem_reg_store <= _T_4088 @[Rocket.scala 363:19]
       mem_reg_btb_hit <= ex_reg_btb_hit @[Rocket.scala 364:21]
       when ex_reg_btb_hit : @[Rocket.scala 365:27]
-        mem_reg_btb_resp <- ex_reg_btb_resp @[Rocket.scala 365:46]
+        mem_reg_btb_resp <= ex_reg_btb_resp @[Rocket.scala 365:46]
         skip @[Rocket.scala 365:27]
       mem_reg_flush_pipe <= ex_reg_flush_pipe @[Rocket.scala 366:24]
       mem_reg_slow_bypass <= ex_slow_bypass @[Rocket.scala 367:25]
@@ -1244,7 +1244,7 @@ circuit RocketCore :
       wb_reg_cause <= mem_cause @[Rocket.scala 403:34]
       skip @[Rocket.scala 403:19]
     when mem_pc_valid : @[Rocket.scala 404:23]
-      wb_ctrl <- mem_ctrl @[Rocket.scala 405:13]
+      wb_ctrl <= mem_ctrl @[Rocket.scala 405:13]
       node _T_4166 = eq(mem_reg_xcpt, UInt<1>("h00")) @[Rocket.scala 406:25]
       node _T_4167 = and(_T_4166, mem_ctrl.fp) @[Rocket.scala 406:39]
       node _T_4168 = and(_T_4167, mem_ctrl.wxd) @[Rocket.scala 406:54]
@@ -1327,10 +1327,10 @@ circuit RocketCore :
     csr.io.exception <= wb_reg_xcpt @[Rocket.scala 462:20]
     csr.io.cause <= wb_reg_cause @[Rocket.scala 463:16]
     csr.io.retire <= wb_valid @[Rocket.scala 464:17]
-    csr.io.interrupts <- io.interrupts @[Rocket.scala 465:21]
+    csr.io.interrupts <= io.interrupts @[Rocket.scala 465:21]
     csr.io.hartid <= io.hartid @[Rocket.scala 466:17]
     io.fpu.fcsr_rm <= csr.io.fcsr_rm @[Rocket.scala 467:18]
-    csr.io.fcsr_flags <- io.fpu.fcsr_flags @[Rocket.scala 468:21]
+    csr.io.fcsr_flags <= io.fpu.fcsr_flags @[Rocket.scala 468:21]
     csr.io.rocc_interrupt <= io.rocc.interrupt @[Rocket.scala 469:25]
     csr.io.pc <= wb_reg_pc @[Rocket.scala 470:13]
     node _T_4204 = shr(wb_reg_wdata, 38) @[Rocket.scala 653:16]
@@ -1352,9 +1352,9 @@ circuit RocketCore :
     node _T_4226 = bits(wb_reg_wdata, 38, 0) @[Rocket.scala 658:16]
     node _T_4227 = cat(_T_4225, _T_4226) @[Cat.scala 30:58]
     csr.io.badaddr <= _T_4227 @[Rocket.scala 471:18]
-    io.ptw.ptbr <- csr.io.ptbr @[Rocket.scala 472:15]
+    io.ptw.ptbr <= csr.io.ptbr @[Rocket.scala 472:15]
     io.ptw.invalidate <= csr.io.fatc @[Rocket.scala 473:21]
-    io.ptw.status <- csr.io.status @[Rocket.scala 474:17]
+    io.ptw.status <= csr.io.status @[Rocket.scala 474:17]
     node _T_4228 = bits(wb_reg_inst, 31, 20) @[Rocket.scala 475:32]
     csr.io.rw.addr <= _T_4228 @[Rocket.scala 475:18]
     node _T_4230 = mux(wb_reg_valid, wb_ctrl.csr, UInt<3>("h00")) @[Rocket.scala 476:23]
@@ -1616,7 +1616,7 @@ circuit RocketCore :
     node _T_4479 = not(_T_4478) @[Rocket.scala 555:33]
     io.imem.btb_update.bits.pc <= _T_4479 @[Rocket.scala 555:30]
     io.imem.btb_update.bits.prediction.valid <= mem_reg_btb_hit @[Rocket.scala 556:44]
-    io.imem.btb_update.bits.prediction.bits <- mem_reg_btb_resp @[Rocket.scala 557:43]
+    io.imem.btb_update.bits.prediction.bits <= mem_reg_btb_resp @[Rocket.scala 557:43]
     node _T_4481 = eq(take_pc_wb, UInt<1>("h00")) @[Rocket.scala 559:48]
     node _T_4482 = and(mem_reg_valid, _T_4481) @[Rocket.scala 559:45]
     node _T_4483 = and(_T_4482, mem_ctrl.branch) @[Rocket.scala 559:60]
@@ -1624,7 +1624,7 @@ circuit RocketCore :
     io.imem.bht_update.bits.pc <= io.imem.btb_update.bits.pc @[Rocket.scala 560:30]
     io.imem.bht_update.bits.taken <= mem_br_taken @[Rocket.scala 561:33]
     io.imem.bht_update.bits.mispredict <= mem_misprediction @[Rocket.scala 562:38]
-    io.imem.bht_update.bits.prediction <- io.imem.btb_update.bits.prediction @[Rocket.scala 563:38]
+    io.imem.bht_update.bits.prediction <= io.imem.btb_update.bits.prediction @[Rocket.scala 563:38]
     node _T_4485 = eq(take_pc_wb, UInt<1>("h00")) @[Rocket.scala 565:48]
     node _T_4486 = and(mem_reg_valid, _T_4485) @[Rocket.scala 565:45]
     io.imem.ras_update.valid <= _T_4486 @[Rocket.scala 565:28]
@@ -1633,7 +1633,7 @@ circuit RocketCore :
     node _T_4488 = and(io.imem.btb_update.bits.isJump, _T_4487) @[Rocket.scala 567:68]
     io.imem.ras_update.bits.isCall <= _T_4488 @[Rocket.scala 567:34]
     io.imem.ras_update.bits.isReturn <= io.imem.btb_update.bits.isReturn @[Rocket.scala 568:36]
-    io.imem.ras_update.bits.prediction <- io.imem.btb_update.bits.prediction @[Rocket.scala 569:38]
+    io.imem.ras_update.bits.prediction <= io.imem.btb_update.bits.prediction @[Rocket.scala 569:38]
     node _T_4490 = eq(ctrl_killd, UInt<1>("h00")) @[Rocket.scala 571:19]
     node _T_4491 = and(_T_4490, id_ctrl.fp) @[Rocket.scala 571:31]
     io.fpu.valid <= _T_4491 @[Rocket.scala 571:16]
@@ -1699,7 +1699,7 @@ circuit RocketCore :
     node _T_4538 = neq(csr.io.status.xs, UInt<1>("h00")) @[Rocket.scala 597:52]
     node _T_4539 = and(wb_reg_xcpt, _T_4538) @[Rocket.scala 597:32]
     io.rocc.exception <= _T_4539 @[Rocket.scala 597:21]
-    io.rocc.cmd.bits.status <- csr.io.status @[Rocket.scala 598:27]
+    io.rocc.cmd.bits.status <= csr.io.status @[Rocket.scala 598:27]
     wire _T_4558 : {funct : UInt<7>, rs2 : UInt<5>, rs1 : UInt<5>, xd : UInt<1>, xs1 : UInt<1>, xs2 : UInt<1>, rd : UInt<5>, opcode : UInt<7>} @[Rocket.scala 599:58]
     _T_4558 is invalid @[Rocket.scala 599:58]
     wire _T_4568 : UInt<32>
@@ -1721,7 +1721,7 @@ circuit RocketCore :
     _T_4558.rs2 <= _T_4575 @[Rocket.scala 599:58]
     node _T_4576 = bits(_T_4568, 31, 25) @[Rocket.scala 599:58]
     _T_4558.funct <= _T_4576 @[Rocket.scala 599:58]
-    io.rocc.cmd.bits.inst <- _T_4558 @[Rocket.scala 599:25]
+    io.rocc.cmd.bits.inst <= _T_4558 @[Rocket.scala 599:25]
     io.rocc.cmd.bits.rs1 <= wb_reg_wdata @[Rocket.scala 600:24]
     io.rocc.cmd.bits.rs2 <= wb_reg_rs2 @[Rocket.scala 601:24]
     node _T_4577 = bits(csr.io.time, 31, 0) @[Rocket.scala 637:32]
@@ -1799,7 +1799,7 @@ circuit RocketCore :
       node _T_415 = asUInt(_T_414) @[IBuf.scala 58:24]
       node _T_416 = tail(_T_415, 1) @[IBuf.scala 58:24]
       nBufValid <= _T_416 @[IBuf.scala 58:17]
-      buf <- io.imem.bits @[IBuf.scala 59:11]
+      buf <= io.imem.bits @[IBuf.scala 59:11]
       node _T_417 = shr(io.imem.bits.data, 16) @[IBuf.scala 133:58]
       node _T_418 = cat(_T_417, _T_417) @[Cat.scala 30:58]
       node _T_419 = cat(_T_418, io.imem.bits.data) @[Cat.scala 30:58]
@@ -1817,7 +1817,7 @@ circuit RocketCore :
       buf.pc <= _T_429 @[IBuf.scala 61:14]
       ibufBTBHit <= io.imem.bits.btb.valid @[IBuf.scala 62:18]
       when io.imem.bits.btb.valid : @[IBuf.scala 63:37]
-        ibufBTBResp <- io.imem.bits.btb.bits @[IBuf.scala 64:21]
+        ibufBTBResp <= io.imem.bits.btb.bits @[IBuf.scala 64:21]
         node _T_430 = add(io.imem.bits.btb.bits.bridx, nICReady) @[IBuf.scala 65:58]
         node _T_431 = tail(_T_430, 1) @[IBuf.scala 65:58]
         ibufBTBResp.bridx <= _T_431 @[IBuf.scala 65:27]
@@ -1893,7 +1893,7 @@ circuit RocketCore :
     node _T_498 = and(ibufBTBHitMask, bufMask) @[IBuf.scala 88:38]
     node _T_500 = neq(_T_498, UInt<1>("h00")) @[IBuf.scala 88:49]
     node _T_501 = mux(_T_500, ibufBTBResp, io.imem.bits.btb.bits) @[IBuf.scala 88:21]
-    io.btb_resp <- _T_501 @[IBuf.scala 88:15]
+    io.btb_resp <= _T_501 @[IBuf.scala 88:15]
     node _T_511 = gt(nBufValid, UInt<1>("h00")) @[IBuf.scala 89:26]
     node _T_512 = mux(_T_511, buf.pc, io.imem.bits.pc) @[IBuf.scala 89:15]
     io.pc <= _T_512 @[IBuf.scala 89:9]
@@ -1902,7 +1902,7 @@ circuit RocketCore :
     RVCExpander.clock <= clock
     RVCExpander.reset <= reset
     RVCExpander.io.in <= inst @[IBuf.scala 94:15]
-    io.inst[0].bits.inst <- RVCExpander.io.out @[IBuf.scala 95:26]
+    io.inst[0].bits.inst <= RVCExpander.io.out @[IBuf.scala 95:26]
     io.inst[0].bits.raw <= inst @[IBuf.scala 96:25]
     node _T_514 = dshr(ic_replay, UInt<1>("h00")) @[IBuf.scala 99:29]
     node _T_515 = bits(_T_514, 0, 0) @[IBuf.scala 99:29]
@@ -2041,7 +2041,7 @@ circuit RocketCore :
     _T_347.debug <= _T_405 @[CSR.scala 194:55]
     wire reset_mstatus : {debug : UInt<1>, isa : UInt<32>, prv : UInt<2>, sd : UInt<1>, zero2 : UInt<27>, sxl : UInt<2>, uxl : UInt<2>, sd_rv32 : UInt<1>, zero1 : UInt<8>, tsr : UInt<1>, tw : UInt<1>, tvm : UInt<1>, mxr : UInt<1>, pum : UInt<1>, mprv : UInt<1>, xs : UInt<2>, fs : UInt<2>, mpp : UInt<2>, hpp : UInt<2>, spp : UInt<1>, mpie : UInt<1>, hpie : UInt<1>, spie : UInt<1>, upie : UInt<1>, mie : UInt<1>, hie : UInt<1>, sie : UInt<1>, uie : UInt<1>}
     reset_mstatus is invalid
-    reset_mstatus <- _T_347
+    reset_mstatus <= _T_347
     reset_mstatus.mpp <= UInt<2>("h03") @[CSR.scala 195:21]
     reset_mstatus.prv <= UInt<2>("h03") @[CSR.scala 196:21]
     reg reg_mstatus : {debug : UInt<1>, isa : UInt<32>, prv : UInt<2>, sd : UInt<1>, zero2 : UInt<27>, sxl : UInt<2>, uxl : UInt<2>, sd_rv32 : UInt<1>, zero1 : UInt<8>, tsr : UInt<1>, tw : UInt<1>, tvm : UInt<1>, mxr : UInt<1>, pum : UInt<1>, mprv : UInt<1>, xs : UInt<2>, fs : UInt<2>, mpp : UInt<2>, hpp : UInt<2>, spp : UInt<1>, mpie : UInt<1>, hpie : UInt<1>, spie : UInt<1>, upie : UInt<1>, mie : UInt<1>, hie : UInt<1>, sie : UInt<1>, uie : UInt<1>}, clock with : (reset => (reset, reset_mstatus)) @[CSR.scala 197:24]
@@ -2092,7 +2092,7 @@ circuit RocketCore :
     _T_505.xdebugver <= _T_541 @[CSR.scala 202:49]
     wire reset_dcsr : {xdebugver : UInt<2>, ndreset : UInt<1>, fullreset : UInt<1>, zero3 : UInt<12>, ebreakm : UInt<1>, ebreakh : UInt<1>, ebreaks : UInt<1>, ebreaku : UInt<1>, zero2 : UInt<1>, stopcycle : UInt<1>, stoptime : UInt<1>, cause : UInt<3>, debugint : UInt<1>, zero1 : UInt<1>, halt : UInt<1>, step : UInt<1>, prv : UInt<2>}
     reset_dcsr is invalid
-    reset_dcsr <- _T_505
+    reset_dcsr <= _T_505
     reset_dcsr.xdebugver <= UInt<1>("h01") @[CSR.scala 203:24]
     reset_dcsr.prv <= UInt<2>("h03") @[CSR.scala 204:18]
     reg reg_dcsr : {xdebugver : UInt<2>, ndreset : UInt<1>, fullreset : UInt<1>, zero3 : UInt<12>, ebreakm : UInt<1>, ebreakh : UInt<1>, ebreaks : UInt<1>, ebreaku : UInt<1>, zero2 : UInt<1>, stopcycle : UInt<1>, stoptime : UInt<1>, cause : UInt<3>, debugint : UInt<1>, zero1 : UInt<1>, halt : UInt<1>, step : UInt<1>, prv : UInt<2>}, clock with : (reset => (reset, reset_dcsr)) @[CSR.scala 205:21]
@@ -2129,7 +2129,7 @@ circuit RocketCore :
     _T_607.rocc <= _T_635 @[CSR.scala 208:43]
     wire _T_636 : {rocc : UInt<1>, meip : UInt<1>, heip : UInt<1>, seip : UInt<1>, ueip : UInt<1>, mtip : UInt<1>, htip : UInt<1>, stip : UInt<1>, utip : UInt<1>, msip : UInt<1>, hsip : UInt<1>, ssip : UInt<1>, usip : UInt<1>}
     _T_636 is invalid
-    _T_636 <- _T_607
+    _T_636 <= _T_607
     _T_636.ssip <= UInt<1>("h01") @[CSR.scala 209:14]
     _T_636.msip <= UInt<1>("h01") @[CSR.scala 210:14]
     _T_636.stip <= UInt<1>("h01") @[CSR.scala 211:14]
@@ -2139,7 +2139,7 @@ circuit RocketCore :
     _T_636.rocc <= UInt<1>("h00") @[CSR.scala 215:14]
     wire _T_657 : {rocc : UInt<1>, meip : UInt<1>, heip : UInt<1>, seip : UInt<1>, ueip : UInt<1>, mtip : UInt<1>, htip : UInt<1>, stip : UInt<1>, utip : UInt<1>, msip : UInt<1>, hsip : UInt<1>, ssip : UInt<1>, usip : UInt<1>}
     _T_657 is invalid
-    _T_657 <- _T_636
+    _T_657 <= _T_636
     _T_657.msip <= UInt<1>("h00") @[CSR.scala 218:14]
     _T_657.mtip <= UInt<1>("h00") @[CSR.scala 219:14]
     _T_657.meip <= UInt<1>("h00") @[CSR.scala 220:14]
@@ -2222,7 +2222,7 @@ circuit RocketCore :
     node hpm_mask = and(reg_mcounteren, _T_956) @[CSR.scala 274:33]
     wire mip : {rocc : UInt<1>, meip : UInt<1>, heip : UInt<1>, seip : UInt<1>, ueip : UInt<1>, mtip : UInt<1>, htip : UInt<1>, stip : UInt<1>, utip : UInt<1>, msip : UInt<1>, hsip : UInt<1>, ssip : UInt<1>, usip : UInt<1>}
     mip is invalid
-    mip <- reg_mip
+    mip <= reg_mip
     mip.rocc <= io.rocc_interrupt @[CSR.scala 277:12]
     node _T_970 = cat(mip.hsip, mip.ssip) @[CSR.scala 278:22]
     node _T_971 = cat(_T_970, mip.usip) @[CSR.scala 278:22]
@@ -2391,7 +2391,7 @@ circuit RocketCore :
     node _T_1203 = or(_T_1202, reg_singleStepped) @[CSR.scala 286:70]
     io.interrupt <= _T_1203 @[CSR.scala 286:16]
     io.interrupt_cause <= interruptCause @[CSR.scala 287:22]
-    io.bp[0] <- reg_bp[0] @[CSR.scala 288:9]
+    io.bp[0] <= reg_bp[0] @[CSR.scala 288:9]
     node _T_1205 = and(UInt<1>("h01"), reg_dcsr.debugint) @[CSR.scala 291:26]
     node _T_1207 = eq(reg_debug, UInt<1>("h00")) @[CSR.scala 291:50]
     node _T_1208 = and(_T_1205, _T_1207) @[CSR.scala 291:47]
@@ -2477,7 +2477,7 @@ circuit RocketCore :
     node _T_1381 = and(read_mip, reg_mideleg) @[CSR.scala 361:29]
     wire _T_1382 : {debug : UInt<1>, isa : UInt<32>, prv : UInt<2>, sd : UInt<1>, zero2 : UInt<27>, sxl : UInt<2>, uxl : UInt<2>, sd_rv32 : UInt<1>, zero1 : UInt<8>, tsr : UInt<1>, tw : UInt<1>, tvm : UInt<1>, mxr : UInt<1>, pum : UInt<1>, mprv : UInt<1>, xs : UInt<2>, fs : UInt<2>, mpp : UInt<2>, hpp : UInt<2>, spp : UInt<1>, mpie : UInt<1>, hpie : UInt<1>, spie : UInt<1>, upie : UInt<1>, mie : UInt<1>, hie : UInt<1>, sie : UInt<1>, uie : UInt<1>}
     _T_1382 is invalid
-    _T_1382 <- io.status
+    _T_1382 <= io.status
     _T_1382.mprv <= UInt<1>("h00") @[CSR.scala 363:23]
     _T_1382.mpp <= UInt<1>("h00") @[CSR.scala 364:22]
     _T_1382.hpp <= UInt<1>("h00") @[CSR.scala 365:22]
@@ -3066,14 +3066,14 @@ circuit RocketCore :
     node tvec = mux(trapToDebug, debugTVec, _T_2329) @[CSR.scala 446:17]
     io.fatc <= insn_sfence_vma @[CSR.scala 447:11]
     io.evec <= tvec @[CSR.scala 448:11]
-    io.ptbr <- reg_sptbr @[CSR.scala 449:11]
+    io.ptbr <= reg_sptbr @[CSR.scala 449:11]
     node _T_2330 = or(insn_call, insn_break) @[CSR.scala 450:24]
     node _T_2331 = or(_T_2330, insn_ret) @[CSR.scala 450:38]
     io.eret <= _T_2331 @[CSR.scala 450:11]
     node _T_2333 = eq(reg_debug, UInt<1>("h00")) @[CSR.scala 451:37]
     node _T_2334 = and(reg_dcsr.step, _T_2333) @[CSR.scala 451:34]
     io.singleStep <= _T_2334 @[CSR.scala 451:17]
-    io.status <- reg_mstatus @[CSR.scala 452:13]
+    io.status <= reg_mstatus @[CSR.scala 452:13]
     node _T_2335 = not(io.status.fs) @[CSR.scala 453:32]
     node _T_2337 = eq(_T_2335, UInt<1>("h00")) @[CSR.scala 453:32]
     node _T_2338 = not(io.status.xs) @[CSR.scala 453:53]
@@ -3980,7 +3980,7 @@ circuit RocketCore :
           node _T_3493 = bits(_T_3478, 63, 60) @[CSR.scala 648:48]
           _T_3461.ttype <= _T_3493 @[CSR.scala 648:48]
           node _T_3494 = and(_T_3461.dmode, reg_debug) @[CSR.scala 649:36]
-          reg_bp[reg_tselect].control <- _T_3461 @[CSR.scala 650:22]
+          reg_bp[reg_tselect].control <= _T_3461 @[CSR.scala 650:22]
           reg_bp[reg_tselect].control.dmode <= _T_3494 @[CSR.scala 651:28]
           node _T_3495 = and(_T_3494, _T_3461.action) @[CSR.scala 652:38]
           reg_bp[reg_tselect].control.action <= _T_3495 @[CSR.scala 652:29]
@@ -3990,7 +3990,11 @@ circuit RocketCore :
           skip @[CSR.scala 654:42]
         skip @[CSR.scala 646:45]
       skip @[CSR.scala 536:49]
-    reg_mip <- io.interrupts @[CSR.scala 659:11]
+    ; manual port from partial connect to full connect @[CSR.scala 659:11]
+    reg_mip.mtip <= io.interrupts.mtip
+    reg_mip.msip <= io.interrupts.msip
+    reg_mip.meip <= io.interrupts.meip
+    reg_mip.seip <= io.interrupts.seip
     reg_dcsr.debugint <= io.interrupts.debug @[CSR.scala 660:21]
     reg_sptbr.asid <= UInt<1>("h00") @[CSR.scala 672:18]
     reg_tselect <= UInt<1>("h00") @[CSR.scala 673:38]
@@ -4060,7 +4064,7 @@ circuit RocketCore :
     _T_3556.control.dmode <= _T_3593 @[CSR.scala 694:28]
     node _T_3594 = bits(_T_3579, 63, 60) @[CSR.scala 694:28]
     _T_3556.control.ttype <= _T_3594 @[CSR.scala 694:28]
-    reg_bp[1] <- _T_3556 @[CSR.scala 694:8]
+    reg_bp[1] <= _T_3556 @[CSR.scala 694:8]
     
   module BreakpointUnit : 
     input clock : Clock
@@ -4966,9 +4970,10 @@ circuit RocketCore :
       node _T_694 = cat(rhs_sign, rhs_in) @[Cat.scala 30:58]
       divisor <= _T_694 @[Multiplier.scala 159:13]
       remainder <= lhs_in @[Multiplier.scala 160:15]
-      req <- io.req.bits @[Multiplier.scala 161:9]
+      req <= io.req.bits @[Multiplier.scala 161:9]
       skip @[Multiplier.scala 153:24]
-    io.resp.bits <- req @[Multiplier.scala 164:16]
+    ; manually ported from partial to full connect @[Multiplier.scala 164:16]
+    io.resp.bits.tag <= req.tag
     node _T_697 = eq(req.dw, UInt<1>("h00")) @[Multiplier.scala 67:62]
     node _T_698 = and(UInt<1>("h01"), _T_697) @[Multiplier.scala 67:52]
     node _T_699 = bits(remainder, 31, 31) @[Multiplier.scala 165:67]
@@ -6152,5 +6157,5 @@ circuit RocketCore :
     node _T_1847 = mux(_T_1786, _T_1811, _T_1841) @[Package.scala 19:12]
     node _T_1853 = mux(_T_1712, _T_1777, _T_1847) @[Package.scala 19:12]
     node _T_1859 = mux(_T_1558, _T_1703, _T_1853) @[Package.scala 19:12]
-    io.out <- _T_1859 @[RVC.scala 163:12]
+    io.out <= _T_1859 @[RVC.scala 163:12]
     

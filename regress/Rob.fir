@@ -193,7 +193,7 @@ circuit Rob :
       node T_28320 = eq(io.dis_uops[0].is_fencei, UInt<1>("h00")) @[rob.scala 349:37] 
       node T_28321 = and(T_28318, T_28320) @[rob.scala 348:62] 
       T_28316 <= T_28321 @[rob.scala 348:34] 
-      T_26182[rob_tail] <- io.dis_uops[0] @[rob.scala 350:34] 
+      T_26182[rob_tail] <= io.dis_uops[0] @[rob.scala 350:34] 
       infer mport T_28407 = T_28311[rob_tail], clk
       T_28407 <= io.dis_uops[0].exception @[rob.scala 351:34] 
       infer mport T_28408 = T_28314[rob_tail], clk
@@ -310,7 +310,7 @@ circuit Rob :
     node T_29273 = and(T_29099, T_29272) @[rob.scala 452:48] 
     node T_29275 = and(T_29273, UInt<1>("h01")) @[rob.scala 453:112] 
     io.com_rbk_valids[0] <= T_29275 @[rob.scala 451:28] 
-    io.com_uops[0] <- T_26182[T_29096] @[rob.scala 455:28] 
+    io.com_uops[0] <= T_26182[T_29096] @[rob.scala 455:28] 
     node T_29361 = eq(rob_state, UInt<2>("h02")) @[rob.scala 457:23] 
     when T_29361 : @[rob.scala 458:7] 
       T_23706[T_29096] <= UInt<1>("h00") @[rob.scala 459:33] 
@@ -902,7 +902,7 @@ circuit Rob :
     debug_entry[0].valid <= T_23706[0] @[rob.scala 551:44] 
     infer mport T_32866 = T_23710[UInt<1>("h00")], clk
     debug_entry[0].busy <= T_32866 @[rob.scala 552:43] 
-    debug_entry[0].uop <- T_26182[UInt<1>("h00")] @[rob.scala 553:42] 
+    debug_entry[0].uop <= T_26182[UInt<1>("h00")] @[rob.scala 553:42] 
     wire T_32955 : UInt<64> @[rob.scala 899:26] 
     T_32955 is invalid @[rob.scala 899:26] 
     node T_32957 = dshr(UInt<5>("h00"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -928,7 +928,7 @@ circuit Rob :
     debug_entry[2].valid <= T_23706[1] @[rob.scala 551:44] 
     infer mport T_32980 = T_23710[UInt<1>("h01")], clk
     debug_entry[2].busy <= T_32980 @[rob.scala 552:43] 
-    debug_entry[2].uop <- T_26182[UInt<1>("h01")] @[rob.scala 553:42] 
+    debug_entry[2].uop <= T_26182[UInt<1>("h01")] @[rob.scala 553:42] 
     wire T_33069 : UInt<64> @[rob.scala 899:26] 
     T_33069 is invalid @[rob.scala 899:26] 
     node T_33071 = dshr(UInt<5>("h01"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -954,7 +954,7 @@ circuit Rob :
     debug_entry[4].valid <= T_23706[2] @[rob.scala 551:44] 
     infer mport T_33094 = T_23710[UInt<2>("h02")], clk
     debug_entry[4].busy <= T_33094 @[rob.scala 552:43] 
-    debug_entry[4].uop <- T_26182[UInt<2>("h02")] @[rob.scala 553:42] 
+    debug_entry[4].uop <= T_26182[UInt<2>("h02")] @[rob.scala 553:42] 
     wire T_33183 : UInt<64> @[rob.scala 899:26] 
     T_33183 is invalid @[rob.scala 899:26] 
     node T_33185 = dshr(UInt<5>("h02"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -980,7 +980,7 @@ circuit Rob :
     debug_entry[6].valid <= T_23706[3] @[rob.scala 551:44] 
     infer mport T_33208 = T_23710[UInt<2>("h03")], clk
     debug_entry[6].busy <= T_33208 @[rob.scala 552:43] 
-    debug_entry[6].uop <- T_26182[UInt<2>("h03")] @[rob.scala 553:42] 
+    debug_entry[6].uop <= T_26182[UInt<2>("h03")] @[rob.scala 553:42] 
     wire T_33297 : UInt<64> @[rob.scala 899:26] 
     T_33297 is invalid @[rob.scala 899:26] 
     node T_33299 = dshr(UInt<5>("h03"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1006,7 +1006,7 @@ circuit Rob :
     debug_entry[8].valid <= T_23706[4] @[rob.scala 551:44] 
     infer mport T_33322 = T_23710[UInt<3>("h04")], clk
     debug_entry[8].busy <= T_33322 @[rob.scala 552:43] 
-    debug_entry[8].uop <- T_26182[UInt<3>("h04")] @[rob.scala 553:42] 
+    debug_entry[8].uop <= T_26182[UInt<3>("h04")] @[rob.scala 553:42] 
     wire T_33411 : UInt<64> @[rob.scala 899:26] 
     T_33411 is invalid @[rob.scala 899:26] 
     node T_33413 = dshr(UInt<5>("h04"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1032,7 +1032,7 @@ circuit Rob :
     debug_entry[10].valid <= T_23706[5] @[rob.scala 551:44] 
     infer mport T_33436 = T_23710[UInt<3>("h05")], clk
     debug_entry[10].busy <= T_33436 @[rob.scala 552:43] 
-    debug_entry[10].uop <- T_26182[UInt<3>("h05")] @[rob.scala 553:42] 
+    debug_entry[10].uop <= T_26182[UInt<3>("h05")] @[rob.scala 553:42] 
     wire T_33525 : UInt<64> @[rob.scala 899:26] 
     T_33525 is invalid @[rob.scala 899:26] 
     node T_33527 = dshr(UInt<5>("h05"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1058,7 +1058,7 @@ circuit Rob :
     debug_entry[12].valid <= T_23706[6] @[rob.scala 551:44] 
     infer mport T_33550 = T_23710[UInt<3>("h06")], clk
     debug_entry[12].busy <= T_33550 @[rob.scala 552:43] 
-    debug_entry[12].uop <- T_26182[UInt<3>("h06")] @[rob.scala 553:42] 
+    debug_entry[12].uop <= T_26182[UInt<3>("h06")] @[rob.scala 553:42] 
     wire T_33639 : UInt<64> @[rob.scala 899:26] 
     T_33639 is invalid @[rob.scala 899:26] 
     node T_33641 = dshr(UInt<5>("h06"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1084,7 +1084,7 @@ circuit Rob :
     debug_entry[14].valid <= T_23706[7] @[rob.scala 551:44] 
     infer mport T_33664 = T_23710[UInt<3>("h07")], clk
     debug_entry[14].busy <= T_33664 @[rob.scala 552:43] 
-    debug_entry[14].uop <- T_26182[UInt<3>("h07")] @[rob.scala 553:42] 
+    debug_entry[14].uop <= T_26182[UInt<3>("h07")] @[rob.scala 553:42] 
     wire T_33753 : UInt<64> @[rob.scala 899:26] 
     T_33753 is invalid @[rob.scala 899:26] 
     node T_33755 = dshr(UInt<5>("h07"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1110,7 +1110,7 @@ circuit Rob :
     debug_entry[16].valid <= T_23706[8] @[rob.scala 551:44] 
     infer mport T_33778 = T_23710[UInt<4>("h08")], clk
     debug_entry[16].busy <= T_33778 @[rob.scala 552:43] 
-    debug_entry[16].uop <- T_26182[UInt<4>("h08")] @[rob.scala 553:42] 
+    debug_entry[16].uop <= T_26182[UInt<4>("h08")] @[rob.scala 553:42] 
     wire T_33867 : UInt<64> @[rob.scala 899:26] 
     T_33867 is invalid @[rob.scala 899:26] 
     node T_33869 = dshr(UInt<5>("h08"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1136,7 +1136,7 @@ circuit Rob :
     debug_entry[18].valid <= T_23706[9] @[rob.scala 551:44] 
     infer mport T_33892 = T_23710[UInt<4>("h09")], clk
     debug_entry[18].busy <= T_33892 @[rob.scala 552:43] 
-    debug_entry[18].uop <- T_26182[UInt<4>("h09")] @[rob.scala 553:42] 
+    debug_entry[18].uop <= T_26182[UInt<4>("h09")] @[rob.scala 553:42] 
     wire T_33981 : UInt<64> @[rob.scala 899:26] 
     T_33981 is invalid @[rob.scala 899:26] 
     node T_33983 = dshr(UInt<5>("h09"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1162,7 +1162,7 @@ circuit Rob :
     debug_entry[20].valid <= T_23706[10] @[rob.scala 551:44] 
     infer mport T_34006 = T_23710[UInt<4>("h0a")], clk
     debug_entry[20].busy <= T_34006 @[rob.scala 552:43] 
-    debug_entry[20].uop <- T_26182[UInt<4>("h0a")] @[rob.scala 553:42] 
+    debug_entry[20].uop <= T_26182[UInt<4>("h0a")] @[rob.scala 553:42] 
     wire T_34095 : UInt<64> @[rob.scala 899:26] 
     T_34095 is invalid @[rob.scala 899:26] 
     node T_34097 = dshr(UInt<5>("h0a"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1188,7 +1188,7 @@ circuit Rob :
     debug_entry[22].valid <= T_23706[11] @[rob.scala 551:44] 
     infer mport T_34120 = T_23710[UInt<4>("h0b")], clk
     debug_entry[22].busy <= T_34120 @[rob.scala 552:43] 
-    debug_entry[22].uop <- T_26182[UInt<4>("h0b")] @[rob.scala 553:42] 
+    debug_entry[22].uop <= T_26182[UInt<4>("h0b")] @[rob.scala 553:42] 
     wire T_34209 : UInt<64> @[rob.scala 899:26] 
     T_34209 is invalid @[rob.scala 899:26] 
     node T_34211 = dshr(UInt<5>("h0b"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1214,7 +1214,7 @@ circuit Rob :
     debug_entry[24].valid <= T_23706[12] @[rob.scala 551:44] 
     infer mport T_34234 = T_23710[UInt<4>("h0c")], clk
     debug_entry[24].busy <= T_34234 @[rob.scala 552:43] 
-    debug_entry[24].uop <- T_26182[UInt<4>("h0c")] @[rob.scala 553:42] 
+    debug_entry[24].uop <= T_26182[UInt<4>("h0c")] @[rob.scala 553:42] 
     wire T_34323 : UInt<64> @[rob.scala 899:26] 
     T_34323 is invalid @[rob.scala 899:26] 
     node T_34325 = dshr(UInt<5>("h0c"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1240,7 +1240,7 @@ circuit Rob :
     debug_entry[26].valid <= T_23706[13] @[rob.scala 551:44] 
     infer mport T_34348 = T_23710[UInt<4>("h0d")], clk
     debug_entry[26].busy <= T_34348 @[rob.scala 552:43] 
-    debug_entry[26].uop <- T_26182[UInt<4>("h0d")] @[rob.scala 553:42] 
+    debug_entry[26].uop <= T_26182[UInt<4>("h0d")] @[rob.scala 553:42] 
     wire T_34437 : UInt<64> @[rob.scala 899:26] 
     T_34437 is invalid @[rob.scala 899:26] 
     node T_34439 = dshr(UInt<5>("h0d"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1266,7 +1266,7 @@ circuit Rob :
     debug_entry[28].valid <= T_23706[14] @[rob.scala 551:44] 
     infer mport T_34462 = T_23710[UInt<4>("h0e")], clk
     debug_entry[28].busy <= T_34462 @[rob.scala 552:43] 
-    debug_entry[28].uop <- T_26182[UInt<4>("h0e")] @[rob.scala 553:42] 
+    debug_entry[28].uop <= T_26182[UInt<4>("h0e")] @[rob.scala 553:42] 
     wire T_34551 : UInt<64> @[rob.scala 899:26] 
     T_34551 is invalid @[rob.scala 899:26] 
     node T_34553 = dshr(UInt<5>("h0e"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1292,7 +1292,7 @@ circuit Rob :
     debug_entry[30].valid <= T_23706[15] @[rob.scala 551:44] 
     infer mport T_34576 = T_23710[UInt<4>("h0f")], clk
     debug_entry[30].busy <= T_34576 @[rob.scala 552:43] 
-    debug_entry[30].uop <- T_26182[UInt<4>("h0f")] @[rob.scala 553:42] 
+    debug_entry[30].uop <= T_26182[UInt<4>("h0f")] @[rob.scala 553:42] 
     wire T_34665 : UInt<64> @[rob.scala 899:26] 
     T_34665 is invalid @[rob.scala 899:26] 
     node T_34667 = dshr(UInt<5>("h0f"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1318,7 +1318,7 @@ circuit Rob :
     debug_entry[32].valid <= T_23706[16] @[rob.scala 551:44] 
     infer mport T_34690 = T_23710[UInt<5>("h010")], clk
     debug_entry[32].busy <= T_34690 @[rob.scala 552:43] 
-    debug_entry[32].uop <- T_26182[UInt<5>("h010")] @[rob.scala 553:42] 
+    debug_entry[32].uop <= T_26182[UInt<5>("h010")] @[rob.scala 553:42] 
     wire T_34779 : UInt<64> @[rob.scala 899:26] 
     T_34779 is invalid @[rob.scala 899:26] 
     node T_34781 = dshr(UInt<5>("h010"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1344,7 +1344,7 @@ circuit Rob :
     debug_entry[34].valid <= T_23706[17] @[rob.scala 551:44] 
     infer mport T_34804 = T_23710[UInt<5>("h011")], clk
     debug_entry[34].busy <= T_34804 @[rob.scala 552:43] 
-    debug_entry[34].uop <- T_26182[UInt<5>("h011")] @[rob.scala 553:42] 
+    debug_entry[34].uop <= T_26182[UInt<5>("h011")] @[rob.scala 553:42] 
     wire T_34893 : UInt<64> @[rob.scala 899:26] 
     T_34893 is invalid @[rob.scala 899:26] 
     node T_34895 = dshr(UInt<5>("h011"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1370,7 +1370,7 @@ circuit Rob :
     debug_entry[36].valid <= T_23706[18] @[rob.scala 551:44] 
     infer mport T_34918 = T_23710[UInt<5>("h012")], clk
     debug_entry[36].busy <= T_34918 @[rob.scala 552:43] 
-    debug_entry[36].uop <- T_26182[UInt<5>("h012")] @[rob.scala 553:42] 
+    debug_entry[36].uop <= T_26182[UInt<5>("h012")] @[rob.scala 553:42] 
     wire T_35007 : UInt<64> @[rob.scala 899:26] 
     T_35007 is invalid @[rob.scala 899:26] 
     node T_35009 = dshr(UInt<5>("h012"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1396,7 +1396,7 @@ circuit Rob :
     debug_entry[38].valid <= T_23706[19] @[rob.scala 551:44] 
     infer mport T_35032 = T_23710[UInt<5>("h013")], clk
     debug_entry[38].busy <= T_35032 @[rob.scala 552:43] 
-    debug_entry[38].uop <- T_26182[UInt<5>("h013")] @[rob.scala 553:42] 
+    debug_entry[38].uop <= T_26182[UInt<5>("h013")] @[rob.scala 553:42] 
     wire T_35121 : UInt<64> @[rob.scala 899:26] 
     T_35121 is invalid @[rob.scala 899:26] 
     node T_35123 = dshr(UInt<5>("h013"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1422,7 +1422,7 @@ circuit Rob :
     debug_entry[40].valid <= T_23706[20] @[rob.scala 551:44] 
     infer mport T_35146 = T_23710[UInt<5>("h014")], clk
     debug_entry[40].busy <= T_35146 @[rob.scala 552:43] 
-    debug_entry[40].uop <- T_26182[UInt<5>("h014")] @[rob.scala 553:42] 
+    debug_entry[40].uop <= T_26182[UInt<5>("h014")] @[rob.scala 553:42] 
     wire T_35235 : UInt<64> @[rob.scala 899:26] 
     T_35235 is invalid @[rob.scala 899:26] 
     node T_35237 = dshr(UInt<5>("h014"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1448,7 +1448,7 @@ circuit Rob :
     debug_entry[42].valid <= T_23706[21] @[rob.scala 551:44] 
     infer mport T_35260 = T_23710[UInt<5>("h015")], clk
     debug_entry[42].busy <= T_35260 @[rob.scala 552:43] 
-    debug_entry[42].uop <- T_26182[UInt<5>("h015")] @[rob.scala 553:42] 
+    debug_entry[42].uop <= T_26182[UInt<5>("h015")] @[rob.scala 553:42] 
     wire T_35349 : UInt<64> @[rob.scala 899:26] 
     T_35349 is invalid @[rob.scala 899:26] 
     node T_35351 = dshr(UInt<5>("h015"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1474,7 +1474,7 @@ circuit Rob :
     debug_entry[44].valid <= T_23706[22] @[rob.scala 551:44] 
     infer mport T_35374 = T_23710[UInt<5>("h016")], clk
     debug_entry[44].busy <= T_35374 @[rob.scala 552:43] 
-    debug_entry[44].uop <- T_26182[UInt<5>("h016")] @[rob.scala 553:42] 
+    debug_entry[44].uop <= T_26182[UInt<5>("h016")] @[rob.scala 553:42] 
     wire T_35463 : UInt<64> @[rob.scala 899:26] 
     T_35463 is invalid @[rob.scala 899:26] 
     node T_35465 = dshr(UInt<5>("h016"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1500,7 +1500,7 @@ circuit Rob :
     debug_entry[46].valid <= T_23706[23] @[rob.scala 551:44] 
     infer mport T_35488 = T_23710[UInt<5>("h017")], clk
     debug_entry[46].busy <= T_35488 @[rob.scala 552:43] 
-    debug_entry[46].uop <- T_26182[UInt<5>("h017")] @[rob.scala 553:42] 
+    debug_entry[46].uop <= T_26182[UInt<5>("h017")] @[rob.scala 553:42] 
     wire T_35577 : UInt<64> @[rob.scala 899:26] 
     T_35577 is invalid @[rob.scala 899:26] 
     node T_35579 = dshr(UInt<5>("h017"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -1561,7 +1561,7 @@ circuit Rob :
       node T_40248 = eq(io.dis_uops[1].is_fencei, UInt<1>("h00")) @[rob.scala 349:37] 
       node T_40249 = and(T_40246, T_40248) @[rob.scala 348:62] 
       T_40244 <= T_40249 @[rob.scala 348:34] 
-      T_38110[rob_tail] <- io.dis_uops[1] @[rob.scala 350:34] 
+      T_38110[rob_tail] <= io.dis_uops[1] @[rob.scala 350:34] 
       infer mport T_40335 = T_40239[rob_tail], clk
       T_40335 <= io.dis_uops[1].exception @[rob.scala 351:34] 
       infer mport T_40336 = T_40242[rob_tail], clk
@@ -1678,7 +1678,7 @@ circuit Rob :
     node T_41201 = and(T_41027, T_41200) @[rob.scala 452:48] 
     node T_41203 = and(T_41201, UInt<1>("h01")) @[rob.scala 453:112] 
     io.com_rbk_valids[1] <= T_41203 @[rob.scala 451:28] 
-    io.com_uops[1] <- T_38110[T_41024] @[rob.scala 455:28] 
+    io.com_uops[1] <= T_38110[T_41024] @[rob.scala 455:28] 
     node T_41289 = eq(rob_state, UInt<2>("h02")) @[rob.scala 457:23] 
     when T_41289 : @[rob.scala 458:7] 
       T_35634[T_41024] <= UInt<1>("h00") @[rob.scala 459:33] 
@@ -2270,7 +2270,7 @@ circuit Rob :
     debug_entry[1].valid <= T_35634[0] @[rob.scala 551:44] 
     infer mport T_44794 = T_35638[UInt<1>("h00")], clk
     debug_entry[1].busy <= T_44794 @[rob.scala 552:43] 
-    debug_entry[1].uop <- T_38110[UInt<1>("h00")] @[rob.scala 553:42] 
+    debug_entry[1].uop <= T_38110[UInt<1>("h00")] @[rob.scala 553:42] 
     wire T_44883 : UInt<64> @[rob.scala 899:26] 
     T_44883 is invalid @[rob.scala 899:26] 
     node T_44885 = dshr(UInt<5>("h00"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2296,7 +2296,7 @@ circuit Rob :
     debug_entry[3].valid <= T_35634[1] @[rob.scala 551:44] 
     infer mport T_44908 = T_35638[UInt<1>("h01")], clk
     debug_entry[3].busy <= T_44908 @[rob.scala 552:43] 
-    debug_entry[3].uop <- T_38110[UInt<1>("h01")] @[rob.scala 553:42] 
+    debug_entry[3].uop <= T_38110[UInt<1>("h01")] @[rob.scala 553:42] 
     wire T_44997 : UInt<64> @[rob.scala 899:26] 
     T_44997 is invalid @[rob.scala 899:26] 
     node T_44999 = dshr(UInt<5>("h01"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2322,7 +2322,7 @@ circuit Rob :
     debug_entry[5].valid <= T_35634[2] @[rob.scala 551:44] 
     infer mport T_45022 = T_35638[UInt<2>("h02")], clk
     debug_entry[5].busy <= T_45022 @[rob.scala 552:43] 
-    debug_entry[5].uop <- T_38110[UInt<2>("h02")] @[rob.scala 553:42] 
+    debug_entry[5].uop <= T_38110[UInt<2>("h02")] @[rob.scala 553:42] 
     wire T_45111 : UInt<64> @[rob.scala 899:26] 
     T_45111 is invalid @[rob.scala 899:26] 
     node T_45113 = dshr(UInt<5>("h02"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2348,7 +2348,7 @@ circuit Rob :
     debug_entry[7].valid <= T_35634[3] @[rob.scala 551:44] 
     infer mport T_45136 = T_35638[UInt<2>("h03")], clk
     debug_entry[7].busy <= T_45136 @[rob.scala 552:43] 
-    debug_entry[7].uop <- T_38110[UInt<2>("h03")] @[rob.scala 553:42] 
+    debug_entry[7].uop <= T_38110[UInt<2>("h03")] @[rob.scala 553:42] 
     wire T_45225 : UInt<64> @[rob.scala 899:26] 
     T_45225 is invalid @[rob.scala 899:26] 
     node T_45227 = dshr(UInt<5>("h03"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2374,7 +2374,7 @@ circuit Rob :
     debug_entry[9].valid <= T_35634[4] @[rob.scala 551:44] 
     infer mport T_45250 = T_35638[UInt<3>("h04")], clk
     debug_entry[9].busy <= T_45250 @[rob.scala 552:43] 
-    debug_entry[9].uop <- T_38110[UInt<3>("h04")] @[rob.scala 553:42] 
+    debug_entry[9].uop <= T_38110[UInt<3>("h04")] @[rob.scala 553:42] 
     wire T_45339 : UInt<64> @[rob.scala 899:26] 
     T_45339 is invalid @[rob.scala 899:26] 
     node T_45341 = dshr(UInt<5>("h04"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2400,7 +2400,7 @@ circuit Rob :
     debug_entry[11].valid <= T_35634[5] @[rob.scala 551:44] 
     infer mport T_45364 = T_35638[UInt<3>("h05")], clk
     debug_entry[11].busy <= T_45364 @[rob.scala 552:43] 
-    debug_entry[11].uop <- T_38110[UInt<3>("h05")] @[rob.scala 553:42] 
+    debug_entry[11].uop <= T_38110[UInt<3>("h05")] @[rob.scala 553:42] 
     wire T_45453 : UInt<64> @[rob.scala 899:26] 
     T_45453 is invalid @[rob.scala 899:26] 
     node T_45455 = dshr(UInt<5>("h05"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2426,7 +2426,7 @@ circuit Rob :
     debug_entry[13].valid <= T_35634[6] @[rob.scala 551:44] 
     infer mport T_45478 = T_35638[UInt<3>("h06")], clk
     debug_entry[13].busy <= T_45478 @[rob.scala 552:43] 
-    debug_entry[13].uop <- T_38110[UInt<3>("h06")] @[rob.scala 553:42] 
+    debug_entry[13].uop <= T_38110[UInt<3>("h06")] @[rob.scala 553:42] 
     wire T_45567 : UInt<64> @[rob.scala 899:26] 
     T_45567 is invalid @[rob.scala 899:26] 
     node T_45569 = dshr(UInt<5>("h06"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2452,7 +2452,7 @@ circuit Rob :
     debug_entry[15].valid <= T_35634[7] @[rob.scala 551:44] 
     infer mport T_45592 = T_35638[UInt<3>("h07")], clk
     debug_entry[15].busy <= T_45592 @[rob.scala 552:43] 
-    debug_entry[15].uop <- T_38110[UInt<3>("h07")] @[rob.scala 553:42] 
+    debug_entry[15].uop <= T_38110[UInt<3>("h07")] @[rob.scala 553:42] 
     wire T_45681 : UInt<64> @[rob.scala 899:26] 
     T_45681 is invalid @[rob.scala 899:26] 
     node T_45683 = dshr(UInt<5>("h07"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2478,7 +2478,7 @@ circuit Rob :
     debug_entry[17].valid <= T_35634[8] @[rob.scala 551:44] 
     infer mport T_45706 = T_35638[UInt<4>("h08")], clk
     debug_entry[17].busy <= T_45706 @[rob.scala 552:43] 
-    debug_entry[17].uop <- T_38110[UInt<4>("h08")] @[rob.scala 553:42] 
+    debug_entry[17].uop <= T_38110[UInt<4>("h08")] @[rob.scala 553:42] 
     wire T_45795 : UInt<64> @[rob.scala 899:26] 
     T_45795 is invalid @[rob.scala 899:26] 
     node T_45797 = dshr(UInt<5>("h08"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2504,7 +2504,7 @@ circuit Rob :
     debug_entry[19].valid <= T_35634[9] @[rob.scala 551:44] 
     infer mport T_45820 = T_35638[UInt<4>("h09")], clk
     debug_entry[19].busy <= T_45820 @[rob.scala 552:43] 
-    debug_entry[19].uop <- T_38110[UInt<4>("h09")] @[rob.scala 553:42] 
+    debug_entry[19].uop <= T_38110[UInt<4>("h09")] @[rob.scala 553:42] 
     wire T_45909 : UInt<64> @[rob.scala 899:26] 
     T_45909 is invalid @[rob.scala 899:26] 
     node T_45911 = dshr(UInt<5>("h09"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2530,7 +2530,7 @@ circuit Rob :
     debug_entry[21].valid <= T_35634[10] @[rob.scala 551:44] 
     infer mport T_45934 = T_35638[UInt<4>("h0a")], clk
     debug_entry[21].busy <= T_45934 @[rob.scala 552:43] 
-    debug_entry[21].uop <- T_38110[UInt<4>("h0a")] @[rob.scala 553:42] 
+    debug_entry[21].uop <= T_38110[UInt<4>("h0a")] @[rob.scala 553:42] 
     wire T_46023 : UInt<64> @[rob.scala 899:26] 
     T_46023 is invalid @[rob.scala 899:26] 
     node T_46025 = dshr(UInt<5>("h0a"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2556,7 +2556,7 @@ circuit Rob :
     debug_entry[23].valid <= T_35634[11] @[rob.scala 551:44] 
     infer mport T_46048 = T_35638[UInt<4>("h0b")], clk
     debug_entry[23].busy <= T_46048 @[rob.scala 552:43] 
-    debug_entry[23].uop <- T_38110[UInt<4>("h0b")] @[rob.scala 553:42] 
+    debug_entry[23].uop <= T_38110[UInt<4>("h0b")] @[rob.scala 553:42] 
     wire T_46137 : UInt<64> @[rob.scala 899:26] 
     T_46137 is invalid @[rob.scala 899:26] 
     node T_46139 = dshr(UInt<5>("h0b"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2582,7 +2582,7 @@ circuit Rob :
     debug_entry[25].valid <= T_35634[12] @[rob.scala 551:44] 
     infer mport T_46162 = T_35638[UInt<4>("h0c")], clk
     debug_entry[25].busy <= T_46162 @[rob.scala 552:43] 
-    debug_entry[25].uop <- T_38110[UInt<4>("h0c")] @[rob.scala 553:42] 
+    debug_entry[25].uop <= T_38110[UInt<4>("h0c")] @[rob.scala 553:42] 
     wire T_46251 : UInt<64> @[rob.scala 899:26] 
     T_46251 is invalid @[rob.scala 899:26] 
     node T_46253 = dshr(UInt<5>("h0c"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2608,7 +2608,7 @@ circuit Rob :
     debug_entry[27].valid <= T_35634[13] @[rob.scala 551:44] 
     infer mport T_46276 = T_35638[UInt<4>("h0d")], clk
     debug_entry[27].busy <= T_46276 @[rob.scala 552:43] 
-    debug_entry[27].uop <- T_38110[UInt<4>("h0d")] @[rob.scala 553:42] 
+    debug_entry[27].uop <= T_38110[UInt<4>("h0d")] @[rob.scala 553:42] 
     wire T_46365 : UInt<64> @[rob.scala 899:26] 
     T_46365 is invalid @[rob.scala 899:26] 
     node T_46367 = dshr(UInt<5>("h0d"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2634,7 +2634,7 @@ circuit Rob :
     debug_entry[29].valid <= T_35634[14] @[rob.scala 551:44] 
     infer mport T_46390 = T_35638[UInt<4>("h0e")], clk
     debug_entry[29].busy <= T_46390 @[rob.scala 552:43] 
-    debug_entry[29].uop <- T_38110[UInt<4>("h0e")] @[rob.scala 553:42] 
+    debug_entry[29].uop <= T_38110[UInt<4>("h0e")] @[rob.scala 553:42] 
     wire T_46479 : UInt<64> @[rob.scala 899:26] 
     T_46479 is invalid @[rob.scala 899:26] 
     node T_46481 = dshr(UInt<5>("h0e"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2660,7 +2660,7 @@ circuit Rob :
     debug_entry[31].valid <= T_35634[15] @[rob.scala 551:44] 
     infer mport T_46504 = T_35638[UInt<4>("h0f")], clk
     debug_entry[31].busy <= T_46504 @[rob.scala 552:43] 
-    debug_entry[31].uop <- T_38110[UInt<4>("h0f")] @[rob.scala 553:42] 
+    debug_entry[31].uop <= T_38110[UInt<4>("h0f")] @[rob.scala 553:42] 
     wire T_46593 : UInt<64> @[rob.scala 899:26] 
     T_46593 is invalid @[rob.scala 899:26] 
     node T_46595 = dshr(UInt<5>("h0f"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2686,7 +2686,7 @@ circuit Rob :
     debug_entry[33].valid <= T_35634[16] @[rob.scala 551:44] 
     infer mport T_46618 = T_35638[UInt<5>("h010")], clk
     debug_entry[33].busy <= T_46618 @[rob.scala 552:43] 
-    debug_entry[33].uop <- T_38110[UInt<5>("h010")] @[rob.scala 553:42] 
+    debug_entry[33].uop <= T_38110[UInt<5>("h010")] @[rob.scala 553:42] 
     wire T_46707 : UInt<64> @[rob.scala 899:26] 
     T_46707 is invalid @[rob.scala 899:26] 
     node T_46709 = dshr(UInt<5>("h010"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2712,7 +2712,7 @@ circuit Rob :
     debug_entry[35].valid <= T_35634[17] @[rob.scala 551:44] 
     infer mport T_46732 = T_35638[UInt<5>("h011")], clk
     debug_entry[35].busy <= T_46732 @[rob.scala 552:43] 
-    debug_entry[35].uop <- T_38110[UInt<5>("h011")] @[rob.scala 553:42] 
+    debug_entry[35].uop <= T_38110[UInt<5>("h011")] @[rob.scala 553:42] 
     wire T_46821 : UInt<64> @[rob.scala 899:26] 
     T_46821 is invalid @[rob.scala 899:26] 
     node T_46823 = dshr(UInt<5>("h011"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2738,7 +2738,7 @@ circuit Rob :
     debug_entry[37].valid <= T_35634[18] @[rob.scala 551:44] 
     infer mport T_46846 = T_35638[UInt<5>("h012")], clk
     debug_entry[37].busy <= T_46846 @[rob.scala 552:43] 
-    debug_entry[37].uop <- T_38110[UInt<5>("h012")] @[rob.scala 553:42] 
+    debug_entry[37].uop <= T_38110[UInt<5>("h012")] @[rob.scala 553:42] 
     wire T_46935 : UInt<64> @[rob.scala 899:26] 
     T_46935 is invalid @[rob.scala 899:26] 
     node T_46937 = dshr(UInt<5>("h012"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2764,7 +2764,7 @@ circuit Rob :
     debug_entry[39].valid <= T_35634[19] @[rob.scala 551:44] 
     infer mport T_46960 = T_35638[UInt<5>("h013")], clk
     debug_entry[39].busy <= T_46960 @[rob.scala 552:43] 
-    debug_entry[39].uop <- T_38110[UInt<5>("h013")] @[rob.scala 553:42] 
+    debug_entry[39].uop <= T_38110[UInt<5>("h013")] @[rob.scala 553:42] 
     wire T_47049 : UInt<64> @[rob.scala 899:26] 
     T_47049 is invalid @[rob.scala 899:26] 
     node T_47051 = dshr(UInt<5>("h013"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2790,7 +2790,7 @@ circuit Rob :
     debug_entry[41].valid <= T_35634[20] @[rob.scala 551:44] 
     infer mport T_47074 = T_35638[UInt<5>("h014")], clk
     debug_entry[41].busy <= T_47074 @[rob.scala 552:43] 
-    debug_entry[41].uop <- T_38110[UInt<5>("h014")] @[rob.scala 553:42] 
+    debug_entry[41].uop <= T_38110[UInt<5>("h014")] @[rob.scala 553:42] 
     wire T_47163 : UInt<64> @[rob.scala 899:26] 
     T_47163 is invalid @[rob.scala 899:26] 
     node T_47165 = dshr(UInt<5>("h014"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2816,7 +2816,7 @@ circuit Rob :
     debug_entry[43].valid <= T_35634[21] @[rob.scala 551:44] 
     infer mport T_47188 = T_35638[UInt<5>("h015")], clk
     debug_entry[43].busy <= T_47188 @[rob.scala 552:43] 
-    debug_entry[43].uop <- T_38110[UInt<5>("h015")] @[rob.scala 553:42] 
+    debug_entry[43].uop <= T_38110[UInt<5>("h015")] @[rob.scala 553:42] 
     wire T_47277 : UInt<64> @[rob.scala 899:26] 
     T_47277 is invalid @[rob.scala 899:26] 
     node T_47279 = dshr(UInt<5>("h015"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2842,7 +2842,7 @@ circuit Rob :
     debug_entry[45].valid <= T_35634[22] @[rob.scala 551:44] 
     infer mport T_47302 = T_35638[UInt<5>("h016")], clk
     debug_entry[45].busy <= T_47302 @[rob.scala 552:43] 
-    debug_entry[45].uop <- T_38110[UInt<5>("h016")] @[rob.scala 553:42] 
+    debug_entry[45].uop <= T_38110[UInt<5>("h016")] @[rob.scala 553:42] 
     wire T_47391 : UInt<64> @[rob.scala 899:26] 
     T_47391 is invalid @[rob.scala 899:26] 
     node T_47393 = dshr(UInt<5>("h016"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -2868,7 +2868,7 @@ circuit Rob :
     debug_entry[47].valid <= T_35634[23] @[rob.scala 551:44] 
     infer mport T_47416 = T_35638[UInt<5>("h017")], clk
     debug_entry[47].busy <= T_47416 @[rob.scala 552:43] 
-    debug_entry[47].uop <- T_38110[UInt<5>("h017")] @[rob.scala 553:42] 
+    debug_entry[47].uop <= T_38110[UInt<5>("h017")] @[rob.scala 553:42] 
     wire T_47505 : UInt<64> @[rob.scala 899:26] 
     T_47505 is invalid @[rob.scala 899:26] 
     node T_47507 = dshr(UInt<5>("h017"), UInt<1>("h01")) @[rob.scala 900:33] 
@@ -3045,7 +3045,7 @@ circuit Rob :
     io.com_fflags <= T_47690 @[rob.scala 641:22] 
     wire next_xcpt_uop : {valid : UInt<1>, iw_state : UInt<2>, uopc : UInt<9>, inst : UInt<32>, pc : UInt<40>, fu_code : UInt<8>, ctrl : {br_type : UInt<4>, op1_sel : UInt<2>, op2_sel : UInt<3>, imm_sel : UInt<3>, op_fcn : UInt<4>, fcn_dw : UInt<1>, rf_wen : UInt<1>, csr_cmd : UInt<3>, is_load : UInt<1>, is_sta : UInt<1>, is_std : UInt<1>}, wakeup_delay : UInt<2>, allocate_brtag : UInt<1>, is_br_or_jmp : UInt<1>, is_jump : UInt<1>, is_jal : UInt<1>, is_ret : UInt<1>, is_call : UInt<1>, br_mask : UInt<8>, br_tag : UInt<3>, br_prediction : {bpd_predict_val : UInt<1>, bpd_predict_taken : UInt<1>, btb_hit : UInt<1>, btb_predicted : UInt<1>, is_br_or_jalr : UInt<1>}, stat_brjmp_mispredicted : UInt<1>, stat_btb_made_pred : UInt<1>, stat_btb_mispredicted : UInt<1>, stat_bpd_made_pred : UInt<1>, stat_bpd_mispredicted : UInt<1>, fetch_pc_lob : UInt<3>, imm_packed : UInt<20>, csr_addr : UInt<12>, rob_idx : UInt<6>, ldq_idx : UInt<4>, stq_idx : UInt<4>, brob_idx : UInt<5>, pdst : UInt<7>, pop1 : UInt<7>, pop2 : UInt<7>, pop3 : UInt<7>, prs1_busy : UInt<1>, prs2_busy : UInt<1>, prs3_busy : UInt<1>, stale_pdst : UInt<7>, exception : UInt<1>, exc_cause : UInt<64>, bypassable : UInt<1>, mem_cmd : UInt<4>, mem_typ : UInt<3>, is_fence : UInt<1>, is_fencei : UInt<1>, is_store : UInt<1>, is_amo : UInt<1>, is_load : UInt<1>, is_unique : UInt<1>, flush_on_commit : UInt<1>, ldst : UInt<6>, lrs1 : UInt<6>, lrs2 : UInt<6>, lrs3 : UInt<6>, ldst_val : UInt<1>, dst_rtype : UInt<2>, lrs1_rtype : UInt<2>, lrs2_rtype : UInt<2>, frs3_en : UInt<1>, fp_val : UInt<1>, fp_single : UInt<1>, xcpt_if : UInt<1>, replay_if : UInt<1>, debug_wdata : UInt<64>, debug_events : {fetch_seq : UInt<32>}} @[rob.scala 651:28] 
     next_xcpt_uop is invalid @[rob.scala 651:28] 
-    next_xcpt_uop <- r_xcpt_uop @[rob.scala 652:18] 
+    next_xcpt_uop <= r_xcpt_uop @[rob.scala 652:18] 
     wire dis_xcpts : UInt<1>[2] @[rob.scala 653:24] 
     dis_xcpts is invalid @[rob.scala 653:24] 
     node T_47869 = and(io.dis_valids[0], io.dis_uops[0].exception) @[rob.scala 656:40] 
@@ -3079,7 +3079,7 @@ circuit Rob :
         node T_47981 = or(T_47975, T_47980) @[rob.scala 667:28] 
         when T_47981 : @[rob.scala 668:10] 
           r_xcpt_val <= UInt<1>("h01") @[rob.scala 669:37] 
-          next_xcpt_uop <- T_47888 @[rob.scala 670:37] 
+          next_xcpt_uop <= T_47888 @[rob.scala 670:37] 
           node T_47983 = mux(io.lxcpt.valid, io.lxcpt.bits.cause, io.bxcpt.bits.cause) @[rob.scala 671:43] 
           next_xcpt_uop.exc_cause <= T_47983 @[rob.scala 671:37] 
           node T_47984 = mux(io.lxcpt.valid, io.lxcpt.bits.badvaddr, io.bxcpt.bits.badvaddr) @[rob.scala 672:43] 
@@ -3094,14 +3094,14 @@ circuit Rob :
       when T_47991 : @[rob.scala 676:7] 
         node T_47994 = mux(dis_xcpts[0], UInt<1>("h00"), UInt<1>("h01")) @[rob.scala 677:40] 
         r_xcpt_val <= UInt<1>("h01") @[rob.scala 680:26] 
-        next_xcpt_uop <- io.dis_uops[T_47994] @[rob.scala 681:26] 
+        next_xcpt_uop <= io.dis_uops[T_47994] @[rob.scala 681:26] 
         node T_48082 = dshl(T_47994, UInt<2>("h02")) @[rob.scala 682:54] 
         node T_48083 = add(io.dis_uops[0].pc, T_48082) @[rob.scala 682:47] 
         node T_48084 = tail(T_48083, 1) @[rob.scala 682:47] 
         r_xcpt_badvaddr <= T_48084 @[rob.scala 682:26] 
         skip @[rob.scala 676:7] 
       skip @[rob.scala 660:4] 
-    r_xcpt_uop <- next_xcpt_uop @[rob.scala 686:23] 
+    r_xcpt_uop <= next_xcpt_uop @[rob.scala 686:23] 
     node T_48085 = not(io.brinfo.mask) @[util.scala 32:47] 
     node T_48086 = and(next_xcpt_uop.br_mask, T_48085) @[util.scala 32:45] 
     node T_48087 = mux(io.brinfo.valid, T_48086, next_xcpt_uop.br_mask) @[util.scala 32:17] 
@@ -3267,7 +3267,7 @@ circuit Rob :
     io.debug.state <= rob_state @[rob.scala 878:22] 
     io.debug.rob_head <= rob_head @[rob.scala 879:22] 
     io.debug.xcpt_val <= r_xcpt_val @[rob.scala 880:22] 
-    io.debug.xcpt_uop <- r_xcpt_uop @[rob.scala 881:22] 
+    io.debug.xcpt_uop <= r_xcpt_uop @[rob.scala 881:22] 
     io.debug.xcpt_badvaddr <= r_xcpt_badvaddr @[rob.scala 882:27] 
     node T_48223 = mux(r_xcpt_val, UInt<8>("h045"), UInt<8>("h02d")) @[rob.scala 946:18] 
     node T_48225 = eq(reset, UInt<1>("h00")) @[rob.scala 945:13] 

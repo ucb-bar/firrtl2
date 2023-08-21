@@ -43,21 +43,37 @@ circuit FPU :
     fp_decoder.io.inst <= io.inst @[FPU.scala 521:22]
     wire cp_ctrl : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>} @[FPU.scala 523:21]
     cp_ctrl is invalid @[FPU.scala 523:21]
-    cp_ctrl <- io.cp_req.bits @[FPU.scala 524:11]
+    ; manual port from partial connect to full connect @[FPU.scala 524:11]
+    cp_ctrl.cmd <= io.cp_req.bits.cmd
+    cp_ctrl.ldst <= io.cp_req.bits.ldst
+    cp_ctrl.wen <= io.cp_req.bits.wen
+    cp_ctrl.ren1 <= io.cp_req.bits.ren1
+    cp_ctrl.ren2 <= io.cp_req.bits.ren2
+    cp_ctrl.ren3 <= io.cp_req.bits.ren3
+    cp_ctrl.swap12 <= io.cp_req.bits.swap12
+    cp_ctrl.swap23 <= io.cp_req.bits.swap23
+    cp_ctrl.single <= io.cp_req.bits.single
+    cp_ctrl.fromint <= io.cp_req.bits.fromint
+    cp_ctrl.toint <= io.cp_req.bits.toint
+    cp_ctrl.fastpipe <= io.cp_req.bits.fastpipe
+    cp_ctrl.fma <= io.cp_req.bits.fma
+    cp_ctrl.div <= io.cp_req.bits.div
+    cp_ctrl.sqrt <= io.cp_req.bits.sqrt
+    cp_ctrl.wflags <= io.cp_req.bits.wflags
     io.cp_resp.valid <= UInt<1>("h00") @[FPU.scala 525:20]
     io.cp_resp.bits.data <= UInt<1>("h00") @[FPU.scala 526:24]
     reg _T_282 : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>}, clock @[Reg.scala 34:16]
     when io.valid : @[Reg.scala 35:19]
-      _T_282 <- fp_decoder.io.sigs @[Reg.scala 35:23]
+      _T_282 <= fp_decoder.io.sigs @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     node ex_ctrl = mux(ex_cp_valid, cp_ctrl, _T_282) @[FPU.scala 529:20]
     reg mem_ctrl : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>}, clock @[Reg.scala 34:16]
     when req_valid : @[Reg.scala 35:19]
-      mem_ctrl <- ex_ctrl @[Reg.scala 35:23]
+      mem_ctrl <= ex_ctrl @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     reg wb_ctrl : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>}, clock @[Reg.scala 34:16]
     when mem_reg_valid : @[Reg.scala 35:19]
-      wb_ctrl <- mem_ctrl @[Reg.scala 35:23]
+      wb_ctrl <= mem_ctrl @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     reg load_wb : UInt<1>, clock @[FPU.scala 534:20]
     load_wb <= io.dmem_resp_val @[FPU.scala 534:20]
@@ -419,7 +435,24 @@ circuit FPU :
     node ex_rm = mux(_T_801, io.fcsr_rm, _T_802) @[FPU.scala 567:18]
     wire req : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>} @[FPU.scala 569:17]
     req is invalid @[FPU.scala 569:17]
-    req <- ex_ctrl @[FPU.scala 570:7]
+    ; manual port from partial connect to full connect @[FPU.scala 570:7]
+    req.cmd <= ex_ctrl.cmd
+    req.ldst <= ex_ctrl.ldst
+    req.wen <= ex_ctrl.wen
+    req.ren1 <= ex_ctrl.ren1
+    req.ren2 <= ex_ctrl.ren2
+    req.ren3 <= ex_ctrl.ren3
+    req.swap12 <= ex_ctrl.swap12
+    req.swap23 <= ex_ctrl.swap23
+    req.single <= ex_ctrl.single
+    req.fromint <= ex_ctrl.fromint
+    req.toint <= ex_ctrl.toint
+    req.fastpipe <= ex_ctrl.fastpipe
+    req.fma <= ex_ctrl.fma
+    req.div <= ex_ctrl.div
+    req.sqrt <= ex_ctrl.sqrt
+    req.wflags <= ex_ctrl.wflags
+
     req.rm <= ex_rm @[FPU.scala 571:10]
     node _T_847 = or(ex_ra1, UInt<5>("h00"))
     node _T_848 = bits(_T_847, 4, 0)
@@ -436,7 +469,7 @@ circuit FPU :
     node _T_858 = bits(ex_reg_inst, 21, 20) @[FPU.scala 575:25]
     req.typ <= _T_858 @[FPU.scala 575:11]
     when ex_cp_valid : @[FPU.scala 576:22]
-      req <- io.cp_req.bits @[FPU.scala 577:9]
+      req <= io.cp_req.bits @[FPU.scala 577:9]
       when io.cp_req.bits.swap23 : @[FPU.scala 578:34]
         req.in2 <= io.cp_req.bits.in3 @[FPU.scala 579:15]
         req.in3 <= io.cp_req.bits.in2 @[FPU.scala 580:15]
@@ -449,7 +482,7 @@ circuit FPU :
     node _T_859 = and(req_valid, ex_ctrl.fma) @[FPU.scala 585:33]
     node _T_860 = and(_T_859, ex_ctrl.single) @[FPU.scala 585:48]
     sfma.io.in.valid <= _T_860 @[FPU.scala 585:20]
-    sfma.io.in.bits <- req @[FPU.scala 586:19]
+    sfma.io.in.bits <= req @[FPU.scala 586:19]
     inst fpiu of FPToInt @[FPU.scala 588:20]
     fpiu.io is invalid
     fpiu.clock <= clock
@@ -461,7 +494,7 @@ circuit FPU :
     node _T_867 = or(_T_862, _T_866) @[FPU.scala 589:82]
     node _T_868 = and(req_valid, _T_867) @[FPU.scala 589:33]
     fpiu.io.in.valid <= _T_868 @[FPU.scala 589:20]
-    fpiu.io.in.bits <- req @[FPU.scala 590:19]
+    fpiu.io.in.bits <= req @[FPU.scala 590:19]
     io.store_data <= fpiu.io.out.bits.store @[FPU.scala 591:17]
     io.toint_data <= fpiu.io.out.bits.toint @[FPU.scala 592:17]
     node _T_869 = and(fpiu.io.out.valid, mem_cp_valid) @[FPU.scala 593:26]
@@ -476,7 +509,7 @@ circuit FPU :
     ifpu.reset <= reset
     node _T_872 = and(req_valid, ex_ctrl.fromint) @[FPU.scala 599:33]
     ifpu.io.in.valid <= _T_872 @[FPU.scala 599:20]
-    ifpu.io.in.bits <- req @[FPU.scala 600:19]
+    ifpu.io.in.bits <= req @[FPU.scala 600:19]
     node _T_873 = mux(ex_cp_valid, io.cp_req.bits.in1, io.fromint_data) @[FPU.scala 601:29]
     ifpu.io.in.bits.in1 <= _T_873 @[FPU.scala 601:23]
     inst fpmu of FPToFP @[FPU.scala 603:20]
@@ -485,7 +518,7 @@ circuit FPU :
     fpmu.reset <= reset
     node _T_874 = and(req_valid, ex_ctrl.fastpipe) @[FPU.scala 604:33]
     fpmu.io.in.valid <= _T_874 @[FPU.scala 604:20]
-    fpmu.io.in.bits <- req @[FPU.scala 605:19]
+    fpmu.io.in.bits <= req @[FPU.scala 605:19]
     fpmu.io.lt <= fpiu.io.out.bits.lt @[FPU.scala 606:14]
     reg divSqrt_wen : UInt<1>, clock @[FPU.scala 608:24]
     divSqrt_wen <= UInt<1>("h00") @[FPU.scala 608:24]
@@ -508,7 +541,7 @@ circuit FPU :
     node _T_885 = eq(ex_ctrl.single, UInt<1>("h00")) @[FPU.scala 625:59]
     node _T_886 = and(_T_883, _T_885) @[FPU.scala 625:56]
     FPUFMAPipe.io.in.valid <= _T_886 @[FPU.scala 625:28]
-    FPUFMAPipe.io.in.bits <- req @[FPU.scala 626:27]
+    FPUFMAPipe.io.in.bits <= req @[FPU.scala 626:27]
     node _T_889 = mux(mem_ctrl.fastpipe, UInt<1>("h01"), UInt<1>("h00")) @[FPU.scala 631:23]
     node _T_892 = mux(mem_ctrl.fromint, UInt<1>("h01"), UInt<1>("h00")) @[FPU.scala 631:23]
     node _T_893 = and(mem_ctrl.fma, mem_ctrl.single) @[FPU.scala 622:56]
@@ -556,11 +589,11 @@ circuit FPU :
       skip @[Reg.scala 35:19]
     node _T_1015 = bits(wen, 1, 1) @[FPU.scala 651:14]
     when _T_1015 : @[FPU.scala 651:21]
-      wbInfo[0] <- wbInfo[1] @[FPU.scala 651:33]
+      wbInfo[0] <= wbInfo[1] @[FPU.scala 651:33]
       skip @[FPU.scala 651:21]
     node _T_1016 = bits(wen, 2, 2) @[FPU.scala 651:14]
     when _T_1016 : @[FPU.scala 651:21]
-      wbInfo[1] <- wbInfo[2] @[FPU.scala 651:33]
+      wbInfo[1] <= wbInfo[2] @[FPU.scala 651:33]
       skip @[FPU.scala 651:21]
     node _T_1017 = shr(wen, 1) @[FPU.scala 653:14]
     wen <= _T_1017 @[FPU.scala 653:7]
@@ -707,7 +740,7 @@ circuit FPU :
     node _T_1168 = or(units_busy, write_port_busy) @[FPU.scala 705:29]
     node _T_1169 = or(_T_1168, divSqrt_in_flight) @[FPU.scala 705:48]
     io.nack_mem <= _T_1169 @[FPU.scala 705:15]
-    io.dec <- fp_decoder.io.sigs @[FPU.scala 706:10]
+    io.dec <= fp_decoder.io.sigs @[FPU.scala 706:10]
     node _T_1171 = eq(wb_cp_valid, UInt<1>("h00")) @[FPU.scala 708:36]
     node _T_1172 = and(wb_reg_valid, _T_1171) @[FPU.scala 708:33]
     node _T_1174 = eq(mem_ctrl.single, UInt<1>("h00")) @[FPU.scala 627:65]
@@ -929,7 +962,7 @@ circuit FPU :
     valid <= io.in.valid @[FPU.scala 482:18]
     reg in : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}, clock @[FPU.scala 483:15]
     when io.in.valid : @[FPU.scala 484:22]
-      in <- io.in.bits @[FPU.scala 485:8]
+      in <= io.in.bits @[FPU.scala 485:8]
       node _T_177 = bits(io.in.bits.cmd, 1, 1) @[FPU.scala 488:33]
       node _T_178 = or(io.in.bits.ren3, io.in.bits.swap23) @[FPU.scala 488:48]
       node _T_179 = and(_T_177, _T_178) @[FPU.scala 488:37]
@@ -962,19 +995,19 @@ circuit FPU :
     _T_192 <= valid @[Valid.scala 47:18]
     reg _T_196 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when valid : @[Reg.scala 35:19]
-      _T_196 <- res @[Reg.scala 35:23]
+      _T_196 <= res @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     reg _T_201 : UInt<1>, clock with : (reset => (reset, UInt<1>("h00"))) @[Valid.scala 47:18]
     _T_201 <= _T_192 @[Valid.scala 47:18]
     reg _T_205 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when _T_192 : @[Reg.scala 35:19]
-      _T_205 <- _T_196 @[Reg.scala 35:23]
+      _T_205 <= _T_196 @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire _T_217 : {valid : UInt<1>, bits : {data : UInt<65>, exc : UInt<5>}} @[Valid.scala 42:21]
     _T_217 is invalid @[Valid.scala 42:21]
     _T_217.valid <= _T_201 @[Valid.scala 43:17]
-    _T_217.bits <- _T_205 @[Valid.scala 44:16]
-    io.out <- _T_217 @[FPU.scala 503:10]
+    _T_217.bits <= _T_205 @[Valid.scala 44:16]
+    io.out <= _T_217 @[FPU.scala 503:10]
     
   module FPToInt : 
     input clock : Clock
@@ -987,7 +1020,7 @@ circuit FPU :
     reg valid : UInt<1>, clock @[FPU.scala 287:18]
     valid <= io.in.valid @[FPU.scala 287:18]
     when io.in.valid : @[FPU.scala 291:22]
-      in <- io.in.bits @[FPU.scala 292:8]
+      in <= io.in.bits @[FPU.scala 292:8]
       node _T_224 = eq(io.in.bits.ldst, UInt<1>("h00")) @[FPU.scala 293:47]
       node _T_225 = and(io.in.bits.single, _T_224) @[FPU.scala 293:44]
       node _T_228 = and(io.in.bits.cmd, UInt<4>("h0c")) @[FPU.scala 293:82]
@@ -1299,7 +1332,7 @@ circuit FPU :
       skip @[FPU.scala 332:33]
     io.out.valid <= valid @[FPU.scala 347:16]
     io.out.bits.lt <= dcmp.io.lt @[FPU.scala 348:18]
-    io.as_double <- in @[FPU.scala 349:16]
+    io.as_double <= in @[FPU.scala 349:16]
     
   module IntToFP : 
     input clock : Clock
@@ -1312,12 +1345,12 @@ circuit FPU :
     _T_132 <= io.in.valid @[Valid.scala 47:18]
     reg _T_155 : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}, clock @[Reg.scala 34:16]
     when io.in.valid : @[Reg.scala 35:19]
-      _T_155 <- io.in.bits @[Reg.scala 35:23]
+      _T_155 <= io.in.bits @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire in : {valid : UInt<1>, bits : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}} @[Valid.scala 42:21]
     in is invalid @[Valid.scala 42:21]
     in.valid <= _T_132 @[Valid.scala 43:17]
-    in.bits <- _T_155 @[Valid.scala 44:16]
+    in.bits <= _T_155 @[Valid.scala 44:16]
     wire mux : {data : UInt<65>, exc : UInt<5>} @[FPU.scala 360:17]
     mux is invalid @[FPU.scala 360:17]
     mux.exc <= UInt<1>("h00") @[FPU.scala 361:11]
@@ -1670,13 +1703,13 @@ circuit FPU :
     _T_694 <= in.valid @[Valid.scala 47:18]
     reg _T_698 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when in.valid : @[Reg.scala 35:19]
-      _T_698 <- mux @[Reg.scala 35:23]
+      _T_698 <= mux @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire _T_710 : {valid : UInt<1>, bits : {data : UInt<65>, exc : UInt<5>}} @[Valid.scala 42:21]
     _T_710 is invalid @[Valid.scala 42:21]
     _T_710.valid <= _T_694 @[Valid.scala 43:17]
-    _T_710.bits <- _T_698 @[Valid.scala 44:16]
-    io.out <- _T_710 @[FPU.scala 405:12]
+    _T_710.bits <= _T_698 @[Valid.scala 44:16]
+    io.out <= _T_710 @[FPU.scala 405:12]
     
   module FPToFP : 
     input clock : Clock
@@ -1689,12 +1722,12 @@ circuit FPU :
     _T_134 <= io.in.valid @[Valid.scala 47:18]
     reg _T_157 : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}, clock @[Reg.scala 34:16]
     when io.in.valid : @[Reg.scala 35:19]
-      _T_157 <- io.in.bits @[Reg.scala 35:23]
+      _T_157 <= io.in.bits @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire in : {valid : UInt<1>, bits : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}} @[Valid.scala 42:21]
     in is invalid @[Valid.scala 42:21]
     in.valid <= _T_134 @[Valid.scala 43:17]
-    in.bits <- _T_157 @[Valid.scala 44:16]
+    in.bits <= _T_157 @[Valid.scala 44:16]
     node _T_272 = bits(in.bits.rm, 1, 1) @[FPU.scala 417:33]
     node _T_273 = xor(in.bits.in1, in.bits.in2) @[FPU.scala 417:50]
     node _T_274 = bits(in.bits.rm, 0, 0) @[FPU.scala 417:79]
@@ -1812,13 +1845,13 @@ circuit FPU :
     _T_382 <= in.valid @[Valid.scala 47:18]
     reg _T_386 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when in.valid : @[Reg.scala 35:19]
-      _T_386 <- mux @[Reg.scala 35:23]
+      _T_386 <= mux @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire _T_398 : {valid : UInt<1>, bits : {data : UInt<65>, exc : UInt<5>}} @[Valid.scala 42:21]
     _T_398 is invalid @[Valid.scala 42:21]
     _T_398.valid <= _T_382 @[Valid.scala 43:17]
-    _T_398.bits <- _T_386 @[Valid.scala 44:16]
-    io.out <- _T_398 @[FPU.scala 469:10]
+    _T_398.bits <= _T_386 @[Valid.scala 44:16]
+    io.out <= _T_398 @[FPU.scala 469:10]
     
   module FPUFMAPipe_1 : 
     input clock : Clock
@@ -1836,7 +1869,7 @@ circuit FPU :
     valid <= io.in.valid @[FPU.scala 482:18]
     reg in : {cmd : UInt<5>, ldst : UInt<1>, wen : UInt<1>, ren1 : UInt<1>, ren2 : UInt<1>, ren3 : UInt<1>, swap12 : UInt<1>, swap23 : UInt<1>, single : UInt<1>, fromint : UInt<1>, toint : UInt<1>, fastpipe : UInt<1>, fma : UInt<1>, div : UInt<1>, sqrt : UInt<1>, wflags : UInt<1>, rm : UInt<3>, typ : UInt<2>, in1 : UInt<65>, in2 : UInt<65>, in3 : UInt<65>}, clock @[FPU.scala 483:15]
     when io.in.valid : @[FPU.scala 484:22]
-      in <- io.in.bits @[FPU.scala 485:8]
+      in <= io.in.bits @[FPU.scala 485:8]
       node _T_177 = bits(io.in.bits.cmd, 1, 1) @[FPU.scala 488:33]
       node _T_178 = or(io.in.bits.ren3, io.in.bits.swap23) @[FPU.scala 488:48]
       node _T_179 = and(_T_177, _T_178) @[FPU.scala 488:37]
@@ -1869,25 +1902,25 @@ circuit FPU :
     _T_192 <= valid @[Valid.scala 47:18]
     reg _T_196 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when valid : @[Reg.scala 35:19]
-      _T_196 <- res @[Reg.scala 35:23]
+      _T_196 <= res @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     reg _T_201 : UInt<1>, clock with : (reset => (reset, UInt<1>("h00"))) @[Valid.scala 47:18]
     _T_201 <= _T_192 @[Valid.scala 47:18]
     reg _T_205 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when _T_192 : @[Reg.scala 35:19]
-      _T_205 <- _T_196 @[Reg.scala 35:23]
+      _T_205 <= _T_196 @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     reg _T_210 : UInt<1>, clock with : (reset => (reset, UInt<1>("h00"))) @[Valid.scala 47:18]
     _T_210 <= _T_201 @[Valid.scala 47:18]
     reg _T_214 : {data : UInt<65>, exc : UInt<5>}, clock @[Reg.scala 34:16]
     when _T_201 : @[Reg.scala 35:19]
-      _T_214 <- _T_205 @[Reg.scala 35:23]
+      _T_214 <= _T_205 @[Reg.scala 35:23]
       skip @[Reg.scala 35:19]
     wire _T_226 : {valid : UInt<1>, bits : {data : UInt<65>, exc : UInt<5>}} @[Valid.scala 42:21]
     _T_226 is invalid @[Valid.scala 42:21]
     _T_226.valid <= _T_210 @[Valid.scala 43:17]
-    _T_226.bits <- _T_214 @[Valid.scala 44:16]
-    io.out <- _T_226 @[FPU.scala 503:10]
+    _T_226.bits <= _T_214 @[Valid.scala 44:16]
+    io.out <= _T_226 @[FPU.scala 503:10]
     
   module DivSqrtRecF64 : 
     input clock : Clock
@@ -1987,7 +2020,7 @@ circuit FPU :
     RoundRawFNToRecFN.reset <= reset
     RoundRawFNToRecFN.io.invalidExc <= invalidExc @[RecFNToRecFN.scala 103:41]
     RoundRawFNToRecFN.io.infiniteExc <= UInt<1>("h00") @[RecFNToRecFN.scala 104:42]
-    RoundRawFNToRecFN.io.in <- outRawFloat @[RecFNToRecFN.scala 105:33]
+    RoundRawFNToRecFN.io.in <= outRawFloat @[RecFNToRecFN.scala 105:33]
     RoundRawFNToRecFN.io.roundingMode <= io.roundingMode @[RecFNToRecFN.scala 106:43]
     io.out <= RoundRawFNToRecFN.io.out @[RecFNToRecFN.scala 107:16]
     io.exceptionFlags <= RoundRawFNToRecFN.io.exceptionFlags @[RecFNToRecFN.scala 108:27]
@@ -2012,7 +2045,7 @@ circuit FPU :
     mulAddRecFN_preMul.io.b <= io.b @[MulAddRecFN.scala 604:30]
     mulAddRecFN_preMul.io.c <= io.c @[MulAddRecFN.scala 605:30]
     mulAddRecFN_preMul.io.roundingMode <= io.roundingMode @[MulAddRecFN.scala 606:40]
-    mulAddRecFN_postMul.io.fromPreMul <- mulAddRecFN_preMul.io.toPostMul @[MulAddRecFN.scala 608:39]
+    mulAddRecFN_postMul.io.fromPreMul <= mulAddRecFN_preMul.io.toPostMul @[MulAddRecFN.scala 608:39]
     node _T_16 = mul(mulAddRecFN_preMul.io.mulAddA, mulAddRecFN_preMul.io.mulAddB) @[MulAddRecFN.scala 610:39]
     node _T_18 = cat(UInt<1>("h00"), mulAddRecFN_preMul.io.mulAddC) @[Cat.scala 30:58]
     node _T_19 = add(_T_16, _T_18) @[MulAddRecFN.scala 610:71]
@@ -2869,7 +2902,7 @@ circuit FPU :
     RoundRawFNToRecFN.reset <= reset
     RoundRawFNToRecFN.io.invalidExc <= invalidExc @[RecFNToRecFN.scala 103:41]
     RoundRawFNToRecFN.io.infiniteExc <= UInt<1>("h00") @[RecFNToRecFN.scala 104:42]
-    RoundRawFNToRecFN.io.in <- outRawFloat @[RecFNToRecFN.scala 105:33]
+    RoundRawFNToRecFN.io.in <= outRawFloat @[RecFNToRecFN.scala 105:33]
     RoundRawFNToRecFN.io.roundingMode <= io.roundingMode @[RecFNToRecFN.scala 106:43]
     io.out <= RoundRawFNToRecFN.io.out @[RecFNToRecFN.scala 107:16]
     io.exceptionFlags <= RoundRawFNToRecFN.io.exceptionFlags @[RecFNToRecFN.scala 108:27]
@@ -2962,7 +2995,7 @@ circuit FPU :
     mulAddRecFN_preMul.io.b <= io.b @[MulAddRecFN.scala 604:30]
     mulAddRecFN_preMul.io.c <= io.c @[MulAddRecFN.scala 605:30]
     mulAddRecFN_preMul.io.roundingMode <= io.roundingMode @[MulAddRecFN.scala 606:40]
-    mulAddRecFN_postMul.io.fromPreMul <- mulAddRecFN_preMul.io.toPostMul @[MulAddRecFN.scala 608:39]
+    mulAddRecFN_postMul.io.fromPreMul <= mulAddRecFN_preMul.io.toPostMul @[MulAddRecFN.scala 608:39]
     node _T_16 = mul(mulAddRecFN_preMul.io.mulAddA, mulAddRecFN_preMul.io.mulAddB) @[MulAddRecFN.scala 610:39]
     node _T_18 = cat(UInt<1>("h00"), mulAddRecFN_preMul.io.mulAddC) @[Cat.scala 30:58]
     node _T_19 = add(_T_16, _T_18) @[MulAddRecFN.scala 610:71]
