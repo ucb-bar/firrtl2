@@ -8,9 +8,8 @@ import firrtl2.testutils._
 import FirrtlCheckers._
 import firrtl2.Parser.AppendInfo
 
-class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
-  def compile(input: String): CircuitState =
-    (new VerilogCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm), List.empty)
+class InfoSpec extends VerilogTransformSpec {
+
   def compileBody(body: String) = {
     val str = """
                 |circuit Test :
@@ -20,10 +19,10 @@ class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
   }
 
   // Some useful constants to use and look for
-  val Info1 = FileInfo(StringLit("Source.scala 1:4"))
-  val Info2 = FileInfo(StringLit("Source.scala 2:4"))
-  val Info3 = FileInfo(StringLit("Source.scala 3:4"))
-  val Info4 = FileInfo(StringLit("Source.scala 4:4"))
+  val Info1 = FileInfo.fromUnescaped("Source.scala 1:4")
+  val Info2 = FileInfo.fromUnescaped("Source.scala 2:4")
+  val Info3 = FileInfo.fromUnescaped("Source.scala 3:4")
+  val Info4 = FileInfo.fromUnescaped("Source.scala 4:4")
 
   "Source locators on module ports" should "be propagated to Verilog" in {
     val result = compileBody(s"""
@@ -165,7 +164,9 @@ class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
         |
       """.stripMargin
 
-    val result = (new LowFirrtlCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm), List.empty)
+    val result = MakeCompiler
+      .makeLowFirrtlCompiler()
+      .transform(CircuitState(parse(input), Seq(MakeCompiler.makeEmitLowFirrtlCircuitAnno)))
     result should containLine("node _GEN_0 = mux(_T_14, _T_16, x) @[GCD.scala 15:14 17:{18,22}]")
     result should containLine("node _GEN_2 = mux(io_e, io_a, _GEN_0) @[GCD.scala 19:{15,19}]")
     result should containLine("x <= _GEN_2")
@@ -182,9 +183,9 @@ class InfoSpec extends FirrtlFlatSpec with FirrtlMatchers {
                   |    output out: UInt<32>
                   |    out <= in @[Top.scala 15:14]
                   |""".stripMargin
-    val circuit = firrtl2.Parser.parse(input.split("\n").toIterator, AppendInfo("myfile.fir"))
-    val circuitState = CircuitState(circuit, UnknownForm)
-    val expectedInfos = Seq(FileInfo(StringLit("Top.scala 15:14")), FileInfo(StringLit("myfile.fir 6:4")))
+    val circuit = firrtl2.Parser.parse(input, AppendInfo("myfile.fir"))
+    val circuitState = CircuitState(circuit, Seq())
+    val expectedInfos = Seq(FileInfo.fromUnescaped("Top.scala 15:14"), FileInfo.fromUnescaped("myfile.fir 6:4"))
     circuitState should containTree { case MultiInfo(`expectedInfos`) => true }
   }
 

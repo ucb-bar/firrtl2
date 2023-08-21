@@ -26,10 +26,9 @@ package object stage {
     def view(options: AnnotationSeq): FirrtlOptions = options.collect { case a: FirrtlOption => a }
       .foldLeft(new FirrtlOptions()) { (c, x) =>
         x match {
-          case OutputFileAnnotation(f)      => c.copy(outputFileName = Some(f))
-          case InfoModeAnnotation(i)        => c.copy(infoModeName = i)
-          case FirrtlCircuitAnnotation(cir) => c.copy(firrtlCircuit = Some(cir))
-          case a: CompilerAnnotation => logger.warn(s"Use of CompilerAnnotation is deprecated. Ignoring $a"); c
+          case OutputFileAnnotation(f)       => c.copy(outputFileName = Some(f))
+          case InfoModeAnnotation(i)         => c.copy(infoModeName = i)
+          case FirrtlCircuitAnnotation(cir)  => c.copy(firrtlCircuit = Some(cir))
           case WarnNoScalaVersionDeprecation => c
           case PrettyNoExprInlining          => c
           case _: DisableFold => c

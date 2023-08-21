@@ -12,9 +12,7 @@ import firrtl2.testutils.FirrtlCheckers._
 // TODO
 // - Test nodes in the connection
 // - Test with whens (is this allowed?)
-class InferResetsSpec extends FirrtlFlatSpec {
-  def compile(input: String, compiler: Compiler = new MiddleFirrtlCompiler): CircuitState =
-    compiler.compileAndEmit(CircuitState(parse(input), ChirrtlForm), List.empty)
+class InferResetsSpec extends MidFirrtlTransformSpec {
 
   behavior.of("ResetType")
 
@@ -91,15 +89,14 @@ class InferResetsSpec extends FirrtlFlatSpec {
   }
 
   it should "work in nested and flipped aggregates with regular and partial connect" in {
-    val result = compile(
+    val src =
       s"""
          |circuit top :
          |  module top :
          |    output fizz : { flip foo : { a : AsyncReset, flip b: Reset }[2], bar : { a : Reset, flip b: AsyncReset }[2] }
          |    fizz.bar <= fizz.foo
-         |""".stripMargin,
-      new LowFirrtlCompiler
-    )
+         |""".stripMargin
+    val result = MakeCompiler.makeLowFirrtlCompiler().transform(CircuitState(parse(src), Seq()))
     result should containTree { case Port(_, "fizz_foo_0_a", Input, AsyncResetType) => true }
     result should containTree { case Port(_, "fizz_foo_0_b", Output, AsyncResetType) => true }
     result should containTree { case Port(_, "fizz_foo_1_a", Input, AsyncResetType) => true }
@@ -461,22 +458,21 @@ class InferResetsSpec extends FirrtlFlatSpec {
   }
 
   it should "not crash on combinational loops" in {
+    val src =
+      s"""
+         |circuit top :
+         |  module top :
+         |    input in : AsyncReset
+         |    output out : Reset
+         |    wire w0 : Reset
+         |    wire w1 : Reset
+         |    w0 <= in
+         |    w0 <= w1
+         |    w1 <= w0
+         |    out <= in
+         |""".stripMargin
     a[CheckCombLoops.CombLoopException] shouldBe thrownBy {
-      val result = compile(
-        s"""
-           |circuit top :
-           |  module top :
-           |    input in : AsyncReset
-           |    output out : Reset
-           |    wire w0 : Reset
-           |    wire w1 : Reset
-           |    w0 <= in
-           |    w0 <= w1
-           |    w1 <= w0
-           |    out <= in
-           |""".stripMargin,
-        compiler = new LowFirrtlCompiler
-      )
+      MakeCompiler.makeLowFirrtlCompiler().transform(CircuitState(parse(src), Seq()))
     }
   }
 }

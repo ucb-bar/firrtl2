@@ -4,42 +4,41 @@ package firrtlTests
 
 import firrtl2._
 import firrtl2.ir._
+import firrtl2.options.Dependency
 import firrtl2.passes._
+import firrtl2.stage.Forms
 import firrtl2.transforms._
 import firrtl2.testutils._
 
-class CInferMDirSpec extends LowTransformSpec {
-  object CInferMDirCheckPass extends Pass {
-    // finds the memory and check its read port
-    def checkStmt(s: Statement): Boolean = s match {
-      case s: DefMemory if s.name == "indices" =>
-        (s.readers contains "index") &&
-          (s.writers contains "bar") &&
-          s.readwriters.isEmpty
-      case s: Block =>
-        s.stmts.exists(checkStmt)
-      case _ => false
-    }
+object CInferMDirCheckPass extends Pass {
+  override def prerequisites = Forms.LowForm
 
-    def run(c: Circuit) = {
-      val errors = new Errors
-      val check = c.modules.exists {
-        case m: Module    => checkStmt(m.body)
-        case m: ExtModule => false
-      }
-      if (!check) {
-        errors.append(new PassException("Memory has incorrect port directions!"))
-        errors.trigger()
-      }
-      c
-    }
+  // finds the memory and check its read port
+  def checkStmt(s: Statement): Boolean = s match {
+    case s: DefMemory if s.name == "indices" =>
+      (s.readers contains "index") &&
+        (s.writers contains "bar") &&
+        s.readwriters.isEmpty
+    case s: Block =>
+      s.stmts.exists(checkStmt)
+    case _ => false
   }
 
-  def transform = new SeqTransform {
-    def inputForm = LowForm
-    def outputForm = LowForm
-    def transforms = Seq(new ConstantPropagation, CInferMDirCheckPass)
+  def run(c: Circuit) = {
+    val errors = new Errors
+    val check = c.modules.exists {
+      case m: Module    => checkStmt(m.body)
+      case m: ExtModule => false
+    }
+    if (!check) {
+      errors.append(new PassException("Memory has incorrect port directions!"))
+      errors.trigger()
+    }
+    c
   }
+}
+
+class CInferMDirSpec extends LowFirrtlTransformSpec(Seq(Dependency(CInferMDirCheckPass))) {
 
   "Memory" should "have correct mem port directions" in {
     val input = """
@@ -66,7 +65,7 @@ circuit foo :
         bar <= io.in
 """.stripMargin
 
-    val res = compileAndEmit(CircuitState(parse(input), ChirrtlForm))
+    val res = compile(input)
     // Check correctness of firrtl
     parse(res.getEmittedCircuit.value)
   }

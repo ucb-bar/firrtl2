@@ -3,14 +3,14 @@
 package firrtlTests
 
 import firrtl2.annotations.{Annotation, CircuitName, ComponentName, ModuleName}
+import firrtl2.options.Dependency
 import firrtl2.transforms.{Flatten, FlattenAnnotation, NoCircuitDedupAnnotation}
 import firrtl2.testutils._
 
 /**
   * Tests deep inline transformation
   */
-class FlattenTests extends LowTransformSpec {
-  def transform = new Flatten
+class FlattenTests extends LowFirrtlTransformSpec(Seq(Dependency[Flatten])) {
   def flatten(mod: String): Annotation = {
     val parts = mod.split('.')
     val modName = ModuleName(parts.head, CircuitName("Top")) // If this fails, bad input

@@ -383,7 +383,7 @@ class AsyncResetSpec extends VerilogTransformSpec {
                            |    reg r : UInt<8>, clock with : (reset => (reset, UInt(123)))
                            |""".stripMargin
     val annos = Seq(dontTouch("m.r")) // dontTouch prevents ConstantPropagation from fixing this problem
-    val result = (new VerilogCompiler).compileAndEmit(CircuitState(parse(withDontTouch), ChirrtlForm, annos))
+    val result = compile(withDontTouch, annos)
     result should containLines(
       "always @(posedge clock or posedge reset) begin",
       "if (reset) begin",

@@ -4,7 +4,7 @@ package firrtlTests
 
 import firrtl2._
 import firrtl2.annotations._
-import firrtl2.passes.{InlineAnnotation, InlineInstances, ResolveKinds}
+import firrtl2.passes.{InlineAnnotation, InlineInstances, PassExceptions, ResolveKinds}
 import firrtl2.transforms.NoCircuitDedupAnnotation
 import firrtl2.testutils._
 import firrtl2.testutils.FirrtlCheckers._
@@ -14,14 +14,17 @@ import firrtl2.options.Dependency
 /**
   * Tests inline instances transformation
   */
-class InlineInstancesTests extends LowTransformSpec {
-  def transform = new InlineInstances
+class InlineInstancesTests extends LowFirrtlTransformSpec(Seq(Dependency[InlineInstances])) {
   def inlineAnno(mod: String): Annotation = {
     val parts = mod.split('.')
     val modName = ModuleName(parts.head, CircuitName("Top")) // If this fails, bad input
-    val name = if (parts.size == 1) modName else ComponentName(parts.tail.mkString("."), modName)
+    val name = if (parts.length == 1) modName else ComponentName(parts.tail.mkString("."), modName)
     InlineAnnotation(name)
   }
+
+  def failingexecute(input: String, annotations: Seq[Annotation]): Exception =
+    intercept[PassExceptions] { compile(input, annotations) }
+
   // Set this to debug, this will apply to all tests
   // Logger.setLevel(this.getClass, Debug)
   "The module Inline" should "be inlined" in {
@@ -439,7 +442,7 @@ class InlineInstancesTests extends LowTransformSpec {
     val nestedInlined = top.instOf("i", "Inline").instOf("foo", "NestedInline")
     val nestedNotInlined = top.instOf("i", "Inline").instOf("bar", "NestedNoInline")
 
-    executeWithAnnos(
+    execute(
       input,
       check,
       Seq(
@@ -504,7 +507,7 @@ class InlineInstancesTests extends LowTransformSpec {
     val top = CircuitTarget("Top").module("Top")
     val inlined = top.instOf("i", "Inline")
 
-    executeWithAnnos(
+    execute(
       input,
       check,
       Seq(
@@ -580,7 +583,7 @@ class InlineInstancesTests extends LowTransformSpec {
     val inlineModuleTarget = top.copy(module = "Inline")
     val nestedInlineModuleTarget = top.copy(module = "NestedInline")
 
-    executeWithAnnos(
+    execute(
       input,
       check,
       Seq(
@@ -628,7 +631,7 @@ class InlineInstancesTests extends LowTransformSpec {
         |    output b : UInt<32>
         |    b <= a""".stripMargin
 
-    val state = CircuitState(parse(input), ChirrtlForm, Seq(inlineAnno("Inline")))
+    val state = CircuitState(parse(input), Seq(inlineAnno("Inline")))
     val manager = new TransformManager(Seq(Dependency[InlineInstances], Dependency(ResolveKinds)))
     val result = manager.execute(state)
 
@@ -636,24 +639,3 @@ class InlineInstancesTests extends LowTransformSpec {
     result should containTree { case WRef("i_a", _, WireKind, _) => true }
   }
 }
-
-// Execution driven tests for inlining modules
-// TODO(izraelevitz) fix this test
-//class InlineInstancesIntegrationSpec extends FirrtlPropSpec {
-//  // Shorthand for creating annotations to inline modules
-//  def inlineModules(names: Seq[String]): Seq[CircuitAnnotation] =
-//    Seq(StickyCircuitAnnotation(InlineCAKind, names.map(n => ModuleName(n) -> TagAnnotation).toMap))
-//
-//  case class Test(name: String, dir: String, ann: Seq[CircuitAnnotation])
-//
-//  val runTests = Seq(
-//    Test("GCDTester", "/integration", inlineModules(Seq("DecoupledGCD")))
-//  )
-//
-//  runTests foreach { test =>
-//    property(s"${test.name} should execute correctly with inlining") {
-//      println(s"Got annotations ${test.ann}")
-//      runFirrtlTest(test.name, test.dir, test.ann)
-//    }
-//  }
-//}

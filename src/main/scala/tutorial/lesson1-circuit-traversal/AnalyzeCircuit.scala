@@ -75,7 +75,7 @@ class AnalyzeCircuit extends Transform {
   /** Indicates the output [[firrtl2.ir.Circuit Circuit]] form to be "low" */
   def outputForm = LowForm
 
-  /** Called by [[firrtl2.Compiler Compiler]] to run your pass. [[firrtl2.CircuitState CircuitState]] contains the circuit
+  /**  [[firrtl2.CircuitState CircuitState]] contains the circuit
     * and its form, as well as other related data.
     */
   def execute(state: CircuitState): CircuitState = {

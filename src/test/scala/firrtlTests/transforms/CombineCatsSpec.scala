@@ -5,22 +5,28 @@ package firrtlTests.transforms
 import firrtl2.PrimOps._
 import firrtl2._
 import firrtl2.ir.DoPrim
+import firrtl2.options.Dependency
 import firrtl2.stage.PrettyNoExprInlining
 import firrtl2.transforms.{CombineCats, MaxCatLenAnnotation}
 import firrtl2.testutils.FirrtlFlatSpec
 import firrtl2.testutils.FirrtlCheckers._
 
 class CombineCatsSpec extends FirrtlFlatSpec {
-  private val transforms = Seq(new IRToWorkingIR, new CombineCats)
-  private val annotations = Seq(new MaxCatLenAnnotation(12))
+  import firrtl2.testutils.Equivalence._
+  private val transforms = Seq(Dependency[CombineCats])
+  private val annotations = Seq(MaxCatLenAnnotation(12))
 
-  private def execute(input: String, transforms: Seq[Transform], annotations: AnnotationSeq): CircuitState = {
+  private def execute(
+    input:       String,
+    transforms:  Seq[Dependency[Transform]],
+    annotations: AnnotationSeq
+  ): CircuitState = {
     val c = transforms
-      .foldLeft(CircuitState(parse(input), UnknownForm, annotations)) { (c: CircuitState, t: Transform) =>
-        t.runTransform(c)
+      .foldLeft(CircuitState(parse(input), annotations)) { (c: CircuitState, t: Dependency[Transform]) =>
+        t.getObject().runTransform(c)
       }
       .circuit
-    CircuitState(c, UnknownForm, Seq(), None)
+    CircuitState(c, Seq())
   }
 
   "circuit1 with combined cats" should "be equivalent to one without" in {

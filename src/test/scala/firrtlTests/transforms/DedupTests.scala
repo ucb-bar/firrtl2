@@ -12,7 +12,7 @@ import firrtl2.testutils._
 /**
   * Tests inline instances transformation
   */
-class DedupModuleTests extends HighTransformSpec {
+class DedupModuleTests extends HighFirrtlTransformSpec {
   case class MultiTargetDummyAnnotation(targets: Seq[Target], tag: Int) extends Annotation {
     override def update(renames: RenameMap): Seq[Annotation] = {
       val newTargets = targets.flatMap(renames(_))

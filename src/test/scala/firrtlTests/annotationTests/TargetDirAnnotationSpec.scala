@@ -4,18 +4,16 @@ package firrtlTests
 package annotationTests
 
 import firrtl2._
-import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.testutils.{FirrtlFlatSpec, MakeCompiler}
 import firrtl2.annotations.{Annotation, NoTargetAnnotation}
+import firrtl2.options.Dependency
 import firrtl2.stage.{FirrtlCircuitAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
 
 case object FoundTargetDirTransformRanAnnotation extends NoTargetAnnotation
 case object FoundTargetDirTransformFoundTargetDirAnnotation extends NoTargetAnnotation
 
 /** Looks for [[TargetDirAnnotation]] */
-class FindTargetDirTransform extends Transform {
-  def inputForm = HighForm
-  def outputForm = HighForm
-
+class FindTargetDirTransform extends Transform with DependencyAPIMigration {
   def execute(state: CircuitState): CircuitState = {
     val a: Option[Annotation] = state.annotations.collectFirst {
       case TargetDirAnnotation("a/b/c") => FoundTargetDirTransformFoundTargetDirAnnotation
@@ -58,13 +56,10 @@ class TargetDirAnnotationSpec extends FirrtlFlatSpec {
   }
 
   it should "NOT be available as an annotation when using a raw compiler" in {
-    val findTargetDir = new FindTargetDirTransform // looks for the annotation
-    val compiler = new VerilogCompiler
+    val compiler = MakeCompiler.makeVerilogCompiler(Seq(Dependency[FindTargetDirTransform]))
     val circuit = Parser.parse(input.split("\n"))
 
-    val annotations: Seq[Annotation] = compiler
-      .compileAndEmit(CircuitState(circuit, HighForm), Seq(findTargetDir))
-      .annotations
+    val annotations: Seq[Annotation] = compiler.transform(CircuitState(circuit, Seq())).annotations
 
     // Check that FindTargetDirTransform does not find the annotation
     annotations should contain(FoundTargetDirTransformRanAnnotation)

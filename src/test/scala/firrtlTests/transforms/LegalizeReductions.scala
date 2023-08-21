@@ -4,6 +4,7 @@ package firrtlTests.transforms
 
 import firrtl2._
 import firrtl2.ir.StringLit
+import firrtl2.options.Dependency
 import firrtl2.testutils._
 import firrtl2.util.BackendCompilationUtilities._
 import org.scalatest.flatspec.AnyFlatSpec
@@ -62,7 +63,7 @@ circuit $name :
     val annos =
       FirrtlSourceAnnotation(test.toFirrtl) ::
         TargetDirAnnotation(testDir.toString) ::
-        CompilerAnnotation(new MinimumVerilogCompiler) ::
+        RunFirrtlTransformAnnotation(Dependency[firrtl2.MinimumVerilogEmitter]) ::
         Nil
     val resultAnnos = (new FirrtlStage).transform(annos)
     val outputFilename = resultAnnos.collectFirst { case OutputFileAnnotation(f) => f }

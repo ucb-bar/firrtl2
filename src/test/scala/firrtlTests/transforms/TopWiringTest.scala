@@ -8,6 +8,7 @@ import firrtl2._
 import firrtl2.ir.{GroundType, IntWidth, Type}
 import firrtl2.Parser
 import firrtl2.annotations.{CircuitName, ComponentName, ModuleName, Target}
+import firrtl2.options.Dependency
 import firrtl2.stage.FirrtlStage
 import firrtl2.transforms.TopWiring._
 import firrtl2.testutils._
@@ -17,7 +18,6 @@ trait TopWiringTestsCommon extends FirrtlRunners {
 
   val testDir = createTestDirectory("TopWiringTests")
   val testDirName = testDir.getPath
-  def transform = new TopWiringTransform
 
   def topWiringDummyOutputFilesFunction(
     dir:     String,
@@ -49,7 +49,7 @@ trait TopWiringTestsCommon extends FirrtlRunners {
 /**
   * Tests TopWiring transformation
   */
-class TopWiringTests extends MiddleTransformSpec with TopWiringTestsCommon {
+class TopWiringTests extends MidFirrtlTransformSpec(Seq(Dependency[TopWiringTransform])) with TopWiringTestsCommon {
 
   "The signal x in module C" should s"be connected to Top port with topwiring prefix and outputfile in $testDirName" in {
     val input =
@@ -651,7 +651,9 @@ class TopWiringTests extends MiddleTransformSpec with TopWiringTestsCommon {
   }
 }
 
-class AggregateTopWiringTests extends MiddleTransformSpec with TopWiringTestsCommon {
+class AggregateTopWiringTests
+    extends MidFirrtlTransformSpec(Seq(Dependency[TopWiringTransform]))
+    with TopWiringTestsCommon {
 
   "An aggregate wire named myAgg in A" should s"be wired to Top's IO as topwiring_a1_myAgg" in {
     val input =

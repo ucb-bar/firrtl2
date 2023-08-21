@@ -2,12 +2,11 @@
 
 package firrtlTests.analyses
 
-import firrtl2.{ChirrtlForm, CircuitState, FileUtils, IRToWorkingIR, UnknownForm}
-import firrtl2.analyses.{CircuitGraph, ConnectionGraph}
+import firrtl2.{CircuitState, FileUtils}
+import firrtl2.analyses.ConnectionGraph
 import firrtl2.annotations.ModuleTarget
 import firrtl2.options.Dependency
 import firrtl2.passes.ExpandWhensAndCheck
-import firrtl2.stage.{Forms, TransformManager}
 import firrtl2.testutils.FirrtlFlatSpec
 
 class ConnectionGraphSpec extends FirrtlFlatSpec {
@@ -16,7 +15,7 @@ class ConnectionGraphSpec extends FirrtlFlatSpec {
     ConnectionGraph(
       new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
         .runTransform(
-          CircuitState(parse(FileUtils.getTextResource("/regress/RocketCore.fir")), UnknownForm)
+          CircuitState(parse(FileUtils.getTextResource("/regress/RocketCore.fir")), Seq())
         )
         .circuit
     )
@@ -48,7 +47,7 @@ class ConnectionGraphSpec extends FirrtlFlatSpec {
 
   val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
     .runTransform(
-      CircuitState(parse(input), UnknownForm)
+      CircuitState(parse(input), Seq())
     )
     .circuit
 

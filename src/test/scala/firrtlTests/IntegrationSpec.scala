@@ -3,6 +3,7 @@
 package firrtlTests
 
 import firrtl2._
+import firrtl2.options.Dependency
 import firrtl2.stage.FirrtlStage
 import firrtl2.testutils._
 import firrtl2.util.BackendCompilationUtilities._
@@ -60,13 +61,13 @@ class FPUCompilationTest extends CompilationTest("FPU", "/regress")
 class HwachaSequencerCompilationTest extends CompilationTest("HwachaSequencer", "/regress")
 
 abstract class CommonSubexprEliminationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(firrtl2.passes.CommonSubexpressionElimination), name, dir)
+    extends EquivalenceTest(Seq(Dependency(firrtl2.passes.CommonSubexpressionElimination)), name, dir)
 abstract class DeadCodeEliminationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(new firrtl2.transforms.DeadCodeElimination), name, dir)
+    extends EquivalenceTest(Seq(Dependency[firrtl2.transforms.DeadCodeElimination]), name, dir)
 abstract class ConstantPropagationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(new firrtl2.transforms.ConstantPropagation), name, dir)
+    extends EquivalenceTest(Seq(Dependency[firrtl2.transforms.ConstantPropagation]), name, dir)
 abstract class LowFirrtlOptimizationEquivTest(name: String, dir: String)
-    extends EquivalenceTest(Seq(new LowFirrtlOptimization), name, dir)
+    extends EquivalenceTest(firrtl2.stage.Forms.LowFormOptimized, name, dir)
 
 class OpsCommonSubexprEliminationTest extends CommonSubexprEliminationEquivTest("Ops", "/regress")
 class OpsDeadCodeEliminationTest extends DeadCodeEliminationEquivTest("Ops", "/regress")

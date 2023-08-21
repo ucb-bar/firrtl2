@@ -5,6 +5,7 @@ package firrtlTests
 import firrtl2.testutils._
 
 class NegSpec extends FirrtlFlatSpec {
+  import Equivalence._
   "unsigned neg" should "be correct and lint-clean" in {
     val input =
       """|circuit UnsignedNeg :

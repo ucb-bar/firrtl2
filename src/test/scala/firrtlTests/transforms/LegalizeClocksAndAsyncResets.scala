@@ -6,9 +6,7 @@ import firrtl2._
 import firrtl2.testutils._
 import firrtl2.testutils.FirrtlCheckers.containLine
 
-class LegalizeClocksTransformSpec extends FirrtlFlatSpec {
-  def compile(input: String): CircuitState =
-    (new MinimumVerilogCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm), Nil)
+class LegalizeClocksTransformSpec extends MinimumVerilogTransformSpec {
 
   behavior.of("LegalizeClocksTransform")
 

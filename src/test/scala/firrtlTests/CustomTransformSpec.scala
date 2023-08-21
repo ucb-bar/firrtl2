@@ -119,7 +119,7 @@ class CustomTransformSpec extends FirrtlFlatSpec {
   behavior.of("Custom Transforms")
 
   they should "be able to introduce high firrtl" in {
-    runFirrtlTest("CustomTransform", "/features", customTransforms = List(new ReplaceExtModuleTransform))
+    runFirrtlTest("CustomTransform", "/features", customTransforms = List(Dependency[ReplaceExtModuleTransform]))
   }
 
   they should "not cause \"Internal Errors\"" in {
@@ -139,10 +139,10 @@ class CustomTransformSpec extends FirrtlFlatSpec {
       "CustomTransform",
       "/features",
       customTransforms = List(
-        new FirstTransform,
-        new SecondTransform,
-        new ThirdTransform,
-        new ReplaceExtModuleTransform
+        Dependency[FirstTransform],
+        Dependency[SecondTransform],
+        Dependency[ThirdTransform],
+        Dependency[ReplaceExtModuleTransform]
       )
     )
   }

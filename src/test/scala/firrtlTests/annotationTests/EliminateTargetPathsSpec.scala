@@ -6,26 +6,26 @@ import firrtl2._
 import firrtl2.annotations._
 import firrtl2.annotations.analysis.DuplicationHelper
 import firrtl2.annotations.transforms.NoSuchTargetException
-import firrtl2.transforms.{DedupedResult, DontTouchAnnotation}
-import firrtl2.testutils.{FirrtlMatchers, FirrtlPropSpec}
+import firrtl2.options.Dependency
+import firrtl2.transforms._
+import firrtl2.testutils._
 
 object EliminateTargetPathsSpec {
 
   case class DummyAnnotation(target: Target) extends SingleTargetAnnotation[Target] {
     override def duplicate(n: Target): Annotation = DummyAnnotation(n)
   }
-  class DummyTransform() extends Transform with ResolvedAnnotationPaths {
-    override def inputForm:  CircuitForm = LowForm
-    override def outputForm: CircuitForm = LowForm
-
+  class DummyTransform() extends Transform with ResolvedAnnotationPaths with DependencyAPIMigration {
+    // run after dedup, because dedup might just undo all the resolving ...
+    override def prerequisites = Seq(Dependency[DedupAnnotationsTransform], Dependency[DedupModules])
     override val annotationClasses: Traversable[Class[_]] = Seq(classOf[DummyAnnotation])
-
     override def execute(state: CircuitState): CircuitState = state
   }
 
 }
 
-class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
+class EliminateTargetPathsSpec
+    extends LowFirrtlTransformSpec(Seq(Dependency[EliminateTargetPathsSpec.DummyTransform])) {
   import EliminateTargetPathsSpec._
 
   val input =
@@ -66,10 +66,8 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
   val Middle_l2_a = Middle.instOf("l2", "Leaf").ref("a")
   val Leaf_a = Leaf.ref("a")
 
-  val customTransforms = Seq(new DummyTransform())
-
-  val inputState = CircuitState(parse(input), ChirrtlForm)
-  property("Hierarchical tokens should be expanded properly") {
+  val inputState = CircuitState(parse(input), Seq())
+  "Hierarchical tokens" should "be expanded properly" in {
     val dupMap = DuplicationHelper(inputState.circuit.modules.map(_.name).toSet)
 
     // Only a few instance references
@@ -115,10 +113,8 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     }
   }
 
-  property("Hierarchical donttouch should be resolved properly") {
-    val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DontTouchAnnotation(Top_m1_l1_a)))
-    val customTransforms = Seq(new LowFirrtlOptimization())
-    val outputState = new LowFirrtlCompiler().compile(inputState, customTransforms)
+  "Hierarchical donttouch" should "be resolved properly" in {
+    val outputState = compile(input, Seq(DontTouchAnnotation(Top_m1_l1_a)))
     val check =
       """circuit Top :
         |  module Leaf :
@@ -154,7 +150,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     } should be(Seq(Top.circuitTarget.module("Top").instOf("m1", "Middle").instOf("l1", "Leaf").ref("a")))
   }
 
-  property("No name conflicts between old and new modules") {
+  "No name conflicts" should "occur between old and new modules" in {
     val input =
       """circuit Top:
         |  module Middle:
@@ -184,15 +180,14 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
         |  module Middle___Top_m1 :
         |  module Middle____Top_m1 :""".stripMargin.split("\n")
     val Top_m1 = Top.instOf("m1", "Middle")
-    val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DummyAnnotation(Top_m1)))
-    val outputState = new LowFirrtlCompiler().compile(inputState, customTransforms)
+    val outputState = compile(input, Seq(DummyAnnotation(Top_m1), NoCircuitDedupAnnotation))
     val outputLines = outputState.circuit.serialize.split("\n")
     checks.foreach { line =>
       outputLines should contain(line)
     }
   }
 
-  property("Previously unused modules should remain, but newly unused modules should be eliminated") {
+  "Previously unused modules" should "remain, but newly unused modules should be eliminated" in {
     val input =
       """circuit Top:
         |  module Leaf:
@@ -223,8 +218,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
 
     val Top_m1 = Top.instOf("m1", "Middle")
     val Top_m2 = Top.instOf("m2", "Middle")
-    val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DummyAnnotation(Top_m1), DummyAnnotation(Top_m2)))
-    val outputState = new LowFirrtlCompiler().compile(inputState, customTransforms)
+    val outputState = compile(input, Seq(DummyAnnotation(Top_m1), DummyAnnotation(Top_m2), NoCircuitDedupAnnotation))
     val outputLines = outputState.circuit.serialize.split("\n")
 
     checks.foreach { line =>
@@ -235,7 +229,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     }
   }
 
-  property("Paths with incorrect names should error") {
+  "Paths with incorrect names" should "error" in {
     val input =
       """circuit Top:
         |  module Leaf:
@@ -258,20 +252,18 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       """.stripMargin
     val e1 = the[CustomTransformException] thrownBy {
       val Top_m1 = Top.instOf("m1", "MiddleX")
-      val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DummyAnnotation(Top_m1)))
-      new LowFirrtlCompiler().compile(inputState, customTransforms)
+      compile(input, Seq(DummyAnnotation(Top_m1)))
     }
     e1.cause shouldBe a[NoSuchTargetException]
 
     val e2 = the[CustomTransformException] thrownBy {
       val Top_m2 = Top.instOf("x2", "Middle")
-      val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DummyAnnotation(Top_m2)))
-      new LowFirrtlCompiler().compile(inputState, customTransforms)
+      compile(input, Seq(DummyAnnotation(Top_m2)))
     }
     e2.cause shouldBe a[NoSuchTargetException]
   }
 
-  property("No name conflicts between two new modules") {
+  "No name conflicts" should "occur between two new modules" in {
     val input =
       """circuit Top:
         |  module Top:
@@ -309,16 +301,15 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
         |  module Leaf____Middle__l :""".stripMargin.split("\n")
     val Middle_l1 = CircuitTarget("Top").module("Middle").instOf("_l", "Leaf")
     val Middle_l2 = CircuitTarget("Top").module("Middle_").instOf("l", "Leaf")
-    val inputState =
-      CircuitState(parse(input), ChirrtlForm, Seq(DummyAnnotation(Middle_l1), DummyAnnotation(Middle_l2)))
-    val outputState = new LowFirrtlCompiler().compile(inputState, customTransforms)
+    val outputState =
+      compile(input, Seq(DummyAnnotation(Middle_l1), DummyAnnotation(Middle_l2), NoCircuitDedupAnnotation))
     val outputLines = outputState.circuit.serialize.split("\n")
     checks.foreach { line =>
       outputLines should contain(line)
     }
   }
 
-  property("Keep annotations of modules not instantiated") {
+  "annotations of modules" should "not be instantiated" in {
     val input =
       """circuit Top:
         |  module Top:
@@ -348,15 +339,14 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       """circuit Top :
         |  module Middle_ :""".stripMargin.split("\n")
     val Middle_ = CircuitTarget("Top").module("Middle_").ref("i")
-    val inputState = CircuitState(parse(input), ChirrtlForm, Seq(DontTouchAnnotation(Middle_)))
-    val outputState = new VerilogCompiler().compile(inputState, customTransforms)
+    val outputState = compile(input, Seq(DontTouchAnnotation(Middle_), NoCircuitDedupAnnotation))
     val outputLines = outputState.circuit.serialize.split("\n")
     checks.foreach { line =>
       outputLines should contain(line)
     }
   }
 
-  property("It should remove ResolvePaths annotations") {
+  "It" should "remove ResolvePaths annotations" in {
     val input =
       """|circuit Foo:
          |  module Bar:
@@ -365,13 +355,13 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    inst bar of Bar
          |""".stripMargin
 
-    CircuitState(Parser.parse(input), UnknownForm, Nil)
+    CircuitState(Parser.parse(input), Seq())
       .resolvePaths(Seq(CircuitTarget("Foo").module("Foo").instOf("bar", "Bar")))
       .annotations
       .collect { case a: firrtl2.annotations.transforms.ResolvePaths => a } should be(empty)
   }
 
-  property("It should rename module annotations") {
+  "It" should "rename module annotations" in {
     val input =
       """|circuit Foo:
          |  module Bar:
@@ -389,7 +379,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    inst bar of Bar___Foo_bar
          |    inst baz of Bar""".stripMargin
     val Bar_x = CircuitTarget("Foo").module("Bar").ref("x")
-    val output = CircuitState(Parser.parse(input), UnknownForm, Seq(DontTouchAnnotation(Bar_x)))
+    val output = CircuitState(Parser.parse(input), Seq(DontTouchAnnotation(Bar_x)))
       .resolvePaths(Seq(CircuitTarget("Foo").module("Foo").instOf("bar", "Bar")))
 
     val parsedCheck = Parser.parse(check)
@@ -404,7 +394,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     } should contain).allOf(DontTouchAnnotation(newBar_x), DontTouchAnnotation(Bar_x))
   }
 
-  property("It should not rename lone instances") {
+  "It" should "not rename lone instances" in {
     val input =
       """|circuit Foo:
          |  module Baz:
@@ -423,7 +413,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
     val dontTouches = targets.map(t => DontTouchAnnotation(t.ref("foo")))
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(inputCircuit, UnknownForm, dontTouches)
+    val output = CircuitState(inputCircuit, dontTouches)
       .resolvePaths(targets)
 
     info(output.circuit.serialize)
@@ -438,7 +428,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
   }
 
-  property("It should not rename parent lone instances but still rename children") {
+  "It" should "not rename parent lone instances but still rename children" in {
     val input =
       """|circuit FooBar:
          |  module Bar:
@@ -462,7 +452,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       CircuitTarget("FooBar").module("FooBar").instOf("foo", "Foo").instOf("barBar", "Bar")
     )
     val dontTouches = targets.map(t => DontTouchAnnotation(t.ref("baz")))
-    val output = CircuitState(Parser.parse(input), UnknownForm, dontTouches)
+    val output = CircuitState(Parser.parse(input), dontTouches)
       .resolvePaths(targets)
 
     info(output.circuit.serialize)
@@ -480,7 +470,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
   }
 
-  property("It should use DedupedResult names") {
+  "It" should "use DedupedResult names" in {
     val input =
       """|circuit Top:
          |  module Baz:
@@ -508,7 +498,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       DontTouchAnnotation(bazzz.ref("foo"))
     )
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(inputCircuit, UnknownForm, annos)
+    val output = CircuitState(inputCircuit, annos)
       .resolvePaths(Seq(baz, bazzz))
 
     info(output.circuit.serialize)
@@ -525,7 +515,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
   }
 
-  property("It should not rename untouched modules") {
+  "It" should "not rename untouched modules" in {
     val input =
       """|circuit Top:
          |  module Baz:
@@ -546,7 +536,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       DontTouchAnnotation(baz.ref("foo"))
     )
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(inputCircuit, UnknownForm, annos)
+    val output = CircuitState(inputCircuit, annos)
       .resolvePaths(Seq(asdf, lkj))
 
     info(output.circuit.serialize)
@@ -560,7 +550,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
   }
 
-  property("It should properly rename modules with multiple instances") {
+  "It" should "properly rename modules with multiple instances" in {
     val input =
       """|circuit Top:
          |  module Core:
@@ -582,7 +572,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     val coreModule = ModuleTarget("Top", "Core")
     val annos = (coreModule +: (relCoreInstances ++ absCoreInstances)).map(DummyAnnotation(_))
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(inputCircuit, UnknownForm, annos)
+    val output = CircuitState(inputCircuit, annos)
       .resolvePaths(relCoreInstances ++ absCoreInstances)
 
     info(output.circuit.serialize)

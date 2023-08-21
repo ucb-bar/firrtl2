@@ -5,14 +5,11 @@ package firrtlTests
 import firrtl2._
 import firrtl2.annotations._
 import firrtl2.testutils.FirrtlCheckers.{containLine, containLines}
-import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.testutils.{FirrtlFlatSpec, VerilogTransformSpec}
 import firrtlTests.execution._
 import org.json4s.convertToJsonInput
 
-class MemInitSpec extends FirrtlFlatSpec {
-  def compile(circuit: String, annos: AnnotationSeq): CircuitState = {
-    (new VerilogCompiler).compileAndEmit(CircuitState(parse(circuit), ChirrtlForm, annos))
-  }
+class MemInitSpec extends VerilogTransformSpec {
 
   def basicTest(tpe: String = "UInt<32>"): String =
     s"""

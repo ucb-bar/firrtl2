@@ -137,6 +137,9 @@ object Logger {
     }
   }
 
+  def makeDebugScope[A](codeBlock: => A): A = makeScope(Seq(LogLevelAnnotation(LogLevel.Debug)))(codeBlock)
+  def makeTraceScope[A](codeBlock: => A): A = makeScope(Seq(LogLevelAnnotation(LogLevel.Trace)))(codeBlock)
+
   /**
     * Used to test whether a given log statement should generate some logging output.
     * It breaks up a class name into a list of packages.  From this list generate progressively

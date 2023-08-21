@@ -2,17 +2,15 @@
 
 package firrtlTests.formal
 
-import firrtl2.logger.{LogLevel, Logger}
-import firrtl2.{ir, CircuitState, SystemVerilogCompiler}
-import firrtl2.testutils.FirrtlFlatSpec
+import firrtl2.{ir, CircuitState}
+import firrtl2.testutils.SystemVerilogTransformSpec
 import firrtl2.options.Dependency
-import firrtl2.stage.TransformManager
+import firrtl2.stage.{Forms, TransformManager}
 
-class VerificationSpec extends FirrtlFlatSpec {
+class VerificationSpec extends SystemVerilogTransformSpec {
   behavior.of("Formal")
 
   it should "generate SystemVerilog verification statements" in {
-    val compiler = new SystemVerilogCompiler
     val input =
       """circuit Asserting :
         |  module Asserting :
@@ -34,6 +32,8 @@ class VerificationSpec extends FirrtlFlatSpec {
         |""".stripMargin
     val expected =
       """module Asserting(
+        |  input clock,
+        |  input reset,
         |  input [7:0] in,
         |  output [7:0] out
         |);
@@ -56,8 +56,8 @@ class VerificationSpec extends FirrtlFlatSpec {
         |    end
         |  end
         |endmodule
-        |""".stripMargin.split("\n").map(normalized)
-    executeTest(input, expected, compiler)
+        |""".stripMargin
+    execute(input, expected)
   }
 
   "VerificationStatement" should "serialize correctly" in {
