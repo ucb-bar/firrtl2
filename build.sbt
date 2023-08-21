@@ -9,7 +9,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val firrtlSettings = Seq(
-  name := "firrtl",
+  name := "firrtl2",
   version := "6.0-SNAPSHOT",
   scalacOptions := Seq(
     "-deprecation",
