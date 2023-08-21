@@ -273,7 +273,6 @@ class StructuralHash private (h: Hasher, renameModule: String => String) {
       hash(writers.length); writers.foreach(hash)
       hash(readwriters.length); readwriters.foreach(hash)
       hash(readUnderWrite)
-    case PartialConnect(_, loc, expr) => id(31); hash(loc); hash(expr)
     case Attach(_, exprs) => id(32); hash(exprs.length); exprs.foreach(hash)
     // WIR
     case firrtl2.CDefMemory(_, name, tpe, size, seq, readUnderWrite) =>

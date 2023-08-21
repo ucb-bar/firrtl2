@@ -299,10 +299,9 @@ trait CheckHighFormLike { this: Pass =>
             errors.append(new MemWithFlipException(info, mname, sx.name))
           if (sx.depth <= 0)
             errors.append(new NegMemSizeException(info, mname))
-        case sx:    DefInstance    => checkInstance(info, mname, sx.module)
-        case sx:    Connect        => checkValidLoc(info, mname, sx.loc)
-        case sx:    PartialConnect => checkValidLoc(info, mname, sx.loc)
-        case sx:    Print          => checkFstring(info, mname, sx.string, sx.args.length)
+        case sx:    DefInstance => checkInstance(info, mname, sx.module)
+        case sx:    Connect     => checkValidLoc(info, mname, sx.loc)
+        case sx:    Print       => checkFstring(info, mname, sx.string, sx.args.length)
         case _:     CDefMemory => errorOnChirrtl(info, mname, s).foreach { e => errors.append(e) }
         case mport: CDefMPort =>
           errorOnChirrtl(info, mname, s).foreach { e => errors.append(e) }

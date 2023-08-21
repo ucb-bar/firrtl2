@@ -163,13 +163,6 @@ class InferResets extends Transform with DependencyAPIMigration {
             for ((loc, exp) <- locs.zip(exps)) {
               markResetDriver(loc, exp)
             }
-          case PartialConnect(_, lhs, rhs) =>
-            val points = Utils.get_valid_points(lhs.tpe, rhs.tpe, Default, Default)
-            val locs = Utils.create_exps(lhs)
-            val exps = Utils.create_exps(rhs)
-            for ((i, j) <- points) {
-              markResetDriver(locs(i), exps(j))
-            }
           case IsInvalid(_, lhs) =>
             val exprs = Utils.create_exps(lhs)
             for (expr <- exprs) {

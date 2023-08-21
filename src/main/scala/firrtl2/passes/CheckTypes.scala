@@ -170,9 +170,6 @@ object CheckTypes extends Pass {
 
   def validConnect(con: Connect): Boolean = validConnect(con.loc.tpe, con.expr.tpe)
 
-  def validPartialConnect(con: PartialConnect): Boolean =
-    bulk_equals(con.loc.tpe, con.expr.tpe, Default, Default)
-
   //;---------------- Helper Functions --------------
   private val UIntUnknown = UIntType(UnknownWidth)
   def ut: UIntType = UIntUnknown
@@ -364,9 +361,6 @@ object CheckTypes extends Pass {
       }
       s match {
         case sx: Connect if !validConnect(sx) =>
-          val conMsg = sx.copy(info = NoInfo).serialize
-          errors.append(new InvalidConnect(info, mname, conMsg, sx.loc, sx.expr))
-        case sx: PartialConnect if !validPartialConnect(sx) =>
           val conMsg = sx.copy(info = NoInfo).serialize
           errors.append(new InvalidConnect(info, mname, conMsg, sx.loc, sx.expr))
         case sx: DefRegister =>

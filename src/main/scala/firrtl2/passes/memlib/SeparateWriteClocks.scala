@@ -60,10 +60,9 @@ class SeparateWriteClocks extends Transform with DependencyAPIMigration {
       }
       replaceExprs ++= clockWireMap.map { case (pClk, clkWire) => pClk -> Reference(clkWire) }
       Block(mem +: clockStmts)
-    case Connect(i, lhs, rhs)        => Connect(i, onExpr(replaceExprs)(lhs), rhs)
-    case PartialConnect(i, lhs, rhs) => PartialConnect(i, onExpr(replaceExprs)(lhs), rhs)
-    case IsInvalid(i, invalidated)   => IsInvalid(i, onExpr(replaceExprs)(invalidated))
-    case s                           => s.mapStmt(onStmt(replaceExprs, ns))
+    case Connect(i, lhs, rhs)      => Connect(i, onExpr(replaceExprs)(lhs), rhs)
+    case IsInvalid(i, invalidated) => IsInvalid(i, onExpr(replaceExprs)(invalidated))
+    case s                         => s.mapStmt(onStmt(replaceExprs, ns))
   }
 
   override def execute(state: CircuitState): CircuitState = {

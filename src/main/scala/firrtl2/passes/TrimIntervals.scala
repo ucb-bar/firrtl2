@@ -60,11 +60,6 @@ class TrimIntervals extends Pass {
         case IntervalType(_, _, p) => Connect(info, loc, fixBP(p)(expr))
         case _                     => c
       }
-    case c @ PartialConnect(info, loc, expr) =>
-      loc.tpe match {
-        case IntervalType(_, _, p) => PartialConnect(info, loc, fixBP(p)(expr))
-        case _                     => c
-      }
     case other => other.map(alignStmtBP)
   }
 

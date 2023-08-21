@@ -276,25 +276,6 @@ object RemoveCHIRRTL extends Transform with DependencyAPIMigration {
           }
         }
         if (stmts.isEmpty) sx else Block(sx +: stmts.toSeq)
-      case PartialConnect(info, loc, expr) =>
-        val locx = remove_chirrtl_e(SinkFlow)(loc)
-        val rocx = remove_chirrtl_e(SourceFlow)(expr)
-        val sx = PartialConnect(info, locx, rocx)
-        val stmts = ArrayBuffer[Statement]()
-        has_read_mport match {
-          case None     =>
-          case Some(en) => stmts += Connect(info, en, one)
-        }
-        if (has_write_mport) {
-          val ls = get_valid_points(loc.tpe, expr.tpe, Default, Default)
-          val locs = create_exps(get_mask(refs)(loc))
-          stmts ++= (ls.map { case (x, _) => Connect(info, locs(x), one) })
-          has_readwrite_mport match {
-            case None        =>
-            case Some(wmode) => stmts += Connect(info, wmode, one)
-          }
-        }
-        if (stmts.isEmpty) sx else Block(sx +: stmts.toSeq)
       case sx => sx.map(remove_chirrtl_s(refs, raddrs)).map(remove_chirrtl_e(SourceFlow))
     }
   }
