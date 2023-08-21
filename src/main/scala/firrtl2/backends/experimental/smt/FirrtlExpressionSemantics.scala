@@ -98,10 +98,9 @@ private object FirrtlExpressionSemantics {
         val width = getWidth(e)
         if (n <= width) { toSMT(e) }
         else { BVExtend(toSMT(e), n.toInt - width, isSigned(e)) }
-      case (PrimOps.AsUInt, Seq(e), _)       => checkForClockInCast(PrimOps.AsUInt, e); toSMT(e)
-      case (PrimOps.AsSInt, Seq(e), _)       => checkForClockInCast(PrimOps.AsSInt, e); toSMT(e)
-      case (PrimOps.AsFixedPoint, Seq(e), _) => throw new AssertionError("Fixed-Point numbers need to be lowered!")
-      case (PrimOps.AsClock, Seq(e), _)      => toSMT(e)
+      case (PrimOps.AsUInt, Seq(e), _)  => checkForClockInCast(PrimOps.AsUInt, e); toSMT(e)
+      case (PrimOps.AsSInt, Seq(e), _)  => checkForClockInCast(PrimOps.AsSInt, e); toSMT(e)
+      case (PrimOps.AsClock, Seq(e), _) => toSMT(e)
       case (PrimOps.AsAsyncReset, Seq(e), _) =>
         checkForClockInCast(PrimOps.AsAsyncReset, e)
         throw new AssertionError(s"Asynchronous resets are not supported! Cannot cast ${e.serialize}.")

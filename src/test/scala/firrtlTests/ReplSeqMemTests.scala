@@ -98,10 +98,10 @@ circuit Top :
     smem entries_info : {takens : UInt<2>, history : UInt<14>, info : UInt<14>}[24]
     when io.backend.allocate.valid :
       write mport W = entries_info[tail_ptr], clock
-      W <- io.backend.allocate.bits.info
+      W <= io.backend.allocate.bits.info
 
     read mport R = entries_info[head_ptr], clock
-    io.commit_entry.bits.info <- R
+    io.commit_entry.bits.info <= R
 """.stripMargin
     val mems = Set(
       MemConf("entries_info_ext", 24, 30, Map(WritePort -> 1, ReadPort -> 1), None)
@@ -135,36 +135,6 @@ circuit Top :
     val mems = Set(MemConf("mem_ext", 32, 64, Map(MaskedWritePort -> 1), Some(64)))
     val confLoc = "ReplSeqMemTests.confTEMP"
     val annos = Seq(ReplSeqMemAnnotation.parse("-c:Top:-o:" + confLoc))
-    val res = compileAndEmit(CircuitState(parse(input), ChirrtlForm, annos))
-    // Check correctness of firrtl
-    parse(res.getEmittedCircuit.value)
-    // Check the emitted conf
-    checkMemConf(res, mems)
-    (new java.io.File(confLoc)).delete()
-
-    checkGenMemVerilog(input, mems)
-  }
-
-  "ReplSeqMem" should "not fail with FixedPoint types " in {
-    val input = """
-circuit CustomMemory : 
-  module CustomMemory : 
-    input clock : Clock
-    input reset : UInt<1>
-    output io : {flip rClk : Clock, flip rAddr : UInt<3>, dO : Fixed<16><<8>>, flip wClk : Clock, flip wAddr : UInt<3>, flip wEn : UInt<1>, flip dI : Fixed<16><<8>>}
-    
-    io is invalid
-    smem mem : Fixed<16><<8>>[7] 
-    read mport _T_17 = mem[io.rAddr], clock
-    io.dO <= _T_17 
-    when io.wEn : 
-      write mport _T_18 = mem[io.wAddr], clock
-      _T_18 <= io.dI
-      skip 
-""".stripMargin
-    val mems = Set(MemConf("mem_ext", 7, 16, Map(WritePort -> 1, ReadPort -> 1), None))
-    val confLoc = "ReplSeqMemTests.confTEMP"
-    val annos = Seq(ReplSeqMemAnnotation.parse("-c:CustomMemory:-o:" + confLoc))
     val res = compileAndEmit(CircuitState(parse(input), ChirrtlForm, annos))
     // Check correctness of firrtl
     parse(res.getEmittedCircuit.value)
@@ -372,7 +342,7 @@ circuit CustomMemory :
     inst child of ChildMemory
     child.clock <= clock
     child.reset <= reset
-    io <- child.io
+    io <= child.io
 
     smem mem_0 : UInt<16>[7]
     smem mem_1 : UInt<16>[7]
@@ -584,12 +554,12 @@ circuit Top :
     smem testmem : {a : UInt<8>, b : UInt<6>}[32]
     write mport w = testmem[waddr], clock
     when wmask.a :
-        w.a <- wdata.a
+        w.a <= wdata.a
     when wmask.b :
-        w.b <- wdata.b
+        w.b <= wdata.b
       
     read mport r = testmem[raddr], clock
-    rdata <- r
+    rdata <= r
 """.stripMargin
     intercept[ReplaceMemMacros.UnsupportedBlackboxMemoryException] {
       val confLoc = "ReplSeqMemTests.confTEMP"

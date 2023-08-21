@@ -114,9 +114,6 @@ object Serializer {
     case ValidIf(cond, value, _) => b ++= "validif("; s(cond); b ++= ", "; s(value); b += ')'
     case SIntLiteral(value, width) =>
       b ++= "SInt"; s(width); b ++= "(\"h"; b ++= value.toString(16); b ++= "\")"
-    case FixedLiteral(value, width, point) =>
-      b ++= "Fixed"; s(width); sPoint(point)
-      b ++= "(\"h"; b ++= value.toString(16); b ++= "\")"
     // WIR
     case firrtl2.WVoid           => b ++= "VOID"
     case firrtl2.WInvalid        => b ++= "INVALID"
@@ -349,17 +346,14 @@ object Serializer {
     // Types
     case UIntType(width: Width) => b ++= "UInt"; s(width)
     case SIntType(width: Width) => b ++= "SInt"; s(width)
-    case FixedType(width, point) => b ++= "Fixed"; s(width); sPoint(point)
-    case BundleType(fields)      => b ++= "{ "; sField(fields, ", "); b += '}'
-    case VectorType(tpe, size)   => s(tpe); b += '['; b ++= size.toString; b += ']'
-    case ClockType               => b ++= "Clock"
-    case ResetType               => b ++= "Reset"
-    case AsyncResetType          => b ++= "AsyncReset"
-    case AnalogType(width)       => b ++= "Analog"; s(width)
-    case UnknownType             => b += '?'
-    // the IntervalType has a complicated custom serialization method which does not recurse
-    case i: IntervalType => b ++= i.serialize
-    case other => b ++= other.serialize // Handle user-defined nodes
+    case BundleType(fields)    => b ++= "{ "; sField(fields, ", "); b += '}'
+    case VectorType(tpe, size) => s(tpe); b += '['; b ++= size.toString; b += ']'
+    case ClockType             => b ++= "Clock"
+    case ResetType             => b ++= "Reset"
+    case AsyncResetType        => b ++= "AsyncReset"
+    case AnalogType(width)     => b ++= "Analog"; s(width)
+    case UnknownType           => b += '?'
+    case other                 => b ++= other.serialize // Handle user-defined nodes
   }
 
   private def s(node: Direction)(implicit b: StringBuilder, indent: Int): Unit = node match {

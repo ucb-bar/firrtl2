@@ -79,8 +79,6 @@ object castRhs {
         rhs
       case (_: SIntType, _) =>
         DoPrim(AsSInt, Seq(rhs), Seq.empty, lhst)
-      case (FixedType(_, IntWidth(p)), _) =>
-        DoPrim(AsFixedPoint, Seq(rhs), Seq(p), lhst)
       case (ClockType, _) =>
         DoPrim(AsClock, Seq(rhs), Seq.empty, lhst)
       case (_: UIntType, _) =>
@@ -200,8 +198,8 @@ object Utils extends LazyLogging {
 
   /** Returns true if PrimOp is a cast, false otherwise */
   def isCast(op: PrimOp): Boolean = op match {
-    case AsUInt | AsSInt | AsClock | AsAsyncReset | AsFixedPoint => true
-    case _                                                       => false
+    case AsUInt | AsSInt | AsClock | AsAsyncReset => true
+    case _                                        => false
   }
 
   /** Returns true if Expression is a casting PrimOp, false otherwise */
@@ -220,24 +218,6 @@ object Utils extends LazyLogging {
   def isBitExtract(expr: Expression): Boolean = expr match {
     case DoPrim(op, _, _, UIntType(_)) if isBitExtract(op) => true
     case _                                                 => false
-  }
-
-  /** Selects all the elements of this list ignoring the duplicates as determined by == after
-    * applying the transforming function f
-    *
-    * @note In Scala Standard Library starting in 2.13
-    */
-  def distinctBy[A, B](xs: List[A])(f: A => B): List[A] = {
-    val buf = new mutable.ListBuffer[A]
-    val seen = new mutable.HashSet[B]
-    for (x <- xs) {
-      val y = f(x)
-      if (!seen(y)) {
-        buf += x
-        seen += y
-      }
-    }
-    buf.toList
   }
 
   /** Provide a nice name to create a temporary * */
@@ -281,18 +261,16 @@ object Utils extends LazyLogging {
 
   /** Returns an [[firrtl2.ir.Expression Expression]] equal to zero for a given [[firrtl2.ir.GroundType GroundType]]
     *
-    * @note Does not support [[firrtl2.ir.AnalogType AnalogType]] nor [[firrtl2.ir.IntervalType IntervalType]]
+    * @note Does not support [[firrtl2.ir.AnalogType AnalogType]]
     */
   def getGroundZero(tpe: GroundType): Expression = tpe match {
-    case u: UIntType  => UIntLiteral(0, u.width)
-    case s: SIntType  => SIntLiteral(0, s.width)
-    case f: FixedType => FixedLiteral(0, f.width, f.point)
+    case u: UIntType => UIntLiteral(0, u.width)
+    case s: SIntType => SIntLiteral(0, s.width)
     // Default reset type is Bool
     case ResetType      => Utils.zero
     case ClockType      => ClockZero
     case AsyncResetType => AsyncZero
-    // TODO Support IntervalType
-    case other => throwInternalError(s"Unexpected type $other")
+    case other          => throwInternalError(s"Unexpected type $other")
   }
 
   def create_exps(n: String, t: Type): Seq[Expression] =
@@ -418,8 +396,6 @@ object Utils extends LazyLogging {
     case (AsyncResetType, AsyncResetType) => AsyncResetType
     case (t1: UIntType, t2: UIntType) => UIntType(UnknownWidth)
     case (t1: SIntType, t2: SIntType) => SIntType(UnknownWidth)
-    case (t1: FixedType, t2: FixedType) => FixedType(UnknownWidth, UnknownWidth)
-    case (t1: IntervalType, t2: IntervalType) => IntervalType(UnknownBound, UnknownBound, UnknownWidth)
     case (t1: VectorType, t2: VectorType) => VectorType(mux_type(t1.tpe, t2.tpe), t1.size)
     case (t1: BundleType, t2: BundleType) =>
       BundleType(t1.fields.zip(t2.fields).map {
@@ -439,10 +415,6 @@ object Utils extends LazyLogging {
       case (AsyncResetType, AsyncResetType) => AsyncResetType
       case (t1x: UIntType, t2x: UIntType) => UIntType(IsMax(t1x.width, t2x.width))
       case (t1x: SIntType, t2x: SIntType) => SIntType(IsMax(t1x.width, t2x.width))
-      case (FixedType(w1, p1), FixedType(w2, p2)) =>
-        FixedType(PLUS(MAX(p1, p2), MAX(MINUS(w1, p1), MINUS(w2, p2))), MAX(p1, p2))
-      case (IntervalType(l1, u1, p1), IntervalType(l2, u2, p2)) =>
-        IntervalType(IsMin(l1, l2), constraint.IsMax(u1, u2), MAX(p1, p2))
       case (t1x: VectorType, t2x: VectorType) => VectorType(mux_type_and_widths(t1x.tpe, t2x.tpe), t1x.size)
       case (t1x: BundleType, t2x: BundleType) =>
         BundleType(t1x.fields.zip(t2x.fields).map {
@@ -484,7 +456,6 @@ object Utils extends LazyLogging {
     (t1, t2) match {
       case (_: UIntType, _: UIntType) => if (flip1 == flip2) Seq((0, 0)) else Nil
       case (_: SIntType, _: SIntType) => if (flip1 == flip2) Seq((0, 0)) else Nil
-      case (_: FixedType, _: FixedType) => if (flip1 == flip2) Seq((0, 0)) else Nil
       case (_: AnalogType, _: AnalogType) => if (flip1 == flip2) Seq((0, 0)) else Nil
       case (t1x: BundleType, t2x: BundleType) =>
         def emptyMap = Map[String, (Type, Orientation, Int)]()
@@ -752,7 +723,7 @@ object Utils extends LazyLogging {
       case sx: WDefInstance => Seq(Field(sx.name, Default, sx.tpe))
       case sx: DefMemory =>
         sx.dataType match {
-          case (_: UIntType | _: SIntType | _: FixedType) =>
+          case (_: UIntType | _: SIntType) =>
             Seq(Field(sx.name, Default, passes.MemPortUtils.memType(sx)))
           case tpe: BundleType =>
             val newFields = tpe.fields

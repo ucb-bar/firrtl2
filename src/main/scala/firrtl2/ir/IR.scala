@@ -471,15 +471,6 @@ object SIntLiteral {
   def minWidth(value: BigInt): Width = IntWidth(value.bitLength + 1)
   def apply(value:    BigInt): SIntLiteral = new SIntLiteral(value, minWidth(value))
 }
-case class FixedLiteral(value: BigInt, width: Width, point: Width) extends Literal with UseSerializer {
-  def tpe = FixedType(width, point)
-  def mapExpr(f:     Expression => Expression): Expression = this
-  def mapType(f:     Type => Type):             Expression = this
-  def mapWidth(f:    Width => Width):           Expression = FixedLiteral(value, f(width), f(point))
-  def foreachExpr(f: Expression => Unit):       Unit = ()
-  def foreachType(f: Type => Unit):             Unit = ()
-  def foreachWidth(f: Width => Unit): Unit = { f(width); f(point) }
-}
 case class DoPrim(op: PrimOp, args: Seq[Expression], consts: Seq[BigInt], tpe: Type)
     extends Expression
     with UseSerializer {
@@ -863,7 +854,7 @@ case object Flip extends Orientation {
 /** Field of [[BundleType]] */
 case class Field(name: String, flip: Orientation, tpe: Type) extends FirrtlNode with HasName with UseSerializer
 
-/** Bounds of [[IntervalType]] */
+/** Bounds */
 
 trait Bound extends Constraint
 case object UnknownBound extends Bound {
@@ -950,96 +941,6 @@ case class UIntType(width: Width) extends GroundType with UseSerializer {
 case class SIntType(width: Width) extends GroundType with UseSerializer {
   def mapWidth(f:     Width => Width): Type = SIntType(f(width))
   def foreachWidth(f: Width => Unit):  Unit = f(width)
-}
-case class FixedType(width: Width, point: Width) extends GroundType with UseSerializer {
-  def mapWidth(f: Width => Width): Type = FixedType(f(width), f(point))
-  def foreachWidth(f: Width => Unit): Unit = { f(width); f(point) }
-}
-case class IntervalType(lower: Bound, upper: Bound, point: Width) extends GroundType {
-  override def serialize: String = {
-    val lowerString = lower match {
-      case Open(l)      => s"(${dec2string(l)}, "
-      case Closed(l)    => s"[${dec2string(l)}, "
-      case UnknownBound => s"[?, "
-      case _            => s"[?, "
-    }
-    val upperString = upper match {
-      case Open(u)      => s"${dec2string(u)})"
-      case Closed(u)    => s"${dec2string(u)}]"
-      case UnknownBound => s"?]"
-      case _            => s"?]"
-    }
-    val bounds = (lower, upper) match {
-      case (k1: IsKnown, k2: IsKnown) => lowerString + upperString
-      case _ => ""
-    }
-    val pointString = point match {
-      case IntWidth(i) => "." + i.toString
-      case _           => ""
-    }
-    "Interval" + bounds + pointString
-  }
-
-  private lazy val bp = point.asInstanceOf[IntWidth].width.toInt
-  private def precision: Option[BigDecimal] = point match {
-    case IntWidth(width) =>
-      val bp = width.toInt
-      if (bp >= 0) Some(BigDecimal(1) / BigDecimal(BigInt(1) << bp)) else Some(BigDecimal(BigInt(1) << -bp))
-    case other => None
-  }
-
-  def min: Option[BigDecimal] = (lower, precision) match {
-    case (Open(a), Some(prec)) =>
-      a / prec match {
-        case x if trim(x).isWhole => Some(a + prec) // add precision for open lower bound i.e. (-4 -> [3 for bp = 0
-        case x =>
-          Some(
-            x.setScale(0, CEILING) * prec
-          ) // Deal with unrepresentable bound representations (finite BP) -- new closed form l > original l
-      }
-    case (Closed(a), Some(prec)) => Some((a / prec).setScale(0, CEILING) * prec)
-    case other                   => None
-  }
-
-  def max: Option[BigDecimal] = (upper, precision) match {
-    case (Open(a), Some(prec)) =>
-      a / prec match {
-        case x if trim(x).isWhole => Some(a - prec) // subtract precision for open upper bound
-        case x                    => Some(x.setScale(0, FLOOR) * prec)
-      }
-    case (Closed(a), Some(prec)) => Some((a / prec).setScale(0, FLOOR) * prec)
-    case _                       => None
-  }
-
-  def minAdjusted: Option[BigInt] = min.map(_ * BigDecimal(BigInt(1) << bp) match {
-    case x if trim(x).isWhole | x.doubleValue == 0.0 => x.toBigInt
-    case x =>
-      sys.error(
-        s"MinAdjusted should be a whole number: $x. Min is $min. BP is $bp. Precision is $precision. Lower is ${lower}."
-      )
-  })
-
-  def maxAdjusted: Option[BigInt] = max.map(_ * BigDecimal(BigInt(1) << bp) match {
-    case x if trim(x).isWhole => x.toBigInt
-    case x                    => sys.error(s"MaxAdjusted should be a whole number: $x")
-  })
-
-  /** If bounds are known, calculates the width, otherwise returns UnknownWidth */
-  val width: Width = (point, lower, upper) match {
-    case (IntWidth(i), l: IsKnown, u: IsKnown) =>
-      IntWidth(Math.max(Utils.getSIntWidth(minAdjusted.get), Utils.getSIntWidth(maxAdjusted.get)))
-    case _ => UnknownWidth
-  }
-
-  /** If bounds are known, returns a sequence of all possible values inside this interval */
-  lazy val range: Option[Seq[BigDecimal]] = (lower, upper, point) match {
-    case (l: IsKnown, u: IsKnown, p: IntWidth) =>
-      if (min.get > max.get) Some(Nil) else Some(Range.BigDecimal(min.get, max.get, precision.get))
-    case _ => None
-  }
-
-  override def mapWidth(f:     Width => Width): Type = this.copy(point = f(point))
-  override def foreachWidth(f: Width => Unit):  Unit = f(point)
 }
 
 case class BundleType(fields: Seq[Field]) extends AggregateType with UseSerializer {

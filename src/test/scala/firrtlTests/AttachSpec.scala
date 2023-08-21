@@ -154,29 +154,6 @@ class InoutVerilogSpec extends FirrtlFlatSpec {
     executeTest(input, check, compiler)
   }
 
-  it should "work in partial connect" in {
-    val compiler = new VerilogCompiler
-    val input =
-      """circuit Attaching :
-        |  module Attaching :
-        |    input foo : { b : UInt<3>, a : Analog<3> }
-        |    output bar : { b : UInt<3>, a : Analog<3> }
-        |    bar <- foo""".stripMargin
-    // Omitting `ifdef SYNTHESIS and `elsif verilator since it's tested above
-    val check =
-      """module Attaching(
-        |  input  [2:0] foo_b,
-        |  inout  [2:0] foo_a,
-        |  output  [2:0] bar_b,
-        |  inout  [2:0] bar_a
-        |);
-        |  assign bar_b = foo_b;
-        |  alias bar_a = foo_a;
-        |endmodule
-        |""".stripMargin.split("\n").map(normalized)
-    executeTest(input, check, compiler)
-  }
-
   it should "preserve attach order" in {
     val compiler = new VerilogCompiler
     val input =

@@ -168,9 +168,9 @@ class UniquifySpec extends FirrtlFlatSpec {
         |    output a_0_b : UInt<1>
         |    input a__0_c_ : { d : UInt<2>, e : UInt<3>}[2]
         |    a_0_b <= a[0].b
-        |    a[0].c <- a__0_c_
+        |    a[0].c <= a__0_c_
       """.stripMargin
-    val expected = Seq("a_0_b <= a__[0].b", "a__[0].c_ <- a__0_c_").map(normalized)
+    val expected = Seq("a_0_b <= a__[0].b", "a__[0].c_ <= a__0_c_").map(normalized)
 
     executeTest(input, expected)
   }

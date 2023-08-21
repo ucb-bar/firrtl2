@@ -222,8 +222,7 @@ class StructuralHash private (h: Hasher, renameModule: String => String) {
     case SubAccess(expr, index, _, _) => id(5); hash(expr); hash(index)
     case Mux(cond, tval, fval, _)     => id(6); hash(cond); hash(tval); hash(fval)
     case ValidIf(cond, value, _)      => id(7); hash(cond); hash(value)
-    case SIntLiteral(value, width)    => id(8); hash(value); hash(width)
-    case FixedLiteral(value, width, point) => id(9); hash(value); hash(width); hash(point)
+    case SIntLiteral(value, width) => id(8); hash(value); hash(width)
     // WIR
     case firrtl2.WVoid           => id(10)
     case firrtl2.WInvalid        => id(11)
@@ -343,15 +342,13 @@ class StructuralHash private (h: Hasher, renameModule: String => String) {
     // Types
     case UIntType(width: Width) => id(50); hash(width)
     case SIntType(width: Width) => id(51); hash(width)
-    case FixedType(width, point)           => id(52); hash(width); hash(point)
-    case BundleType(fields)                => id(53); hash(fields.length); fields.foreach(hash)
-    case VectorType(tpe, size)             => id(54); hash(tpe); hash(size)
-    case ClockType                         => id(55)
-    case ResetType                         => id(56)
-    case AsyncResetType                    => id(57)
-    case AnalogType(width)                 => id(58); hash(width)
-    case UnknownType                       => id(59)
-    case IntervalType(lower, upper, point) => id(60); hash(lower); hash(upper); hash(point)
+    case BundleType(fields)    => id(53); hash(fields.length); fields.foreach(hash)
+    case VectorType(tpe, size) => id(54); hash(tpe); hash(size)
+    case ClockType             => id(55)
+    case ResetType             => id(56)
+    case AsyncResetType        => id(57)
+    case AnalogType(width)     => id(58); hash(width)
+    case UnknownType           => id(59)
     // ids 61 ... 65 are reserved for future Type nodes
   }
 

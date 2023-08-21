@@ -48,8 +48,6 @@ class ParserSpec extends FirrtlFlatSpec {
       "UInt",
       "SInt",
       "Analog",
-      "Fixed",
-      "Interval",
       "flip",
       "Clock",
       "Reset",

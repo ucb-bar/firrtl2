@@ -18,7 +18,7 @@ circuit Legalize :
     ; Check assignment to smaller width
     node x = UInt<32>("hdeadbeef")
     wire y : UInt<16>
-    y <- x
+    y <= x
     when neq(y, UInt("hbeef")) :
       printf(clock, UInt(1), "Assertion failed!\n y != beef\n")
       stop(clock, UInt(1), 1)

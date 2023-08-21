@@ -17,8 +17,7 @@ object ZeroWidth extends Transform with DependencyAPIMigration {
       Dependency(ReplaceAccesses),
       Dependency(ExpandConnects),
       Dependency(RemoveAccesses),
-      Dependency[ExpandWhensAndCheck],
-      Dependency(ConvertFixedToSInt)
+      Dependency[ExpandWhensAndCheck]
     ) ++ firrtl2.stage.Forms.Deduped
 
   override def invalidates(a: Transform): Boolean = a match {

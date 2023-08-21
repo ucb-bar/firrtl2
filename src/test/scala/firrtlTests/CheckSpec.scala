@@ -313,7 +313,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
         |    sub.io is invalid
         |    inst bb of BlackBoxTop
         |    bb.jtag is invalid
-        |    bb.jtag <- io.jtag
+        |    bb.jtag <= io.jtag
         |
         |    sub.io.debug_clk <= io.jtag.TCK
         |
@@ -370,7 +370,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
     }
   }
 
-  for (op <- List("shl", "shr", "pad", "head", "tail", "incp", "decp")) {
+  for (op <- List("shl", "shr", "pad", "head", "tail")) {
     s"$op by negative amount" should "result in an error" in {
       val amount = -1
       val input =
