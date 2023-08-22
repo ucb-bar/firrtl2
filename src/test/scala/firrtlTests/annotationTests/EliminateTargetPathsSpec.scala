@@ -365,7 +365,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    inst bar of Bar
          |""".stripMargin
 
-    CircuitState(passes.ToWorkingIR.run(Parser.parse(input)), UnknownForm, Nil)
+    CircuitState(Parser.parse(input), UnknownForm, Nil)
       .resolvePaths(Seq(CircuitTarget("Foo").module("Foo").instOf("bar", "Bar")))
       .annotations
       .collect { case a: firrtl2.annotations.transforms.ResolvePaths => a } should be(empty)
@@ -389,7 +389,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    inst bar of Bar___Foo_bar
          |    inst baz of Bar""".stripMargin
     val Bar_x = CircuitTarget("Foo").module("Bar").ref("x")
-    val output = CircuitState(passes.ToWorkingIR.run(Parser.parse(input)), UnknownForm, Seq(DontTouchAnnotation(Bar_x)))
+    val output = CircuitState(Parser.parse(input), UnknownForm, Seq(DontTouchAnnotation(Bar_x)))
       .resolvePaths(Seq(CircuitTarget("Foo").module("Foo").instOf("bar", "Bar")))
 
     val parsedCheck = Parser.parse(check)
@@ -423,7 +423,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     )
     val dontTouches = targets.map(t => DontTouchAnnotation(t.ref("foo")))
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(passes.ToWorkingIR.run(inputCircuit), UnknownForm, dontTouches)
+    val output = CircuitState(inputCircuit, UnknownForm, dontTouches)
       .resolvePaths(targets)
 
     info(output.circuit.serialize)
@@ -462,7 +462,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       CircuitTarget("FooBar").module("FooBar").instOf("foo", "Foo").instOf("barBar", "Bar")
     )
     val dontTouches = targets.map(t => DontTouchAnnotation(t.ref("baz")))
-    val output = CircuitState(passes.ToWorkingIR.run(Parser.parse(input)), UnknownForm, dontTouches)
+    val output = CircuitState(Parser.parse(input), UnknownForm, dontTouches)
       .resolvePaths(targets)
 
     info(output.circuit.serialize)
@@ -508,7 +508,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       DontTouchAnnotation(bazzz.ref("foo"))
     )
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(passes.ToWorkingIR.run(inputCircuit), UnknownForm, annos)
+    val output = CircuitState(inputCircuit, UnknownForm, annos)
       .resolvePaths(Seq(baz, bazzz))
 
     info(output.circuit.serialize)
@@ -546,7 +546,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
       DontTouchAnnotation(baz.ref("foo"))
     )
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(passes.ToWorkingIR.run(inputCircuit), UnknownForm, annos)
+    val output = CircuitState(inputCircuit, UnknownForm, annos)
       .resolvePaths(Seq(asdf, lkj))
 
     info(output.circuit.serialize)
@@ -582,7 +582,7 @@ class EliminateTargetPathsSpec extends FirrtlPropSpec with FirrtlMatchers {
     val coreModule = ModuleTarget("Top", "Core")
     val annos = (coreModule +: (relCoreInstances ++ absCoreInstances)).map(DummyAnnotation(_))
     val inputCircuit = Parser.parse(input)
-    val output = CircuitState(passes.ToWorkingIR.run(inputCircuit), UnknownForm, annos)
+    val output = CircuitState(inputCircuit, UnknownForm, annos)
       .resolvePaths(relCoreInstances ++ absCoreInstances)
 
     info(output.circuit.serialize)

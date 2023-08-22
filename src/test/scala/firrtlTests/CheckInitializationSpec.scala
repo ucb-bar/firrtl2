@@ -8,7 +8,6 @@ import firrtl2.testutils._
 
 class CheckInitializationSpec extends FirrtlFlatSpec {
   private val passes = Seq(
-    ToWorkingIR,
     CheckHighForm,
     ResolveKinds,
     InferTypes,

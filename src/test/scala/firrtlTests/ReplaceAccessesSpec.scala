@@ -7,7 +7,7 @@ import firrtl2.passes._
 import firrtl2.testutils._
 
 class ReplaceAccessesSpec extends FirrtlFlatSpec {
-  val transforms = Seq(ToWorkingIR, ResolveKinds, InferTypes, ResolveFlows, new InferWidths, ReplaceAccesses)
+  val transforms = Seq(ResolveKinds, InferTypes, ResolveFlows, new InferWidths, ReplaceAccesses)
   protected def exec(input: String) = {
     transforms
       .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, t: Transform) =>

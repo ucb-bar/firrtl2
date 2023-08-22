@@ -24,7 +24,6 @@ class WiringTests extends FirrtlFlatSpec {
   }
 
   def passes = Seq(
-    ToWorkingIR,
     ResolveKinds,
     InferTypes,
     ResolveFlows,

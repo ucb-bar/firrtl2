@@ -139,8 +139,7 @@ class DriverCompatibilitySpec extends AnyFlatSpec with Matchers with PrivateMeth
 
   behavior.of(classOf[AddImplicitEmitter].toString)
 
-  val (nc, hfc, mfc, lfc, vc, svc) = (
-    new NoneCompiler,
+  val (hfc, mfc, lfc, vc, svc) = (
     new HighFirrtlCompiler,
     new MiddleFirrtlCompiler,
     new LowFirrtlCompiler,
@@ -151,7 +150,6 @@ class DriverCompatibilitySpec extends AnyFlatSpec with Matchers with PrivateMeth
   it should "convert CompilerAnnotations into EmitCircuitAnnotations without EmitOneFilePerModuleAnnotation" in
     new PhaseFixture(new AddImplicitEmitter) {
       val annotations = Seq(
-        CompilerAnnotation(nc),
         CompilerAnnotation(hfc),
         CompilerAnnotation(mfc),
         CompilerAnnotation(lfc),
@@ -170,7 +168,6 @@ class DriverCompatibilitySpec extends AnyFlatSpec with Matchers with PrivateMeth
     new PhaseFixture(new AddImplicitEmitter) {
       val annotations = Seq(
         EmitOneFilePerModuleAnnotation,
-        CompilerAnnotation(nc),
         CompilerAnnotation(hfc),
         CompilerAnnotation(mfc),
         CompilerAnnotation(lfc),

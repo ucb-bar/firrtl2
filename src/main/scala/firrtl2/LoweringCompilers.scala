@@ -2,7 +2,6 @@
 
 package firrtl2
 
-import firrtl2.transforms.IdentityTransform
 import firrtl2.stage.{Forms, TransformManager}
 
 @deprecated("Use a TransformManager or some other Stage/Phase class. Will be removed in 1.4.", "FIRRTL 1.2")
@@ -103,19 +102,6 @@ class MinimumLowFirrtlOptimization extends CoreTransform {
   def inputForm = LowForm
   def outputForm = LowForm
   def transforms = new TransformManager(Forms.LowFormMinimumOptimized, Forms.LowForm).flattenedTransformOrder
-}
-
-/** Emits input circuit with no changes
-  *
-  * Primarily useful for changing between .fir and .pb serialized formats
-  */
-@deprecated(
-  "Use stage.{FirrtlStage, FirrtlMain} or stage.transforms.Compiler(Seq(Dependency[ChirrtlEmitter]))",
-  "FIRRTL 1.3"
-)
-class NoneCompiler extends Compiler {
-  val emitter = new ChirrtlEmitter
-  def transforms: Seq[Transform] = Seq(new IdentityTransform(ChirrtlForm))
 }
 
 /** Emits input circuit

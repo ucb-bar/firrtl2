@@ -95,7 +95,6 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
     val g: Seq[Transform]
 
     val setup: Seq[Transform] = Seq(
-      firrtl2.passes.ToWorkingIR,
       new firrtl2.ResolveAndCheck
     )
 
@@ -167,7 +166,6 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
     val f: Seq[Transform]
 
     val setup: Seq[Transform] = Seq(
-      firrtl2.passes.ToWorkingIR,
       new firrtl2.ResolveAndCheck
     )
 

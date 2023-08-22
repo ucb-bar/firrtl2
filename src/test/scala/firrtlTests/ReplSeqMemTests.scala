@@ -191,7 +191,7 @@ circuit Top :
     f <= c
 """.stripMargin
 
-      val circuit = InferTypes.run(ToWorkingIR.run(parse(input)))
+      val circuit = InferTypes.run(parse(input))
       val m = circuit.modules.head.asInstanceOf[ir.Module]
       val connects = AnalysisUtils.getConnects(m)
       val calculatedOrigin = AnalysisUtils.getOrigin(connects, "f").serialize

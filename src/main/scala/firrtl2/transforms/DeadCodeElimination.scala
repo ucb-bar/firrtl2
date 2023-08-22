@@ -43,7 +43,6 @@ class DeadCodeElimination extends Transform with RegisteredTransform with Depend
       Dependency[firrtl2.transforms.BlackBoxSourceHelper],
       Dependency[firrtl2.transforms.ReplaceTruncatingArithmetic],
       Dependency[firrtl2.transforms.FlattenRegUpdate],
-      Dependency(passes.VerilogModulusCleanup),
       Dependency[firrtl2.transforms.VerilogRename],
       Dependency(passes.VerilogPrep),
       Dependency[firrtl2.AddDescriptionNodes]

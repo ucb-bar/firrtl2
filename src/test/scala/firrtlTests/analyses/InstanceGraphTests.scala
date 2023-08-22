@@ -33,7 +33,7 @@ circuit Top :
   module Child2 :
     skip
 """
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val graph = new InstanceGraph(circuit).graph.transformNodes(_.module)
     getEdgeSet(graph) shouldBe Map(
       "Top" -> Set("Child1", "Child2"),
@@ -68,7 +68,7 @@ circuit Top :
     skip
 """
 
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val iGraph = new InstanceGraph(circuit)
     iGraph.findInstancesInHierarchy("Top") shouldBe Seq(Seq(WDefInstance("Top", "Top")))
     iGraph.findInstancesInHierarchy("Child1") shouldBe Seq(Seq(WDefInstance("Top", "Top"), WDefInstance("c", "Child1")))
@@ -103,7 +103,7 @@ circuit Top :
     skip
 
 """
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val graph = new InstanceGraph(circuit).graph.transformNodes(_.module)
     getEdgeSet(graph) shouldBe Map(
       "Top" -> Set("Child1"),
@@ -131,7 +131,7 @@ circuit Top :
     inst f of Foo
     inst b of Bar
 """
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val graph = (new InstanceGraph(circuit)).graph
 
     // Create graphs with edges from child to parent module
@@ -165,7 +165,7 @@ circuit Top :
                   |  module Child2 :
                   |    skip
                   |""".stripMargin
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val instGraph = new InstanceGraph(circuit)
     val childMap = instGraph.getChildrenInstances
     childMap.keys.toSeq should equal(Seq("Top", "Child1", "Child1a", "Child1b", "Child2"))
@@ -186,7 +186,7 @@ circuit Top :
                   |  module Child :
                   |    skip
                   |""".stripMargin
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val instGraph = new InstanceGraph(circuit)
     val childMap = instGraph.getChildrenInstances
     val insts = childMap("Top").toSeq.map(_.name)
@@ -207,7 +207,7 @@ circuit Top :
                   |  module Child :
                   |    skip
                   |""".stripMargin
-    val circuit = ToWorkingIR.run(parse(input))
+    val circuit = parse(input)
     val instGraph = new InstanceGraph(circuit)
     val hier = instGraph.fullHierarchy
     hier.keys.toSeq.map(_.name) should equal(Seq("Top", "a", "b", "c", "d", "e"))
@@ -221,7 +221,7 @@ circuit Top :
          |  module Foo:
          |    skip
          |""".stripMargin
-    val iGraph = new InstanceGraph(ToWorkingIR.run(parse(input)))
+    val iGraph = new InstanceGraph(parse(input))
     val expectedCounts = Map(OfModule("Foo") -> 1)
     iGraph.staticInstanceCount should be(expectedCounts)
   }
@@ -240,7 +240,7 @@ circuit Top :
          |    inst bar1 of Bar
          |    inst bar2 of Bar
          |""".stripMargin
-    val iGraph = new InstanceGraph(ToWorkingIR.run(parse(input)))
+    val iGraph = new InstanceGraph(parse(input))
     val expectedCounts = Map(OfModule("Foo") -> 1, OfModule("Bar") -> 2, OfModule("Baz") -> 3)
     iGraph.staticInstanceCount should be(expectedCounts)
   }
@@ -253,7 +253,7 @@ circuit Top :
          |  module Foo:
          |    skip
          |""".stripMargin
-    val iGraph = new InstanceGraph(ToWorkingIR.run(parse(input)))
+    val iGraph = new InstanceGraph(parse(input))
     val expectedCounts = Map(OfModule("Foo") -> 1, OfModule("Bar") -> 0)
     iGraph.staticInstanceCount should be(expectedCounts)
   }
@@ -270,7 +270,7 @@ circuit Top :
          |  module Top:
          |    inst reachable of Reachable
          |""".stripMargin
-    val iGraph = new InstanceGraph(ToWorkingIR.run(parse(input)))
+    val iGraph = new InstanceGraph(parse(input))
     iGraph.modules should contain theSameElementsAs Seq(OfModule("Top"), OfModule("Reachable"), OfModule("Unreachable"))
     iGraph.reachableModules should contain theSameElementsAs Seq(OfModule("Top"), OfModule("Reachable"))
     iGraph.unreachableModules should contain theSameElementsAs Seq(OfModule("Unreachable"))

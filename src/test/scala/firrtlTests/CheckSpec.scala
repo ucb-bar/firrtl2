@@ -15,14 +15,13 @@ import firrtl2.passes.{
   Pass,
   PassException,
   ResolveFlows,
-  ResolveKinds,
-  ToWorkingIR
+  ResolveKinds
 }
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class CheckSpec extends AnyFlatSpec with Matchers {
-  val defaultPasses = Seq(ToWorkingIR, CheckHighForm)
+  val defaultPasses = Seq(CheckHighForm)
   def checkHighInput(input: String) = {
     defaultPasses.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
       p.run(c)
@@ -56,7 +55,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
   }
 
   "Memories with zero write latency" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm)
+    val passes = Seq(CheckHighForm)
     val input =
       """circuit Unit :
         |  module Unit :
@@ -283,7 +282,6 @@ class CheckSpec extends AnyFlatSpec with Matchers {
 
   "Clock Types" should "be connectable" in {
     val passes = Seq(
-      ToWorkingIR,
       CheckHighForm,
       ResolveKinds,
       InferTypes,
@@ -324,7 +322,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
   }
 
   "Clocks with types other than ClockType" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """
         |circuit Top :
@@ -347,7 +345,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
   }
 
   "Illegal reset type" should "throw an exception" in {
-    val passes = Seq(ToWorkingIR, CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
+    val passes = Seq(CheckHighForm, ResolveKinds, InferTypes, CheckTypes)
     val input =
       """
         |circuit Top :
@@ -406,7 +404,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
   for ((description, input) <- CheckSpec.nonUniqueExamples) {
     it should s"be asserted for $description" in {
       assertThrows[CheckHighForm.NotUniqueException] {
-        Seq(ToWorkingIR, CheckHighForm).foldLeft(Parser.parse(input)) { case (c, tx) => tx.run(c) }
+        Seq(CheckHighForm).foldLeft(Parser.parse(input)) { case (c, tx) => tx.run(c) }
       }
     }
   }
