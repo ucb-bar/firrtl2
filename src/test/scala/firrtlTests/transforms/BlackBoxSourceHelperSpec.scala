@@ -6,13 +6,13 @@ import firrtl2.annotations._
 import firrtl2.transforms._
 import firrtl2._
 import firrtl2.FileUtils
-import firrtl2.testutils.LowTransformSpec
 import firrtl2.stage._
 import firrtl2.options.Dependency
 
 import java.io.File
 import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 import firrtl2.logger.{LogLevel, LogLevelAnnotation}
+import firrtl2.testutils.LowFirrtlTransformSpec
 
 class ChangeBlackBoxTargetDir extends Transform with DependencyAPIMigration {
   override def prerequisites =
@@ -29,9 +29,7 @@ class ChangeBlackBoxTargetDir extends Transform with DependencyAPIMigration {
   }
 }
 
-class BlacklBoxSourceHelperTransformSpec extends LowTransformSpec {
-  def transform: Transform = new BlackBoxSourceHelper
-
+class BlacklBoxSourceHelperTransformSpec extends LowFirrtlTransformSpec(Seq(Dependency[BlackBoxSourceHelper])) {
   private val moduleName = ModuleName("Top", CircuitName("Top"))
   private val bbTarget = CircuitTarget("Top").module("AdderExtModule")
   private val input = """

@@ -55,7 +55,7 @@ object DriverCompatibility {
       .action((_, _) => throw new OptionsException(optionRemoved("--top-name/-tn")))
   }
 
-  /** Indicates that the implicit emitter, derived from a [[CompilerAnnotation]] should be an [[EmitAllModulesAnnotation]]
+  /** Indicates that the emitter should be an [[EmitAllModulesAnnotation]]
     * as opposed to an [[EmitCircuitAnnotation]].
     */
   case object EmitOneFilePerModuleAnnotation extends NoTargetAnnotation {
@@ -188,9 +188,7 @@ object DriverCompatibility {
     }
   }
 
-  /** Adds an [[firrtl2.EmitAnnotation EmitAnnotation]] for each [[CompilerAnnotation]].
-    *
-    * If an [[EmitOneFilePerModuleAnnotation]] exists, then this will add an [[EmitAllModulesAnnotation]]. Otherwise,
+  /** If an [[EmitOneFilePerModuleAnnotation]] exists, then this will add an [[EmitAllModulesAnnotation]]. Otherwise,
     * this adds an [[EmitCircuitAnnotation]]. This replicates old behavior where specifying a compiler automatically
     * meant that an emitter would also run.
     */
@@ -206,15 +204,11 @@ object DriverCompatibility {
 
     override def invalidates(a: Phase) = false
 
-    /** Add one [[EmitAnnotation]] foreach [[CompilerAnnotation]]. */
+    /** Add one [[EmitAnnotation]] . */
     def transform(annotations: AnnotationSeq): AnnotationSeq = {
       val splitModules = annotations.collectFirst { case a: EmitOneFilePerModuleAnnotation.type => a }.isDefined
 
       annotations.flatMap {
-        case a @ CompilerAnnotation(c) =>
-          val b = RunFirrtlTransformAnnotation(a.compiler.emitter)
-          if (splitModules) { Seq(a, b, EmitAllModulesAnnotation(c.emitter.getClass)) }
-          else { Seq(a, b, EmitCircuitAnnotation(c.emitter.getClass)) }
         case a @ RunFirrtlTransformAnnotation(e: Emitter) =>
           if (splitModules) { Seq(a, EmitAllModulesAnnotation(e.getClass)) }
           else { Seq(a, EmitCircuitAnnotation(e.getClass)) }

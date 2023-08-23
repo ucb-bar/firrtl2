@@ -8,11 +8,10 @@ import firrtl2.transforms.{GroupAnnotation, GroupComponents, NoCircuitDedupAnnot
 import firrtl2._
 import firrtl2.ir._
 import firrtl2.testutils._
-
 import FirrtlCheckers._
+import firrtl2.options.Dependency
 
-class GroupComponentsSpec extends MiddleTransformSpec {
-  def transform = new GroupComponents()
+class GroupComponentsSpec extends MidFirrtlTransformSpec(Seq(Dependency[GroupComponents])) {
   val top = "Top"
   def topComp(name: String): ComponentName = ComponentName(name, ModuleName(top, CircuitName(top)))
   "The register r" should "be grouped" in {
@@ -392,10 +391,10 @@ class GroupComponentsIntegrationSpec extends FirrtlFlatSpec {
     val groups = Seq(
       GroupAnnotation(Seq(topComp("r")), "MyModule", "inst", Some("_OUT"), Some("_IN"))
     )
-    val result = (new VerilogCompiler).compileAndEmit(
-      CircuitState(parse(input), ChirrtlForm, groups),
-      Seq(new GroupComponents)
-    )
+    val result = MakeCompiler
+      .makeVerilogCompiler(Seq(Dependency[GroupComponents]))
+      .transform(CircuitState(parse(input), groups))
+
     result should containTree {
       case Connect(_, WSubField(WRef("inst", _, InstanceKind, _), "data_IN", _, _), WRef("data", _, _, _)) => true
     }

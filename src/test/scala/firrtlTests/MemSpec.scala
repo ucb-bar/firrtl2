@@ -6,17 +6,17 @@ import firrtl2._
 import firrtl2.testutils._
 import FirrtlCheckers._
 
-class MemSpec extends FirrtlPropSpec with FirrtlMatchers {
+class MemSpec extends VerilogTransformSpec {
 
-  property("Zero-ported mems should be supported!") {
-    runFirrtlTest("ZeroPortMem", "/features")
+  "Zero-ported mems" should "be supported!" in {
+    FirrtlRunners.runFirrtlTest("ZeroPortMem", "/features")
   }
 
-  property("Mems with zero-width elements should be supported!") {
-    runFirrtlTest("ZeroWidthMem", "/features")
+  "Mems with zero-width elements" should "be supported!" in {
+    FirrtlRunners.runFirrtlTest("ZeroWidthMem", "/features")
   }
 
-  property("Very large memories should be supported") {
+  "Very large memories" should "be supported" in {
     val addrWidth = 65
     val memSize = BigInt(1) << addrWidth
     val input =
@@ -48,12 +48,12 @@ class MemSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    m.w.clk <= clock
          |    m.w.mask <= UInt(1)
        """.stripMargin
-    val result = (new VerilogCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm, List.empty))
+    val result = compile(input)
     // TODO Not great that it includes the sparse comment for VCS
     result should containLine(s"reg /* sparse */ [7:0] m [0:$addrWidth'd${memSize - 1}];")
   }
 
-  property("Very large CHIRRTL memories should be supported") {
+  "Very large CHIRRTL memories" should "be supported" in {
     val addrWidth = 65
     val memSize = BigInt(1) << addrWidth
     val input =
@@ -74,7 +74,7 @@ class MemSpec extends FirrtlPropSpec with FirrtlMatchers {
          |    when wen :
          |      w <= wdata
        """.stripMargin
-    val result = (new VerilogCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm, List.empty))
+    val result = compile(input)
     // TODO Not great that it includes the sparse comment for VCS
     result should containLine(s"reg /* sparse */ [7:0] m [0:$addrWidth'd${memSize - 1}];")
   }

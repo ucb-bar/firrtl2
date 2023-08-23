@@ -3,12 +3,10 @@
 package firrtlTests
 
 import firrtl2.transforms._
-import firrtl2._
+import firrtl2.options.Dependency
+import firrtl2.testutils.MidFirrtlTransformSpec
 
-import CompilerUtils.getLoweringTransforms
-
-class SimplifyMemsSpec extends ConstantPropagationSpec {
-  override val transforms = getLoweringTransforms(ChirrtlForm, MidForm) ++ Seq(new SimplifyMems)
+class SimplifyMemsSpec extends MidFirrtlTransformSpec(Seq(Dependency[SimplifyMems])) {
 
   "SimplifyMems" should "lower aggregate memories" in {
     val input =
@@ -79,6 +77,6 @@ class SimplifyMemsSpec extends ConstantPropagationSpec {
         |    m.write.mask.b <= UInt<1>("h1")
 
      """.stripMargin
-    (parse(exec(input))) should be(parse(check))
+    execute(input, check)
   }
 }

@@ -4,10 +4,8 @@ package firrtl2.testutils
 
 import java.io._
 import scala.sys.process._
-
 import org.scalatest._
 import org.scalatestplus.scalacheck._
-
 import firrtl2._
 import firrtl2.ir._
 import firrtl2.Parser.UseInfo
@@ -69,24 +67,22 @@ object RenameTop extends Transform {
   }
 }
 
-trait FirrtlRunners {
-  import BackendCompilationUtilities._
-
-  val cppHarnessResourceName: String = "/firrtl2/testTop.cpp"
+object Equivalence {
+  import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 
   /** Extra transforms to run by default */
-  val extraCheckTransforms = Seq(new CheckLowForm)
+  val extraCheckTransforms = Seq(Dependency[CheckLowForm])
 
   /** Check equivalence of Firrtl transforms using yosys
     *
-    * @param input string containing Firrtl source
-    * @param customTransforms Firrtl transforms to test for equivalence
+    * @param input             string containing Firrtl source
+    * @param customTransforms  Firrtl transforms to test for equivalence
     * @param customAnnotations Optional Firrtl annotations
-    * @param timesteps the maximum number of timesteps to consider
+    * @param timesteps         the maximum number of timesteps to consider
     */
   def firrtlEquivalenceTest(
     input:             String,
-    customTransforms:  Seq[Transform] = Seq.empty,
+    customTransforms:  Seq[Dependency[Transform]] = Seq.empty,
     customAnnotations: AnnotationSeq = Seq.empty,
     timesteps:         Int = 1
   ): Unit = {
@@ -94,11 +90,11 @@ trait FirrtlRunners {
     val prefix = circuit.main
     val testDir = createTestDirectory(prefix + "_equivalence_test")
 
-    def toAnnos(xforms: Seq[Transform]) = xforms.map(RunFirrtlTransformAnnotation(_))
+    def toAnnos(xforms: Seq[Dependency[Transform]]) = xforms.map(RunFirrtlTransformAnnotation(_))
 
     def getBaseAnnos(topName: String) = {
-      val baseTransforms = RenameTop +: extraCheckTransforms
-      TargetDirAnnotation(testDir.toString) +:
+      val baseTransforms = Dependency(RenameTop) +: extraCheckTransforms
+      firrtl2.options.TargetDirAnnotation(testDir.toString) +:
         InfoModeAnnotation("ignore") +:
         RenameTopAnnotation(topName) +:
         stage.FirrtlCircuitAnnotation(circuit) +:
@@ -108,7 +104,8 @@ trait FirrtlRunners {
     }
 
     val customName = s"${prefix}_custom"
-    val customAnnos = customAnnotations ++: toAnnos((new GetNamespace) +: customTransforms) ++: getBaseAnnos(customName)
+    val customAnnos =
+      customAnnotations ++: toAnnos((Dependency[GetNamespace]) +: customTransforms) ++: getBaseAnnos(customName)
 
     val customResult = (new firrtl2.stage.FirrtlStage).execute(Array.empty, customAnnos)
     val nsAnno = customResult.collectFirst { case m: ModuleNamespaceAnnotation => m }.get
@@ -126,9 +123,9 @@ trait FirrtlRunners {
   /** Check equivalence of Firrtl with reference Verilog
     *
     * @note the name of the reference Verilog module is grabbed via regex
-    * @param inputFirrtl string containing Firrtl source
+    * @param inputFirrtl      string containing Firrtl source
     * @param referenceVerilog Verilog that will be used as reference for LEC
-    * @param timesteps the maximum number of timesteps to consider
+    * @param timesteps        the maximum number of timesteps to consider
     */
   def firrtlEquivalenceWithVerilog(
     inputFirrtl:      String,
@@ -147,7 +144,7 @@ trait FirrtlRunners {
     val testDir = createTestDirectory(inputName + "_equivalence_test")
 
     val annos = List(
-      TargetDirAnnotation(testDir.toString),
+      firrtl2.options.TargetDirAnnotation(testDir.toString),
       InfoModeAnnotation("ignore"),
       stage.FirrtlCircuitAnnotation(circuit),
       stage.RunFirrtlTransformAnnotation.stringToEmitter("verilog"),
@@ -163,6 +160,15 @@ trait FirrtlRunners {
 
     assert(BackendCompilationUtilities.yosysExpectSuccess(inputName, refName, testDir, timesteps))
   }
+}
+
+trait FirrtlRunners {
+  import BackendCompilationUtilities._
+
+  val cppHarnessResourceName: String = "/firrtl2/testTop.cpp"
+
+  /** Extra transforms to run by default */
+  val extraCheckTransforms = Seq(Dependency[CheckLowForm])
 
   /** Compiles input Firrtl to Verilog */
   def compileToVerilog(input: String, annotations: AnnotationSeq = Seq.empty): String = {
@@ -171,9 +177,9 @@ trait FirrtlRunners {
 
   /** Compiles input Firrtl to Verilog */
   def compileToVerilogCircuitState(input: String, annotations: AnnotationSeq = Seq.empty): CircuitState = {
-    val circuit = Parser.parse(input.split("\n").toIterator)
-    val compiler = new VerilogCompiler
-    compiler.compileAndEmit(CircuitState(circuit, HighForm, annotations), extraCheckTransforms)
+    val circuit = Parser.parse(input)
+    val compiler = MakeCompiler.makeVerilogCompiler(extraCheckTransforms)
+    compiler.transform(CircuitState(circuit, MakeCompiler.makeEmitVerilogCircuitAnno +: annotations))
   }
 
   /** Run Verilator lint on some Verilog text
@@ -201,7 +207,7 @@ trait FirrtlRunners {
   def compileFirrtlTest(
     prefix:           String,
     srcDir:           String,
-    customTransforms: Seq[Transform] = Seq.empty,
+    customTransforms: Seq[Dependency[Transform]] = Seq.empty,
     annotations:      AnnotationSeq = Seq.empty
   ): File = {
     val testDir = createTestDirectory(prefix)
@@ -210,7 +216,7 @@ trait FirrtlRunners {
 
     val annos =
       FirrtlFileAnnotation(inputFile.toString) +:
-        TargetDirAnnotation(testDir.toString) +:
+        firrtl2.options.TargetDirAnnotation(testDir.toString) +:
         InfoModeAnnotation("ignore") +:
         annotations ++:
         (customTransforms ++ extraCheckTransforms).map(RunFirrtlTransformAnnotation(_))
@@ -231,7 +237,7 @@ trait FirrtlRunners {
     prefix:           String,
     srcDir:           String,
     verilogPrefixes:  Seq[String] = Seq.empty,
-    customTransforms: Seq[Transform] = Seq.empty,
+    customTransforms: Seq[Dependency[Transform]] = Seq.empty,
     annotations:      AnnotationSeq = Seq.empty
   ) = {
     val testDir = compileFirrtlTest(prefix, srcDir, customTransforms, annotations)
@@ -251,6 +257,8 @@ trait FirrtlRunners {
     assert(executeExpectingSuccess(prefix, testDir))
   }
 }
+
+object FirrtlRunners extends FirrtlRunners {}
 
 trait FirrtlMatchers extends Matchers {
   def dontTouch(ref: ReferenceTarget): DontTouchAnnotation = {
@@ -280,24 +288,7 @@ trait FirrtlMatchers extends Matchers {
     def onModule(mod: DefModule) = mod.map(firrtl2.Utils.squashEmpty)
     circuit.map(onModule)
   }
-  def parse(str: String) = Parser.parse(str.split("\n").toIterator, UseInfo)
-
-  /** Helper for executing tests
-    * compiler will be run on input then emitted result will each be split into
-    * lines and normalized.
-    */
-  def executeTest(
-    input:       String,
-    expected:    Seq[String],
-    compiler:    Compiler,
-    annotations: Seq[Annotation] = Seq.empty
-  ) = {
-    val finalState = compiler.compileAndEmit(CircuitState(parse(input), ChirrtlForm, annotations))
-    val lines = finalState.getEmittedCircuit.value.split("\n").map(normalized)
-    for (e <- expected) {
-      lines should contain(e)
-    }
-  }
+  def parse(str: String) = Parser.parse(str)
 }
 
 object FirrtlCheckers extends FirrtlMatchers {
@@ -379,8 +370,8 @@ class TestFirrtlFlatSpec extends FirrtlFlatSpec {
                   |    output out : UInt<8>
                   |    out <= in
                   |""".stripMargin)
-  val state = CircuitState(c, ChirrtlForm)
-  val compiled = (new LowFirrtlCompiler).compileAndEmit(state, List.empty)
+  val state = CircuitState(c, Seq(MakeCompiler.makeEmitLowFirrtlCircuitAnno))
+  val compiled = MakeCompiler.makeLowFirrtlCompiler().transform(state)
 
   // While useful, ScalaTest helpers should be used over search
   behavior.of("Search")
@@ -459,7 +450,9 @@ trait Utils {
 }
 
 /** Super class for equivalence driven Firrtl tests */
-abstract class EquivalenceTest(transforms: Seq[Transform], name: String, dir: String) extends FirrtlFlatSpec {
+abstract class EquivalenceTest(transforms: Seq[Dependency[Transform]], name: String, dir: String)
+    extends FirrtlFlatSpec {
+  import Equivalence.firrtlEquivalenceTest
   val fileName = s"$dir/$name.fir"
   val in = getClass.getResourceAsStream(fileName)
   if (in == null) {
@@ -470,8 +463,8 @@ abstract class EquivalenceTest(transforms: Seq[Transform], name: String, dir: St
     try source.mkString
     finally source.close()
 
-  s"$name with ${transforms.map(_.name).mkString(", ")}" should
-    s"be equivalent to $name without ${transforms.map(_.name).mkString(", ")}" in {
+  s"$name with ${transforms.map(_.getName).mkString(", ")}" should
+    s"be equivalent to $name without ${transforms.map(_.getName).mkString(", ")}" in {
     firrtlEquivalenceTest(input, transforms)
   }
 }

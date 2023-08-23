@@ -7,7 +7,8 @@ import firrtl2.passes._
 import firrtl2.transforms._
 import firrtl2.testutils._
 import firrtl2.annotations.Annotation
-import firrtl2.stage.DisableFold
+import firrtl2.options.Dependency
+import firrtl2.stage.{DisableFold, Forms}
 
 class ConstantPropagationSpec extends FirrtlFlatSpec {
   val transforms: Seq[Transform] =
@@ -813,8 +814,7 @@ class ConstantPropagationSingleModule extends ConstantPropagationSpec {
 }
 
 // More sophisticated tests of the full compiler
-class ConstantPropagationIntegrationSpec extends LowTransformSpec {
-  def transform = new LowFirrtlOptimization
+class ConstantPropagationIntegrationSpec extends LowFirrtlTransformSpec(Forms.LowFormOptimized) {
 
   "ConstProp" should "NOT optimize across dontTouch on nodes" in {
     val input =
@@ -1596,8 +1596,8 @@ class ConstantPropagationIntegrationSpec extends LowTransformSpec {
 }
 
 class ConstantPropagationEquivalenceSpec extends FirrtlFlatSpec {
-  private val srcDir = "/constant_propagation_tests"
-  private val transforms = Seq(new ConstantPropagation)
+  private val transforms = Seq(Dependency[ConstantPropagation])
+  import Equivalence.firrtlEquivalenceTest
 
   "anything added to zero" should "be equal to itself" in {
     val input =

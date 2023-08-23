@@ -134,8 +134,7 @@ class InferWidthsWithAnnosSpec extends FirrtlFlatSpec {
       ResolveFlows,
       new InferWidths,
       CheckWidths,
-      new WiringTransform,
-      new ResolveAndCheck
+      new WiringTransform
     )
     val sourceTarget = ComponentName("bundle", ModuleName("A", CircuitName("Top")))
     val source = SourceAnnotation(sourceTarget, "pin")

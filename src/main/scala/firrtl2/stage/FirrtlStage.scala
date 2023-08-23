@@ -10,8 +10,7 @@ import firrtl2.stage.phases.CatchExceptions
 class FirrtlPhase
     extends PhaseManager(
       targets = Seq(
-        Dependency[firrtl2.stage.phases.Compiler],
-        Dependency[firrtl2.stage.phases.ConvertCompilerAnnotations]
+        Dependency[firrtl2.stage.phases.Compiler]
       )
     ) {
 

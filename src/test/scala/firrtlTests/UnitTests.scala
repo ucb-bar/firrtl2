@@ -25,11 +25,11 @@ class UnitTests extends FirrtlFlatSpec {
 
   def execute(input: String, transforms: Seq[Transform]): CircuitState = {
     val c = transforms
-      .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, t: Transform) =>
+      .foldLeft(CircuitState(parse(input), Seq())) { (c: CircuitState, t: Transform) =>
         t.runTransform(c)
       }
       .circuit
-    CircuitState(c, UnknownForm, Seq(), None)
+    CircuitState(c, Seq())
   }
 
   "Pull muxes" should "not be exponential in runtime" in {
@@ -376,7 +376,9 @@ class UnitTests extends FirrtlFlatSpec {
         |    output out : UInt<8>
         |    out <= shl(in, 4)
         |""".stripMargin
-    val res = (new VerilogCompiler).compileAndEmit(CircuitState(parse(input), ChirrtlForm))
+    val res = MakeCompiler
+      .makeVerilogCompiler()
+      .transform(CircuitState(parse(input), Seq(MakeCompiler.makeEmitVerilogCircuitAnno)))
     res should containLine("assign out = {in, 4'h0};")
   }
 }

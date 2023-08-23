@@ -2,29 +2,15 @@
 
 package firrtlTests
 
-import firrtl2._
-import firrtl2.ir.{Circuit, Connect, FileInfo, MultiInfo, Statement}
-import firrtl2.annotations.{Annotation, ReferenceTarget}
+import firrtl2.ir.{Connect, FileInfo, MultiInfo, Statement}
+import firrtl2.annotations.ReferenceTarget
 import firrtl2.options.Dependency
-import firrtl2.passes._
 import firrtl2.transforms._
 import firrtl2.testutils._
-import firrtl2.stage.{PrettyNoExprInlining, TransformManager}
+import firrtl2.stage.PrettyNoExprInlining
 
-class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
-  val transform = new InlineBooleanExpressions
-  val transforms: Seq[Transform] = new TransformManager(
-    transform.prerequisites
-  ).flattenedTransformOrder :+ transform
-
-  protected def exec(input: Circuit, annos: Seq[Annotation] = Nil) = {
-    transforms
-      .foldLeft(CircuitState(input, UnknownForm, AnnotationSeq(annos))) { (c: CircuitState, t: Transform) =>
-        t.runTransform(c)
-      }
-      .circuit
-      .serialize
-  }
+class InlineBooleanExpressionsSpec extends LowFirrtlTransformSpec(Seq(Dependency[InlineBooleanExpressions])) {
+  import Equivalence.firrtlEquivalenceTest
 
   it should "inline mux operands" in {
     val input =
@@ -49,9 +35,8 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _c = lt(x1, x2)
         |    node _y = mux(lt(x1, x2), head(x1, 1), head(x2, 1))
         |    out <= mux(lt(x1, x2), head(x1, 1), head(x2, 1))""".stripMargin
-    val result = exec(parse(input))
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check)
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "not inline dontTouched signals" in {
@@ -77,15 +62,12 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _c = lt(x1, x2)
         |    node _y = mux(lt(x1, x2), _t, _f)
         |    out <= mux(lt(x1, x2), _t, _f)""".stripMargin
-    val result = exec(
-      parse(input),
-      Seq(
-        DontTouchAnnotation(ReferenceTarget("Top", "Top", Seq.empty, "_t", Seq.empty)),
-        DontTouchAnnotation(ReferenceTarget("Top", "Top", Seq.empty, "_f", Seq.empty))
-      )
+    val annos = Seq(
+      DontTouchAnnotation(ReferenceTarget("Top", "Top", Seq.empty, "_t", Seq.empty)),
+      DontTouchAnnotation(ReferenceTarget("Top", "Top", Seq.empty, "_f", Seq.empty))
     )
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check, annos)
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "only inline expressions with the same file and line number" in {
@@ -123,9 +105,8 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    outA2 <= _y @[A 2:3]
         |
         |    outB <= _y @[B]""".stripMargin
-    val result = exec(parse(input))
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check)
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "inline if subexpression info is a subset of parent info" in {
@@ -167,8 +148,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _t = in_2 @[A 1:1]
         |    node _f = in_3 @[A 1:1]
         |    out <= mux(in_1, in_2, in_3) @[A 1:1 2:2 3:3]""".stripMargin
-    val result = exec(input)
-    (result) should be(parse(check).serialize)
+    execute(input.serialize, check)
   }
 
   it should "inline mux condition and dshl/dhslr shamt args" in {
@@ -202,8 +182,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    out_1 <= mux(head(in_1, 1), _t, _f)
         |    out_2 <= dshr(in_1, head(in_1, 1))
         |    out_3 <= dshl(in_1, head(in_1, 1))""".stripMargin
-    val result = exec(parse(input))
-    (result) should be(parse(check).serialize)
+    execute(input, check)
   }
 
   it should "inline boolean DoPrims" in {
@@ -235,16 +214,15 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _a = lt(x1, x2)
         |    node _b = eq(lt(x1, x2), x2)
         |    node _c = and(eq(lt(x1, x2), x2), x2)
-        |    outA <= and(eq(lt(x1, x2), x2), x2)
+        |    outA <= bits(and(eq(lt(x1, x2), x2), x2), 0, 0)
         |
         |    node _d = head(_c, 1)
         |    node _e = andr(head(_c, 1))
         |    node _f = lt(andr(head(_c, 1)), x2)
         |
         |    outB <= lt(andr(head(_c, 1)), x2)""".stripMargin
-    val result = exec(parse(input))
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check, unordered = true)
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "inline more boolean DoPrims" in {
@@ -287,9 +265,8 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _h = geq(x1, gt(x1, leq(x1, lt(x1, x2))))
         |
         |    outB <= geq(x1, gt(x1, leq(x1, lt(x1, x2))))""".stripMargin
-    val result = exec(parse(input))
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check, unordered = true)
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "limit the number of inlines" in {
@@ -333,9 +310,8 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
          |    node _6 = or(or(or(_3, c_4), c_5), c_6)
          |
          |    out <= or(or(or(_3, c_4), c_5), c_6)""".stripMargin
-    val result = exec(parse(input), Seq(InlineBooleanExpressionsMax(3)))
-    (result) should be(parse(check).serialize)
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    execute(input, check, Seq(InlineBooleanExpressionsMax(3)))
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "be equivalent" in {
@@ -352,7 +328,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    node _e = eq(in[5], _d)
         |    node _f = head(_e, 1)
         |    out <= _f""".stripMargin
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "emit parentheses in the correct places" in {
@@ -378,7 +354,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    out[11] <= and(in[0], xor(in[1], in[2]))
         |    out[12] <= xor(in[0], or(in[1], in[2]))
     """.stripMargin
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should "avoid inlining when it would create context-sensitivity bugs" in {
@@ -389,7 +365,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    input b: UInt<1>
         |    output o: UInt<2>
         |    o <= add(a, not(b))""".stripMargin
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   // https://github.com/chipsalliance/firrtl/issues/2035
@@ -405,7 +381,7 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |    input b: SInt<1>
         |    output o: UInt
         |    o <= dshl(a, asUInt(cvt(b)))""".stripMargin
-    firrtlEquivalenceTest(input, Seq(new InlineBooleanExpressions))
+    firrtlEquivalenceTest(input, Seq(Dependency[InlineBooleanExpressions]))
   }
 
   it should s"respect --${PrettyNoExprInlining.longOption}" in {
@@ -419,7 +395,6 @@ class InlineBooleanExpressionsSpec extends FirrtlFlatSpec {
         |
         |    node _T_1 = and(a, b)
         |    out <= and(_T_1, c)""".stripMargin
-    val result = exec(parse(input), PrettyNoExprInlining :: Nil)
-    (result) should be(parse(input).serialize)
+    execute(input, input, Seq(PrettyNoExprInlining))
   }
 }

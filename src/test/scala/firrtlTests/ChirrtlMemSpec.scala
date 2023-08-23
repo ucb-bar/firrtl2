@@ -241,7 +241,7 @@ circuit foo :
         |      read mport bar = mem[addr], asClock(local)
         |      out <= bar
         |""".stripMargin
-    val res = new LowFirrtlCompiler().compile(CircuitState(parse(input), ChirrtlForm), Seq()).circuit
+    val res = MakeCompiler.makeLowFirrtlCompiler().transform(CircuitState(parse(input), Seq()))
     assert(res.search {
       case Connect(
             _,
@@ -266,7 +266,7 @@ circuit foo :
         |      read mport bar = mem[addr], asClock(clock)
         |      out <= bar
         |""".stripMargin
-    val res = (new HighFirrtlCompiler).compile(CircuitState(parse(input), ChirrtlForm), Seq()).circuit
+    val res = MakeCompiler.makeHighFirrtlCompiler().transform(CircuitState(parse(input), Seq())).circuit
     assert(res.search {
       case Connect(
             _,

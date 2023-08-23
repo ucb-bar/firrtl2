@@ -5,6 +5,7 @@ package firrtlTests
 import firrtl2.testutils._
 
 class VerilogEquivalenceSpec extends FirrtlFlatSpec {
+  import Equivalence._
   "mul followed by cat" should "be correct" in {
     val header = s"""
                     |circuit Multiply :

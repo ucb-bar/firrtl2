@@ -324,9 +324,8 @@ class ZeroWidthTests extends LeanTransformSpec(Seq(Dependency(ZeroWidth))) {
   }
 }
 
-class ZeroWidthVerilog extends FirrtlFlatSpec {
+class ZeroWidthVerilog extends VerilogTransformSpec {
   "Circuit" should "accept zero width wires" in {
-    val compiler = new VerilogCompiler
     val input =
       """circuit Top :
         |  module Top :
@@ -339,7 +338,7 @@ class ZeroWidthVerilog extends FirrtlFlatSpec {
         |);
         |  assign x = 3'h0;
         |endmodule
-        |""".stripMargin.split("\n").map(normalized)
-    executeTest(input, check, compiler)
+        |""".stripMargin
+    execute(input, check)
   }
 }

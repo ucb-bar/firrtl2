@@ -7,7 +7,7 @@ import firrtl2.passes._
 import firrtl2.transforms._
 import firrtl2.annotations._
 import firrtl2.passes.memlib.SimpleTransform
-import firrtl2.stage.FirrtlStage
+import firrtl2.stage.{FirrtlStage, Forms}
 import firrtl2.testutils._
 import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 
@@ -22,22 +22,7 @@ case class AnnotationWithDontTouches(target: ReferenceTarget)
   def dontTouches: Seq[ReferenceTarget] = targets
 }
 
-class DCETests extends FirrtlFlatSpec {
-  // Not using executeTest because it is for positive testing, we need to check that stuff got
-  // deleted
-  private val customTransforms = Seq(
-    new LowFirrtlOptimization,
-    RemoveEmpty
-  )
-  private def exec(input: String, check: String, annos: Seq[Annotation] = List.empty): Unit = {
-    val state = CircuitState(parse(input), ChirrtlForm, annos)
-    val finalState = (new LowFirrtlCompiler).compileAndEmit(state, customTransforms)
-    val res = finalState.getEmittedCircuit.value
-    // Convert to sets for comparison
-    val resSet = Set(parse(res).serialize.split("\n"): _*)
-    val checkSet = Set(parse(check).serialize.split("\n"): _*)
-    resSet should be(checkSet)
-  }
+class DCETests extends LowFirrtlTransformSpec(Forms.LowFormOptimized) {
 
   "Unread wire" should "be deleted" in {
     val input =
@@ -54,7 +39,7 @@ class DCETests extends FirrtlFlatSpec {
         |    input x : UInt<1>
         |    output z : UInt<1>
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Unread wire marked dont touch" should "NOT be deleted" in {
     val input =
@@ -72,7 +57,7 @@ class DCETests extends FirrtlFlatSpec {
         |    output z : UInt<1>
         |    node a = x
         |    z <= x""".stripMargin
-    exec(input, check, Seq(dontTouch("Top.a")))
+    execute(input, check, Seq(dontTouch("Top.a")))
   }
   "Unread wire marked dont touch by another annotation" should "NOT be deleted" in {
     val input =
@@ -90,7 +75,7 @@ class DCETests extends FirrtlFlatSpec {
         |    output z : UInt<1>
         |    node a = x
         |    z <= x""".stripMargin
-    exec(input, check, Seq(AnnotationWithDontTouches(ModuleTarget("Top", "Top").ref("a"))))
+    execute(input, check, Seq(AnnotationWithDontTouches(ModuleTarget("Top", "Top").ref("a"))))
   }
   "Unread register" should "be deleted" in {
     val input =
@@ -111,7 +96,7 @@ class DCETests extends FirrtlFlatSpec {
         |    output z : UInt<1>
         |    node y = asUInt(clk)
         |    z <= or(x, y)""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Unread node" should "be deleted" in {
     val input =
@@ -127,7 +112,7 @@ class DCETests extends FirrtlFlatSpec {
         |    input x : UInt<1>
         |    output z : UInt<1>
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Unused ports" should "be deleted" in {
     val input =
@@ -160,7 +145,7 @@ class DCETests extends FirrtlFlatSpec {
         |    inst sub of Sub
         |    sub.x <= x
         |    z <= sub.z""".stripMargin
-    exec(input, check)
+    execute(input, check, unordered = true)
   }
   "Chain of unread nodes" should "be deleted" in {
     val input =
@@ -178,7 +163,7 @@ class DCETests extends FirrtlFlatSpec {
         |    input x : UInt<1>
         |    output z : UInt<1>
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Chain of unread wires and their connections" should "be deleted" in {
     val input =
@@ -197,7 +182,7 @@ class DCETests extends FirrtlFlatSpec {
         |    input x : UInt<1>
         |    output z : UInt<1>
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Read register" should "not be deleted" in {
     val input =
@@ -218,7 +203,7 @@ class DCETests extends FirrtlFlatSpec {
         |    reg r : UInt<1>, clk with : (reset => (UInt<1>("h0"), r))
         |    r <= x
         |    z <= r""".stripMargin
-    exec(input, check)
+    execute(input, check, unordered = true)
   }
   "Logic that feeds into simulation constructs" should "not be deleted" in {
     val input =
@@ -239,7 +224,7 @@ class DCETests extends FirrtlFlatSpec {
         |    node a = not(x)
         |    z <= x
         |    stop(clk, a, 0)""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Globally dead module" should "should be deleted" in {
     val input =
@@ -260,7 +245,7 @@ class DCETests extends FirrtlFlatSpec {
         |    input x : UInt<1>
         |    output z : UInt<1>
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
   "Globally dead extmodule" should "NOT be deleted by default" in {
     val input =
@@ -285,7 +270,7 @@ class DCETests extends FirrtlFlatSpec {
         |    inst dead of Dead
         |    dead.x <= x
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check, unordered = true)
   }
   "Extmodule with only inputs" should "NOT be deleted by default" in {
     val input =
@@ -308,7 +293,7 @@ class DCETests extends FirrtlFlatSpec {
         |    inst ext of InputsOnly
         |    ext.x <= x
         |    z <= x""".stripMargin
-    exec(input, check)
+    execute(input, check, unordered = true)
   }
   "Globally dead extmodule marked optimizable" should "be deleted" in {
     val input =
@@ -329,7 +314,7 @@ class DCETests extends FirrtlFlatSpec {
         |    output z : UInt<1>
         |    z <= x""".stripMargin
     val doTouchAnno = OptimizableExtModuleAnnotation(ModuleName("Dead", CircuitName("Top")))
-    exec(input, check, Seq(doTouchAnno))
+    execute(input, check, Seq(doTouchAnno))
   }
   "Analog ports of extmodules" should "count as both inputs and outputs" in {
     val input =
@@ -346,7 +331,7 @@ class DCETests extends FirrtlFlatSpec {
         |    attach (bb1.bus, bb2.bus)
         |    out <= bb2.out
         """.stripMargin
-    exec(input, input)
+    execute(input, input, unordered = true)
   }
   "extmodules with no ports" should "NOT be deleted by default" in {
     val input =
@@ -359,7 +344,7 @@ class DCETests extends FirrtlFlatSpec {
         |    inst blackBox of BlackBox
         |    y <= x
         |""".stripMargin
-    exec(input, input)
+    execute(input, input)
   }
   "extmodules with no ports marked optimizable" should "be deleted" in {
     val input =
@@ -380,7 +365,7 @@ class DCETests extends FirrtlFlatSpec {
         |    y <= x
         |""".stripMargin
     val doTouchAnno = OptimizableExtModuleAnnotation(ModuleName("BlackBox", CircuitName("Top")))
-    exec(input, check, Seq(doTouchAnno))
+    execute(input, check, Seq(doTouchAnno))
   }
   // bar.z is not used and thus is dead code, but foo.z is used so this code isn't eliminated
   "Module deduplication" should "should be preserved despite unused output of ONE instance" in {
@@ -418,7 +403,7 @@ class DCETests extends FirrtlFlatSpec {
         |    bar.x <= x
         |    node t0 = or(foo.y, foo.z)
         |    z <= or(t0, bar.y)""".stripMargin
-    exec(input, check)
+    execute(input, check, unordered = true)
   }
   // This currently does NOT work
   behavior.of("Single dead instances")
@@ -451,7 +436,7 @@ class DCETests extends FirrtlFlatSpec {
         |    foo.x <= x
         |    skip
         |    z <= foo.z""".stripMargin
-    exec(input, check)
+    execute(input, check)
   }
 
   "Emitted Verilog" should "not contain dead \"register update\" code" in {
@@ -468,8 +453,8 @@ class DCETests extends FirrtlFlatSpec {
         |    z <= r""".stripMargin
     )
 
-    val state = CircuitState(input, ChirrtlForm)
-    val result = (new VerilogCompiler).compileAndEmit(state, List.empty)
+    val state = CircuitState(input, Seq(MakeCompiler.makeEmitVerilogCircuitAnno))
+    val result = MakeCompiler.makeVerilogCompiler().transform(state)
     val verilog = result.getEmittedCircuit.value
     // Check that mux is removed!
     (verilog shouldNot include).regex("""a \? x : r;""")
@@ -487,8 +472,8 @@ class DCETests extends FirrtlFlatSpec {
         |      stop(clock, UInt<1>(1), 1)""".stripMargin
     )
 
-    val state = CircuitState(input, ChirrtlForm)
-    val result = (new VerilogCompiler).compileAndEmit(state, List.empty)
+    val state = CircuitState(input, Seq(MakeCompiler.makeEmitVerilogCircuitAnno))
+    val result = MakeCompiler.makeVerilogCompiler().transform(state)
     val verilog = result.getEmittedCircuit.value
     (verilog shouldNot include).regex("""fwrite""")
     (verilog shouldNot include).regex("""fatal""")
@@ -527,7 +512,7 @@ class DCETests extends FirrtlFlatSpec {
     val annos =
       Seq(top.instOf("c", "child").ref("z"), top.instOf("c_1", "child").ref("z"))
         .map(DontTouchAnnotation(_))
-    exec(input, check, annos)
+    execute(input, check, annos)
   }
 }
 
