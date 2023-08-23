@@ -2,8 +2,7 @@
 
 package firrtlTests
 
-import org.scalatest._
-import firrtl2.{CircuitState, Parser, Transform, UnknownForm}
+import firrtl2.{CircuitState, Parser, Transform}
 import firrtl2.ir.Circuit
 import firrtl2.passes.{
   CheckFlows,
@@ -23,7 +22,7 @@ import org.scalatest.matchers.should.Matchers
 class CheckSpec extends AnyFlatSpec with Matchers {
   val defaultPasses = Seq(CheckHighForm)
   def checkHighInput(input: String) = {
-    defaultPasses.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+    defaultPasses.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
       p.run(c)
     }
   }
@@ -65,7 +64,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
         |      read-latency => 0
         |      write-latency => 0""".stripMargin
     intercept[CheckHighForm.IllegalMemLatencyException] {
-      passes.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+      passes.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
         p.run(c)
       }
     }
@@ -316,8 +315,8 @@ class CheckSpec extends AnyFlatSpec with Matchers {
         |    sub.io.debug_clk <= io.jtag.TCK
         |
         |""".stripMargin
-    passes.foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-      (c: CircuitState, p: Transform) => p.runTransform(c)
+    passes.foldLeft(CircuitState(Parser.parse(input))) { (c: CircuitState, p: Transform) =>
+      p.runTransform(c)
     }
   }
 
@@ -338,7 +337,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
         |
         |""".stripMargin
     intercept[CheckTypes.RegReqClk] {
-      passes.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+      passes.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
         p.run(c)
       }
     }
@@ -362,7 +361,7 @@ class CheckSpec extends AnyFlatSpec with Matchers {
         |
         |""".stripMargin
     intercept[CheckTypes.IllegalResetType] {
-      passes.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+      passes.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
         p.run(c)
       }
     }

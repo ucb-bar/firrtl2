@@ -15,7 +15,7 @@ object EliminateTargetPathsSpec {
   case class DummyAnnotation(target: Target) extends SingleTargetAnnotation[Target] {
     override def duplicate(n: Target): Annotation = DummyAnnotation(n)
   }
-  class DummyTransform() extends Transform with ResolvedAnnotationPaths with DependencyAPIMigration {
+  class DummyTransform() extends Transform with ResolvedAnnotationPaths {
     // run after dedup, because dedup might just undo all the resolving ...
     override def prerequisites = Seq(Dependency[DedupAnnotationsTransform], Dependency[DedupModules])
     override val annotationClasses: Traversable[Class[_]] = Seq(classOf[DummyAnnotation])

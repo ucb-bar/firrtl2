@@ -4,9 +4,9 @@ package firrtl2.transforms.formal
 
 import firrtl2.ir.{Circuit, Formal, Statement, Verification}
 import firrtl2.stage.TransformManager.TransformDependency
-import firrtl2.{CircuitState, DependencyAPIMigration, Transform}
+import firrtl2.{CircuitState, Transform}
 import firrtl2.annotations.NoTargetAnnotation
-import firrtl2.options.{PreservesAll, RegisteredTransform, ShellOption}
+import firrtl2.options.{RegisteredTransform, ShellOption}
 
 /**
   * Assert Submodule Assumptions
@@ -16,12 +16,9 @@ import firrtl2.options.{PreservesAll, RegisteredTransform, ShellOption}
   * overly restrictive assume in a child module can prevent the model checker
   * from searching valid inputs and states in the parent module.
   */
-class AssertSubmoduleAssumptions
-    extends Transform
-    with RegisteredTransform
-    with DependencyAPIMigration
-    with PreservesAll[Transform] {
+class AssertSubmoduleAssumptions extends Transform with RegisteredTransform {
 
+  override def invalidates(a: Transform) = false
   override def prerequisites:         Seq[TransformDependency] = Seq.empty
   override def optionalPrerequisites: Seq[TransformDependency] = Seq.empty
   override def optionalPrerequisiteOf: Seq[TransformDependency] =

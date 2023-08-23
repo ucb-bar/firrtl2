@@ -11,10 +11,7 @@ import firrtl2.options.Viewer.view
 import firrtl2.options.{CustomFileEmission, Dependency}
 import firrtl2.stage.{FirrtlOptions, FirrtlOptionsView}
 
-private[firrtl2] abstract class SMTEmitter private[firrtl2] ()
-    extends Transform
-    with Emitter
-    with DependencyAPIMigration {
+private[firrtl2] abstract class SMTEmitter private[firrtl2] () extends Transform with Emitter {
   override def prerequisites: Seq[Dependency[Transform]] = Seq(Dependency(FirrtlToTransitionSystem))
   override def invalidates(a: Transform): Boolean = false
 

@@ -11,8 +11,8 @@ import wiring._
 class WiringTests extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: String, passes: Seq[Transform], annos: Seq[Annotation]): Unit = {
     val c = passes
-      .foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm, annos)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
+      .foldLeft(CircuitState(Parser.parse(input), annos)) { (c: CircuitState, p: Transform) =>
+        p.runTransform(c)
       }
       .circuit
 

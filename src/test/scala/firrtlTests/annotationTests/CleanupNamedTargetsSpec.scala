@@ -2,7 +2,7 @@
 
 package firrtlTests.annotationTests
 
-import firrtl2.{AnnotationSeq, CircuitState, Parser, UnknownForm}
+import firrtl2.{AnnotationSeq, CircuitState, Parser}
 import firrtl2.annotations.{
   CircuitName,
   CircuitTarget,
@@ -53,7 +53,7 @@ class CleanupNamedTargetsSpec extends AnyFlatSpec with Matchers {
 
     lazy val bazTarget = ComponentName("baz", ModuleName("Foo", CircuitName("Foo"))).toTarget
 
-    def circuitState(a: AnnotationSeq): CircuitState = CircuitState(Parser.parse(circuit), UnknownForm, a, None)
+    def circuitState(a: AnnotationSeq): CircuitState = CircuitState(Parser.parse(circuit), a, None)
 
   }
 

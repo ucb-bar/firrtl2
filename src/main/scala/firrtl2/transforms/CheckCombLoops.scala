@@ -98,7 +98,7 @@ case class CombinationalPath(sink: ReferenceTarget, sources: Seq[ReferenceTarget
   * @note The pass relies on ExtModulePathAnnotations to find loops through ExtModules
   * @note The pass will throw exceptions on "false paths"
   */
-class CheckCombLoops extends Transform with RegisteredTransform with DependencyAPIMigration {
+class CheckCombLoops extends Transform with RegisteredTransform {
 
   override def prerequisites = firrtl2.stage.Forms.MidForm ++
     Seq(Dependency(passes.LowerTypes), Dependency(firrtl2.transforms.RemoveReset))

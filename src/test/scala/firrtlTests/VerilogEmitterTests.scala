@@ -479,7 +479,7 @@ class VerilogEmitterSpec extends VerilogTransformSpec {
           |    out <= tmp
           |""".stripMargin
     val circuit = Seq(ResolveKinds, InferTypes).foldLeft(parse(input)) { case (c, p) => p.run(c) }
-    val state = CircuitState(circuit, LowForm, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
+    val state = CircuitState(circuit, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
     val result = (new VerilogEmitter).execute(state)
     result should containLine("if (sel == 2'h0) begin")
     result should containLine("end else if (sel == 2'h1) begin")
@@ -500,7 +500,7 @@ class VerilogEmitterSpec extends VerilogTransformSpec {
           |    out <= tmp
           |""".stripMargin
     val circuit = Seq(ResolveKinds, InferTypes).foldLeft(parse(input)) { case (c, p) => p.run(c) }
-    val state = CircuitState(circuit, LowForm, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
+    val state = CircuitState(circuit, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
     val result = (new VerilogEmitter).execute(state)
     result should not(containLine("tmp <= tmp"))
   }
@@ -518,7 +518,7 @@ class VerilogEmitterSpec extends VerilogTransformSpec {
           |    out <= tmp
           |""".stripMargin
     val circuit = Seq(ResolveKinds, InferTypes).foldLeft(parse(input)) { case (c, p) => p.run(c) }
-    val state = CircuitState(circuit, LowForm, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
+    val state = CircuitState(circuit, Seq(EmitCircuitAnnotation(classOf[VerilogEmitter])))
     val result = (new VerilogEmitter).execute(state)
     result should containLine("if (!(sel == 1'h0)) begin")
     result should not(containLine("tmp <= tmp"))

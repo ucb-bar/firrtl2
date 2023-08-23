@@ -8,7 +8,8 @@ import firrtl2.passes.Pass
 import firrtl2.ir._
 import firrtl2.stage.{FirrtlSourceAnnotation, FirrtlStage, RunFirrtlTransformAnnotation}
 import firrtl2.options.Dependency
-import firrtl2.transforms.{LegalizeAndReductionsTransform}
+import firrtl2.stage.TransformManager.TransformDependency
+import firrtl2.transforms.LegalizeAndReductionsTransform
 import firrtl2.testutils._
 import firrtl2.transforms.formal.ConvertAsserts
 
@@ -43,8 +44,11 @@ object CustomTransformSpec {
       )
     }
     def transforms = Seq(new ReplaceExtModule)
-    def inputForm = LowForm
-    def outputForm = HighForm
+
+    override def invalidates(a: Transform) = false
+
+    override def optionalPrerequisiteOf: Seq[TransformDependency] =
+      Seq(Dependency[VerilogEmitter], Dependency[MinimumVerilogEmitter], Dependency[firrtl2.passes.ExpandWhensAndCheck])
   }
 
   val input = """
@@ -54,8 +58,6 @@ object CustomTransformSpec {
                 |    out <= UInt(123)""".stripMargin
   val errorString = "My Custom Transform failed!"
   class ErroringTransform extends Transform {
-    def inputForm = HighForm
-    def outputForm = HighForm
     def execute(state: CircuitState): CircuitState = {
       require(false, errorString)
       state
@@ -67,9 +69,7 @@ object CustomTransformSpec {
   }
 
   class FirstTransform extends Transform {
-    def inputForm = HighForm
-    def outputForm = HighForm
-
+    override def invalidates(a: Transform) = false
     def execute(state: CircuitState): CircuitState = {
       require(MutableState.count == 0, s"Count was ${MutableState.count}, expected 0")
       MutableState.count = 1
@@ -78,9 +78,8 @@ object CustomTransformSpec {
   }
 
   class SecondTransform extends Transform {
-    def inputForm = HighForm
-    def outputForm = HighForm
-
+    override def invalidates(a: Transform) = false
+    override def prerequisites = Seq(Dependency[FirstTransform])
     def execute(state: CircuitState): CircuitState = {
       require(MutableState.count == 1, s"Count was ${MutableState.count}, expected 1")
       MutableState.count = 2
@@ -89,9 +88,8 @@ object CustomTransformSpec {
   }
 
   class ThirdTransform extends Transform {
-    def inputForm = HighForm
-    def outputForm = HighForm
-
+    override def invalidates(a: Transform) = false
+    override def prerequisites = Seq(Dependency[SecondTransform])
     def execute(state: CircuitState): CircuitState = {
       require(MutableState.count == 2, s"Count was ${MutableState.count}, expected 2")
       MutableState.count = 3
@@ -101,8 +99,6 @@ object CustomTransformSpec {
 
   object Foo {
     class A extends Transform {
-      def inputForm = HighForm
-      def outputForm = HighForm
       def execute(s: CircuitState) = {
         assert(name.endsWith("A"))
         s

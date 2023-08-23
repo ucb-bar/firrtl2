@@ -10,7 +10,7 @@ import firrtl2._
 import firrtl2.ir._
 import firrtl2.Parser.UseInfo
 import firrtl2.options.Dependency
-import firrtl2.stage.{FirrtlFileAnnotation, InfoModeAnnotation, RunFirrtlTransformAnnotation}
+import firrtl2.stage.{FirrtlFileAnnotation, Forms, InfoModeAnnotation, RunFirrtlTransformAnnotation}
 import firrtl2.analyses.{GetNamespace, ModuleNamespaceAnnotation}
 import firrtl2.annotations._
 import firrtl2.logger.{LazyLogging, LogLevel, LogLevelAnnotation}
@@ -22,8 +22,8 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.propspec.AnyPropSpec
 
 class CheckLowForm extends SeqTransform {
-  def inputForm = LowForm
-  def outputForm = LowForm
+  // it only makes sense to check the LowFirrtl after we convert the circuit.
+  override def prerequisites = Forms.LowForm
   def transforms = Seq(
     passes.CheckHighForm
   )
@@ -32,8 +32,6 @@ class CheckLowForm extends SeqTransform {
 case class RenameTopAnnotation(newTopName: String) extends NoTargetAnnotation
 
 object RenameTop extends Transform {
-  def inputForm = UnknownForm
-  def outputForm = UnknownForm
   override def invalidates(a: Transform) = false
 
   override val optionalPrerequisites = Seq(Dependency[RenameModules])
@@ -86,7 +84,7 @@ object Equivalence {
     customAnnotations: AnnotationSeq = Seq.empty,
     timesteps:         Int = 1
   ): Unit = {
-    val circuit = Parser.parse(input.split("\n").toIterator)
+    val circuit = Parser.parse(input)
     val prefix = circuit.main
     val testDir = createTestDirectory(prefix + "_equivalence_test")
 
@@ -137,7 +135,7 @@ object Equivalence {
       case VerilogModule(name) => name
       case _                   => throw new Exception(s"Reference Verilog must match simple regex! $VerilogModule")
     }
-    val circuit = Parser.parse(inputFirrtl.split("\n").toIterator)
+    val circuit = Parser.parse(inputFirrtl)
     val inputName = circuit.main
     require(refName != inputName, s"Name of reference Verilog must not match name of input FIRRTL: $refName")
 

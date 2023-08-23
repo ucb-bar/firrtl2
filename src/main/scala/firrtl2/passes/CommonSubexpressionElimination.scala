@@ -11,7 +11,7 @@ import firrtl2.options.{Dependency, HasShellOptions, RegisteredTransform, ShellO
 /** Indicate that CommonSubexpressionElimination should not be run */
 case object NoCommonSubexpressionEliminationAnnotation extends NoTargetAnnotation
 
-object CommonSubexpressionElimination extends Transform with HasShellOptions with DependencyAPIMigration {
+object CommonSubexpressionElimination extends Transform with HasShellOptions {
 
   override def prerequisites = firrtl2.stage.Forms.LowForm
   override def optionalPrerequisiteOf =

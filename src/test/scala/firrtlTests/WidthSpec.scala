@@ -9,8 +9,8 @@ import firrtl2.testutils._
 class WidthSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Transform]) = {
     val c = passes
-      .foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
+      .foldLeft(CircuitState(Parser.parse(input))) { (c: CircuitState, p: Transform) =>
+        p.runTransform(c)
       }
       .circuit
     val lines = c.serialize.split("\n").map(normalized)

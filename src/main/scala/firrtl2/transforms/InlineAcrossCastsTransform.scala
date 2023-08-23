@@ -81,7 +81,7 @@ object InlineAcrossCastsTransform {
   * simply contain a cast. It does so by greedily building larger expression trees that contain at
   * most one expression that is neither a cast nor reference-like node.
   */
-class InlineAcrossCastsTransform extends Transform with DependencyAPIMigration {
+class InlineAcrossCastsTransform extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.LowFormMinimumOptimized ++
     Seq(

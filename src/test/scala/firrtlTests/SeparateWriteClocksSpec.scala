@@ -10,7 +10,7 @@ import firrtl2.testutils.FirrtlCheckers._
 
 class SeparateWriteClocksSpec extends FirrtlFlatSpec {
   def transform(input: String): CircuitState = {
-    val csx = (new SeparateWriteClocks).execute(CircuitState(parse(input), MidForm))
+    val csx = (new SeparateWriteClocks).execute(CircuitState(parse(input)))
     val emittedCirc = EmittedFirrtlCircuit("top", csx.circuit.serialize, ".fir")
     csx.copy(annotations = Seq(EmittedFirrtlCircuitAnnotation(emittedCirc)))
   }

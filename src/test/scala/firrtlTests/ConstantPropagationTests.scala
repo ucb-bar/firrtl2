@@ -15,7 +15,7 @@ class ConstantPropagationSpec extends FirrtlFlatSpec {
     Seq(ResolveKinds, InferTypes, ResolveFlows, new InferWidths, new ConstantPropagation)
   protected def exec(input: String, annos: Seq[Annotation] = Nil) = {
     transforms
-      .foldLeft(CircuitState(parse(input), UnknownForm, AnnotationSeq(annos))) { (c: CircuitState, t: Transform) =>
+      .foldLeft(CircuitState(parse(input), AnnotationSeq(annos))) { (c: CircuitState, t: Transform) =>
         t.runTransform(c)
       }
       .circuit

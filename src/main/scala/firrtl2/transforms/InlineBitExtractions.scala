@@ -96,7 +96,7 @@ object InlineBitExtractionsTransform {
 }
 
 /** Inline nodes that are simple bits */
-class InlineBitExtractionsTransform extends Transform with DependencyAPIMigration {
+class InlineBitExtractionsTransform extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.LowFormMinimumOptimized ++
     Seq(

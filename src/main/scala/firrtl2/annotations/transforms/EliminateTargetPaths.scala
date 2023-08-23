@@ -9,7 +9,7 @@ import firrtl2.annotations.TargetToken.{fromDefModuleToTargetToken, Instance, Of
 import firrtl2.annotations.analysis.DuplicationHelper
 import firrtl2.annotations._
 import firrtl2.ir._
-import firrtl2.{AnnotationSeq, CircuitState, DependencyAPIMigration, FirrtlInternalException, RenameMap, Transform}
+import firrtl2.{AnnotationSeq, CircuitState, FirrtlInternalException, RenameMap, Transform}
 import firrtl2.renamemap.MutableRenameMap
 import firrtl2.stage.Forms
 import firrtl2.transforms.DedupedResult
@@ -106,7 +106,7 @@ object EliminateTargetPaths {
   * B/x -> (B/x, B_/x) // where x is any reference in B
   * C/x -> (C/x, C_/x) // where x is any reference in C
   */
-class EliminateTargetPaths extends Transform with DependencyAPIMigration {
+class EliminateTargetPaths extends Transform {
   import EliminateTargetPaths._
 
   override def prerequisites = Forms.MinimalHighForm

@@ -9,7 +9,7 @@ import firrtl2.renamemap.MutableRenameMap
 import firrtl2.Mappers._
 import firrtl2.options.Dependency
 
-object ZeroWidth extends Transform with DependencyAPIMigration {
+object ZeroWidth extends Transform {
 
   override def prerequisites =
     Seq(

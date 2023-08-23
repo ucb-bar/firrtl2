@@ -18,8 +18,6 @@ import org.scalatest.matchers.should.Matchers
 object AnnotationTests {
 
   class DeletingTransform extends Transform {
-    val inputForm = LowForm
-    val outputForm = LowForm
     def execute(state: CircuitState) = state.copy(annotations = Seq())
   }
 
@@ -603,9 +601,6 @@ class JsonAnnotationTests extends AnnotationTests {
   }
 
   object DoNothingTransform extends Transform {
-    override def inputForm:  CircuitForm = UnknownForm
-    override def outputForm: CircuitForm = UnknownForm
-
     def execute(state: CircuitState): CircuitState = state
   }
 
@@ -616,7 +611,7 @@ class JsonAnnotationTests extends AnnotationTests {
         |  module Top :
         |    input a : UInt<1>
         |    node b = c""".stripMargin
-    val cr = DoNothingTransform.runTransform(CircuitState(parse(input), ChirrtlForm, annos))
+    val cr = DoNothingTransform.runTransform(CircuitState(parse(input), annos))
     cr.annotations.toSeq shouldEqual annos
   }
 

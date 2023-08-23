@@ -6,7 +6,7 @@ package memlib
 
 import firrtl2.stage.Forms
 
-class CreateMemoryAnnotations extends Transform with DependencyAPIMigration {
+class CreateMemoryAnnotations extends Transform {
 
   override def prerequisites = Forms.MidForm
   override def optionalPrerequisites = Seq.empty

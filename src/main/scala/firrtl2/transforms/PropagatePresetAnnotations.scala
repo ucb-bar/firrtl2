@@ -40,7 +40,7 @@ object PropagatePresetAnnotations {
   *
   * @note This pass must run before InlineCastsTransform
   */
-class PropagatePresetAnnotations extends Transform with DependencyAPIMigration {
+class PropagatePresetAnnotations extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.LowForm :+
     Dependency(firrtl2.passes.RemoveValidIf)

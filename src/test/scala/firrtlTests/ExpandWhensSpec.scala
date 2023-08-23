@@ -24,8 +24,8 @@ class ExpandWhensSpec extends FirrtlFlatSpec {
     ExpandWhens
   )
   private def executeTest(input: String, check: String, expected: Boolean) = {
-    val circuit = Parser.parse(input.split("\n").toIterator)
-    val result = transforms.foldLeft(CircuitState(circuit, UnknownForm)) { (c: CircuitState, p: Transform) =>
+    val circuit = Parser.parse(input)
+    val result = transforms.foldLeft(CircuitState(circuit)) { (c: CircuitState, p: Transform) =>
       p.runTransform(c)
     }
     val c = result.circuit

@@ -50,7 +50,7 @@ class MorphismSpec extends AnyFlatSpec with Matchers {
     override def serialize: String = expand(new StringBuilder()).toString
   }
 
-  object StripDeleted extends Transform with DependencyAPIMigration {
+  object StripDeleted extends Transform {
     override def execute(a: CircuitState): CircuitState = {
 
       val annotationsx = a.annotations.filter {

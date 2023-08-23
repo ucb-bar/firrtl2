@@ -2,7 +2,7 @@
 
 package firrtl2.stage
 
-import firrtl2.{CircuitState, DependencyAPIMigration, Transform}
+import firrtl2.{CircuitState, Transform}
 import firrtl2.options.{Dependency, DependencyManager}
 
 /** A [[Transform]] that ensures some other [[Transform]]s and their prerequisites are executed.
@@ -16,7 +16,6 @@ class TransformManager(
   val currentState: Seq[TransformManager.TransformDependency] = Seq.empty,
   val knownObjects: Set[Transform] = Set.empty)
     extends Transform
-    with DependencyAPIMigration
     with DependencyManager[CircuitState, Transform] {
 
   override def execute(state: CircuitState): CircuitState = transform(state)

@@ -296,7 +296,7 @@ class InoutVerilogSpec extends VerilogTransformSpec(Forms.LowFormOptimized) {
 
 class AttachAnalogSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Pass]) = {
-    val c = passes.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+    val c = passes.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
       p.run(c)
     }
     val lines = c.serialize.split("\n").map(normalized)

@@ -24,9 +24,7 @@ object FlattenRegUpdate {
   type Netlist = mutable.HashMap[WrappedExpression, Expression]
 
   /** Build a [[Netlist]] from a Module's connections and Nodes
-    *
-    * This assumes [[firrtl2.LowForm LowForm]]
-    *
+    * Assumes low firrtl.
     * @param mod [[firrtl2.ir.Module Module]] from which to build a [[Netlist]]
     * @return [[Netlist]] of the module's connections and nodes
     */
@@ -162,7 +160,7 @@ object FlattenRegUpdate {
   * the register
   */
 // TODO Preserve source locators
-class FlattenRegUpdate extends Transform with DependencyAPIMigration {
+class FlattenRegUpdate extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.LowFormMinimumOptimized ++
     Seq(
