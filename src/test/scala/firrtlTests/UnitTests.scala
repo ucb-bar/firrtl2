@@ -90,10 +90,10 @@ class UnitTests extends FirrtlFlatSpec {
 
   "Emitting a nested expression" should "compile" in {
     val passes = Seq(InferTypes, ResolveKinds)
-    val c = Parser.parse(splitExpTestCode.split("\n").toIterator)
+    val c = Parser.parse(splitExpTestCode)
     val c2 = passes.foldLeft(c)((c, p) => p.run(c))
     val writer = new StringWriter()
-    (new VerilogEmitter).emit(CircuitState(c2, LowForm), writer)
+    (new VerilogEmitter).emit(CircuitState(c2), writer)
   }
 
   "Simple compound expressions" should "be split" in {
@@ -185,8 +185,8 @@ class UnitTests extends FirrtlFlatSpec {
         |  module Unit :
         |    node x = bits(UInt(1), 100, 0)""".stripMargin
     intercept[CheckWidths.BitsWidthException] {
-      passes.foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
+      passes.foldLeft(CircuitState(Parser.parse(input))) { (c: CircuitState, p: Transform) =>
+        p.runTransform(c)
       }
     }
   }
@@ -198,8 +198,8 @@ class UnitTests extends FirrtlFlatSpec {
         |  module Unit :
         |    node x = head(UInt(1), 100)""".stripMargin
     intercept[CheckWidths.HeadWidthException] {
-      passes.foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
+      passes.foldLeft(CircuitState(Parser.parse(input))) { (c: CircuitState, p: Transform) =>
+        p.runTransform(c)
       }
     }
   }
@@ -225,8 +225,8 @@ class UnitTests extends FirrtlFlatSpec {
         |  module Unit :
         |    node x = tail(UInt(1), 100)""".stripMargin
     intercept[CheckWidths.TailWidthException] {
-      passes.foldLeft(CircuitState(Parser.parse(input.split("\n").toIterator), UnknownForm)) {
-        (c: CircuitState, p: Transform) => p.runTransform(c)
+      passes.foldLeft(CircuitState(Parser.parse(input))) { (c: CircuitState, p: Transform) =>
+        p.runTransform(c)
       }
     }
   }

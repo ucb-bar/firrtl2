@@ -6,7 +6,6 @@ import firrtl2._
 import firrtl2.passes._
 import firrtl2.transforms._
 import firrtl2.annotations._
-import firrtl2.passes.memlib.SimpleTransform
 import firrtl2.stage.{FirrtlStage, Forms}
 import firrtl2.testutils._
 import firrtl2.util.BackendCompilationUtilities.createTestDirectory

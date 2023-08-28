@@ -11,7 +11,7 @@ import clocklist._
 
 class ClockListTests extends FirrtlFlatSpec {
   private def executeTest(input: String, expected: Seq[String], passes: Seq[Pass]) = {
-    val c = passes.foldLeft(Parser.parse(input.split("\n").toIterator)) { (c: Circuit, p: Pass) =>
+    val c = passes.foldLeft(Parser.parse(input)) { (c: Circuit, p: Pass) =>
       p.run(c)
     }
     val lines = c.serialize.split("\n").map(normalized)
@@ -76,7 +76,7 @@ class ClockListTests extends FirrtlFlatSpec {
         |Good Origin of h$c.clock is h$clkGen.clk3
         |""".stripMargin
     val c = passes
-      .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      .foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
       .circuit
@@ -109,7 +109,7 @@ class ClockListTests extends FirrtlFlatSpec {
         |Good Origin of b$c.clock is clock
         |""".stripMargin
     val c = passes
-      .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      .foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
       .circuit
@@ -144,7 +144,7 @@ class ClockListTests extends FirrtlFlatSpec {
         |Good Origin of c.clock is clkC
         |""".stripMargin
     val c = passes
-      .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      .foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
       .circuit

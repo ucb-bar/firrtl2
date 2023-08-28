@@ -5,7 +5,7 @@ package firrtl2.annotations.transforms
 import firrtl2._
 import firrtl2.annotations.{CircuitTarget, ModuleTarget, MultiTargetAnnotation, ReferenceTarget, SingleTargetAnnotation}
 import firrtl2.ir
-import firrtl2.options.{Dependency, PreservesAll}
+import firrtl2.options.Dependency
 import firrtl2.traversals.Foreachers._
 import firrtl2.renamemap.MutableRenameMap
 
@@ -18,7 +18,7 @@ import scala.collection.immutable.{Set => ISet}
   * ComponentName]] is the only way to refer to an instance, but this is resolved incorrectly to a
   *       [[firrtl2.annotations.ReferenceTarget ReferenceTarget]].
   */
-class CleanupNamedTargets extends Transform with DependencyAPIMigration {
+class CleanupNamedTargets extends Transform {
 
   override def prerequisites = Seq(Dependency(passes.RemoveCHIRRTL))
 

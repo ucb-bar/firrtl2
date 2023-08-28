@@ -3,7 +3,7 @@
 package firrtlTests
 
 import firrtl2.FileUtils
-import firrtl2.{ChirrtlForm, CircuitState}
+import firrtl2.CircuitState
 import firrtl2.testutils._
 
 import scala.concurrent.duration.Duration

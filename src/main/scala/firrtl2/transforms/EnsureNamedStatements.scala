@@ -6,7 +6,7 @@ import firrtl2._
 import firrtl2.ir._
 
 /** Adds default names to print, stop and verification statements if their name is empty. */
-object EnsureNamedStatements extends Transform with DependencyAPIMigration {
+object EnsureNamedStatements extends Transform {
   override def invalidates(a: Transform) = false
 
   override protected def execute(state: CircuitState): CircuitState = {

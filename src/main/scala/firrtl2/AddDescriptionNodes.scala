@@ -141,7 +141,7 @@ private case class DescribedMod(
   * @note should only be used by VerilogEmitter, described nodes will
   *       break other transforms.
   */
-class AddDescriptionNodes extends Transform with DependencyAPIMigration {
+class AddDescriptionNodes extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.LowFormMinimumOptimized ++
     Seq(

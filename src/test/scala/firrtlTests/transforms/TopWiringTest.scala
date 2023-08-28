@@ -633,7 +633,7 @@ class TopWiringTests extends MidFirrtlTransformSpec(Seq(Dependency[TopWiringTran
         .toNamed match { case a: ComponentName => a }
 
     val annotations = Seq(TopWiringAnnotation(bar, "bar_"))
-    val outputState = (new TopWiringTransform).execute(CircuitState(Parser.parse(input), MidForm, annotations, None))
+    val outputState = (new TopWiringTransform).execute(CircuitState(Parser.parse(input), annotations, None))
 
     outputState.circuit.serialize should include("output bar_foo")
     outputState.annotations.toSeq should be(empty)

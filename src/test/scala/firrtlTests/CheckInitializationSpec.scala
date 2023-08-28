@@ -2,7 +2,7 @@
 
 package firrtlTests
 
-import firrtl2.{CircuitState, Transform, UnknownForm}
+import firrtl2.{CircuitState, Transform}
 import firrtl2.passes._
 import firrtl2.testutils._
 
@@ -32,7 +32,7 @@ class CheckInitializationSpec extends FirrtlFlatSpec {
         |    when p :
         |      x <= UInt(1)""".stripMargin
     intercept[CheckInitialization.RefNotInitializedException] {
-      passes.foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      passes.foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
     }
@@ -47,7 +47,7 @@ class CheckInitializationSpec extends FirrtlFlatSpec {
         |    else :
         |      x <= UInt(1)""".stripMargin
     intercept[CheckInitialization.RefNotInitializedException] {
-      passes.foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      passes.foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
     }
@@ -63,7 +63,7 @@ class CheckInitializationSpec extends FirrtlFlatSpec {
         |      x <= UInt(1)
         |    x <= UInt(1)
         |    """.stripMargin
-    passes.foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+    passes.foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
       p.runTransform(c)
     }
   }
@@ -83,7 +83,7 @@ class CheckInitializationSpec extends FirrtlFlatSpec {
         |        x <= UInt(2)
         |    x <= UInt(1)
         |    """.stripMargin
-    passes.foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+    passes.foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
       p.runTransform(c)
     }
   }
@@ -99,7 +99,7 @@ class CheckInitializationSpec extends FirrtlFlatSpec {
         |    when p :
         |      c.in <= UInt(1)""".stripMargin
     intercept[CheckInitialization.RefNotInitializedException] {
-      passes.foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, p: Transform) =>
+      passes.foldLeft(CircuitState(parse(input))) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
     }

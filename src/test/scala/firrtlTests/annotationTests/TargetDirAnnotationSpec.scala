@@ -13,7 +13,7 @@ case object FoundTargetDirTransformRanAnnotation extends NoTargetAnnotation
 case object FoundTargetDirTransformFoundTargetDirAnnotation extends NoTargetAnnotation
 
 /** Looks for [[TargetDirAnnotation]] */
-class FindTargetDirTransform extends Transform with DependencyAPIMigration {
+class FindTargetDirTransform extends Transform {
   def execute(state: CircuitState): CircuitState = {
     val a: Option[Annotation] = state.annotations.collectFirst {
       case TargetDirAnnotation("a/b/c") => FoundTargetDirTransformFoundTargetDirAnnotation

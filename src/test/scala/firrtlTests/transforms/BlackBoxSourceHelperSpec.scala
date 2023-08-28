@@ -14,7 +14,7 @@ import firrtl2.util.BackendCompilationUtilities.createTestDirectory
 import firrtl2.logger.{LogLevel, LogLevelAnnotation}
 import firrtl2.testutils.LowFirrtlTransformSpec
 
-class ChangeBlackBoxTargetDir extends Transform with DependencyAPIMigration {
+class ChangeBlackBoxTargetDir extends Transform {
   override def prerequisites =
     Dependency[firrtl2.passes.memlib.ReplSeqMem] +: Forms.LowFormOptimized
   override def optionalPrerequisiteOf = Forms.BackendEmitters

@@ -23,7 +23,7 @@ import scala.util.{Failure, Success, Try}
   *  wires have multiple connections that may be impossible to order in a
   *  flow-foward way
   */
-class RemoveWires extends Transform with DependencyAPIMigration {
+class RemoveWires extends Transform {
 
   override def prerequisites = firrtl2.stage.Forms.MidForm ++
     Seq(

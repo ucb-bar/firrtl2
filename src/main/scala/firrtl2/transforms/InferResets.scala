@@ -99,7 +99,7 @@ object InferResets {
   *       generator languages like Chisel can infer differently
   */
 // TODO should we error if a DefMemory is of type AsyncReset? In CheckTypes?
-class InferResets extends Transform with DependencyAPIMigration {
+class InferResets extends Transform {
 
   override def prerequisites =
     Seq(

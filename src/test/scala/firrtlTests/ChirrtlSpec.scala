@@ -40,8 +40,8 @@ class ChirrtlSpec extends FirrtlFlatSpec {
         |      infer mport y = ram[UInt(4)], newClock
         |      y <= UInt(5)
        """.stripMargin
-    val circuit = Parser.parse(input.split("\n").toIterator)
-    transforms.foldLeft(CircuitState(circuit, UnknownForm)) { (c: CircuitState, p: Transform) =>
+    val circuit = Parser.parse(input)
+    transforms.foldLeft(CircuitState(circuit)) { (c: CircuitState, p: Transform) =>
       p.runTransform(c)
     }
   }
@@ -60,8 +60,8 @@ class ChirrtlSpec extends FirrtlFlatSpec {
         |      y <= z
        """.stripMargin
     intercept[PassException] {
-      val circuit = Parser.parse(input.split("\n").toIterator)
-      transforms.foldLeft(CircuitState(circuit, UnknownForm)) { (c: CircuitState, p: Transform) =>
+      val circuit = Parser.parse(input)
+      transforms.foldLeft(CircuitState(circuit)) { (c: CircuitState, p: Transform) =>
         p.runTransform(c)
       }
     }

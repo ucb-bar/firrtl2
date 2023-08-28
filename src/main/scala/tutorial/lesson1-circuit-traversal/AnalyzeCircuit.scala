@@ -4,7 +4,7 @@ package tutorial
 package lesson1
 
 // Compiler Infrastructure
-import firrtl2.{CircuitState, LowForm, Transform, Utils}
+import firrtl2.{CircuitState, Transform, Utils}
 // Firrtl IR classes
 import firrtl2.ir.{DefModule, Expression, Mux, Statement}
 // Map functions
@@ -68,12 +68,6 @@ class Ledger {
   *   - https://github.com/ucb-bar/firrtl/wiki/Common-Pass-Idioms
   */
 class AnalyzeCircuit extends Transform {
-
-  /** Requires the [[firrtl2.ir.Circuit Circuit]] form to be "low" */
-  def inputForm = LowForm
-
-  /** Indicates the output [[firrtl2.ir.Circuit Circuit]] form to be "low" */
-  def outputForm = LowForm
 
   /**  [[firrtl2.CircuitState CircuitState]] contains the circuit
     * and its form, as well as other related data.

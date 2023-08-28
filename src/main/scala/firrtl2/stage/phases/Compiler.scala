@@ -2,9 +2,9 @@
 
 package firrtl2.stage.phases
 
-import firrtl2.{seqToAnnoSeq, AnnotationSeq, ChirrtlForm, CircuitState, Transform}
+import firrtl2.{AnnotationSeq, CircuitState, Transform}
 import firrtl2.options.{Dependency, Phase, PhasePrerequisiteException, Translator}
-import firrtl2.stage.{CurrentFirrtlStateAnnotation, FirrtlCircuitAnnotation, Forms, RunFirrtlTransformAnnotation}
+import firrtl2.stage.{CurrentFirrtlStateAnnotation, FirrtlCircuitAnnotation, RunFirrtlTransformAnnotation}
 import firrtl2.stage.TransformManager.TransformDependency
 
 import scala.collection.mutable
@@ -65,7 +65,7 @@ class Compiler extends Phase with Translator[AnnotationSeq, Seq[CompilerRun]] {
       case (d, FirrtlCircuitAnnotation(circuit)) =>
         foundFirstCircuit = true
         CompilerRun(
-          CircuitState(circuit, ChirrtlForm, d.annotations, None),
+          CircuitState(circuit, d.annotations, None),
           None,
           d.transforms,
           d.currentState

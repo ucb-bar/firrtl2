@@ -8,7 +8,7 @@ import firrtl2.annotations.{CircuitName, ModuleName}
 import firrtl2.stage.Forms
 import firrtl2.transforms.BlackBoxInlineAnno
 
-class DumpMemoryAnnotations extends Transform with DependencyAPIMigration {
+class DumpMemoryAnnotations extends Transform {
 
   override def prerequisites = Forms.MidForm
   override def optionalPrerequisites = Seq.empty

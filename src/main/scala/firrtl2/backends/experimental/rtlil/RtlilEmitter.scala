@@ -39,7 +39,7 @@ case class EmittedRtlilModuleAnnotation(name: String, value: String, outputSuffi
   override def getBytes:         Iterable[Byte] = value.getBytes
 }
 
-private[firrtl2] class RtlilEmitter extends SeqTransform with Emitter with DependencyAPIMigration {
+private[firrtl2] class RtlilEmitter extends SeqTransform with Emitter {
 
   override def prerequisites: Seq[TransformManager.TransformDependency] =
     Seq(

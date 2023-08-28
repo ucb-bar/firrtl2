@@ -41,7 +41,7 @@ class IRLookupSpec extends FirrtlFlatSpec {
 
     val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
       .runTransform(
-        CircuitState(parse(input), UnknownForm)
+        CircuitState(parse(input))
       )
       .circuit
     val irLookup = IRLookup(circuit)
@@ -163,7 +163,7 @@ class IRLookupSpec extends FirrtlFlatSpec {
 
     val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
       .runTransform(
-        CircuitState(parse(input), UnknownForm)
+        CircuitState(parse(input))
       )
       .circuit
     val irLookup = IRLookup(circuit)
@@ -201,7 +201,7 @@ class IRLookupSpec extends FirrtlFlatSpec {
 
     val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
       .runTransform(
-        CircuitState(parse(input), UnknownForm)
+        CircuitState(parse(input))
       )
       .circuit
     val irLookup = IRLookup(circuit)
@@ -283,7 +283,7 @@ class IRLookupSpec extends FirrtlFlatSpec {
 
     val circuit = new firrtl2.stage.transforms.Compiler(Seq(Dependency[ExpandWhensAndCheck]))
       .runTransform(
-        CircuitState(parse(input), UnknownForm)
+        CircuitState(parse(input))
       )
       .circuit
     val Test = ModuleTarget("Test", "Test")

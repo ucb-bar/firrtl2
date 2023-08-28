@@ -18,7 +18,7 @@ class RemoveResetSpec extends FirrtlFlatSpec with GivenWhenThen {
     (new FirrtlStage)
       .execute(Array("-X", "low"), Seq(FirrtlSourceAnnotation(string)))
       .collectFirst { case FirrtlCircuitAnnotation(a) => a }
-      .map(a => firrtl2.CircuitState(a, firrtl2.UnknownForm))
+      .map(a => firrtl2.CircuitState(a))
       .get
   }
 

@@ -25,7 +25,7 @@ class LowerTypesSpec extends FirrtlFlatSpec {
     inputAnnos:    Seq[Annotation],
     expectedAnnos: Seq[Annotation]
   ): Unit = {
-    val circuit = Parser.parse(input.split("\n").toIterator)
+    val circuit = Parser.parse(input)
     val result = compiler.runTransform(CircuitState(circuit, inputAnnos))
     val lines = result.circuit.serialize.split("\n").map(normalized)
 
@@ -268,7 +268,7 @@ class LowerTypesUniquifySpec extends FirrtlFlatSpec {
     inputAnnos:    Seq[Annotation],
     expectedAnnos: Seq[Annotation]
   ): Unit = {
-    val circuit = Parser.parse(input.split("\n").toIterator)
+    val circuit = Parser.parse(input)
     val result = compiler.runTransform(CircuitState(circuit, inputAnnos))
     val lines = result.circuit.serialize.split("\n").map(normalized)
 

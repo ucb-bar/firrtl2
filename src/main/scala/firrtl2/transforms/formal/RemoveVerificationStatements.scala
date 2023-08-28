@@ -3,8 +3,8 @@
 package firrtl2.transforms.formal
 
 import firrtl2.ir.{Circuit, EmptyStmt, Statement, Verification}
-import firrtl2.{CircuitState, DependencyAPIMigration, MinimumVerilogEmitter, Transform, VerilogEmitter}
-import firrtl2.options.{Dependency, PreservesAll, StageUtils}
+import firrtl2.{CircuitState, MinimumVerilogEmitter, Transform, VerilogEmitter}
+import firrtl2.options.{Dependency, StageUtils}
 import firrtl2.stage.TransformManager.TransformDependency
 
 /**
@@ -14,8 +14,9 @@ import firrtl2.stage.TransformManager.TransformDependency
   * This is intended to be required by the Verilog emitter to ensure compatibility
   * with the Verilog 2001 standard.
   */
-class RemoveVerificationStatements extends Transform with DependencyAPIMigration with PreservesAll[Transform] {
+class RemoveVerificationStatements extends Transform {
 
+  override def invalidates(a: Transform) = false
   override def prerequisites:         Seq[TransformDependency] = Seq.empty
   override def optionalPrerequisites: Seq[TransformDependency] = Seq(Dependency(ConvertAsserts))
   override def optionalPrerequisiteOf: Seq[TransformDependency] =

@@ -32,7 +32,7 @@ import collection.mutable
   * circumstances of their instantiation in their parent module, they will still not be removed. To
   * remove such modules, use the [[NoDedupAnnotation]] to prevent deduplication.
   */
-class DeadCodeElimination extends Transform with RegisteredTransform with DependencyAPIMigration {
+class DeadCodeElimination extends Transform with RegisteredTransform {
 
   override def prerequisites = firrtl2.stage.Forms.LowForm
 

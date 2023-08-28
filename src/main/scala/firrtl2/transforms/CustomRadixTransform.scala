@@ -7,7 +7,7 @@ import firrtl2.annotations.{Annotation, NoTargetAnnotation, ReferenceTarget, Sin
 import firrtl2.options.{CustomFileEmission, Dependency, HasShellOptions, ShellOption}
 import firrtl2.stage.TransformManager.TransformDependency
 import firrtl2.stage.{Forms, RunFirrtlTransformAnnotation}
-import firrtl2.{AnnotationSeq, CircuitState, DependencyAPIMigration, Transform}
+import firrtl2.{AnnotationSeq, CircuitState, Transform}
 
 /** Contains a static map from signal value(BigInt) to signal name(String)
   * This is useful for enumeration(finite state machine, bus transaction name, etc)
@@ -66,7 +66,7 @@ case class CustomRadixConfigFileAnnotation(
 }
 
 /** A Transform that generate scripts or config file for Custom Radix */
-object CustomRadixTransform extends Transform with DependencyAPIMigration with HasShellOptions {
+object CustomRadixTransform extends Transform with HasShellOptions {
 
   val options = Seq(
     new ShellOption[String](

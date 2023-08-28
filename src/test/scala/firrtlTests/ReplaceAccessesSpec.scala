@@ -10,7 +10,7 @@ class ReplaceAccessesSpec extends FirrtlFlatSpec {
   val transforms = Seq(ResolveKinds, InferTypes, ResolveFlows, new InferWidths, ReplaceAccesses)
   protected def exec(input: String) = {
     transforms
-      .foldLeft(CircuitState(parse(input), UnknownForm)) { (c: CircuitState, t: Transform) =>
+      .foldLeft(CircuitState(parse(input))) { (c: CircuitState, t: Transform) =>
         t.runTransform(c)
       }
       .circuit

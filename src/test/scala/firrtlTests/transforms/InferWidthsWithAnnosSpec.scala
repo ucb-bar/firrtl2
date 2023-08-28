@@ -11,7 +11,7 @@ import firrtl2.annotations.TargetToken.{Field, Index}
 
 class InferWidthsWithAnnosSpec extends FirrtlFlatSpec {
   private def executeTest(input: String, check: String, transforms: Seq[Transform], annotations: Seq[Annotation]) = {
-    val start = CircuitState(parse(input), ChirrtlForm, annotations)
+    val start = CircuitState(parse(input), annotations)
     val end = transforms.foldLeft(start) { (c: CircuitState, t: Transform) =>
       t.runTransform(c)
     }
