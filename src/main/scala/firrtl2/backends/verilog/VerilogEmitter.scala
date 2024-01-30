@@ -980,7 +980,7 @@ class VerilogEmitter extends SeqTransform with Emitter {
       }
 
       // dirs are already padded
-      (dirs, padToMax(tpes), m.ports).zipped.toSeq.zipWithIndex.foreach {
+      dirs.lazyZip(padToMax(tpes)).lazyZip(m.ports).toSeq.zipWithIndex.foreach {
         case ((dir, tpe, Port(info, name, _, _)), i) =>
           portDescriptions.get(name).map {
             case d =>

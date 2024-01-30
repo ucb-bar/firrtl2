@@ -102,7 +102,7 @@ trait DependencyManager[A, B <: TransformLike[A] with DependencyAPI[B]] extends 
           edges(obj) = LinkedHashSet.empty
           dependencyToObject += (v -> obj)
         }
-        edges(dependencyToObject(u)) = edges(dependencyToObject(u)) + dependencyToObject(v)
+        edges(dependencyToObject(u)) = edges(dependencyToObject(u)).union(Set(dependencyToObject(v)))
       }
     }
 
@@ -215,7 +215,7 @@ trait DependencyManager[A, B <: TransformLike[A] with DependencyAPI[B]] extends 
         val cmp =
           (l: B, r: B) =>
             v.foldLeft((Map.empty[B, Dependency[B] => Boolean], Set.empty[Dependency[B]])) {
-              case ((m, s), r) => (m + (r -> ((a: Dependency[B]) => !s(a))), s + r)
+              case ((m, s), r) => (m + (r -> ((a: Dependency[B]) => !s(a))), s.union(Set(r)))
             }._1(l)(r)
         new LinkedHashMap() ++
           v.map(vv => vv -> (new LinkedHashSet() ++ (dependencyGraph.getEdges(vv).toSeq.sortWith(cmp))))

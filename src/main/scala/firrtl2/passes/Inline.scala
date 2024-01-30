@@ -244,7 +244,7 @@ class InlineInstances extends Transform with RegisteredTransform {
       *  The [[RenameMap]]s in renamesMap are appear in renamesSeq
       *  in the order that they should be applied
       */
-    val (renamesMap, renamesSeq) = {
+    val (renamesMap: Map[(OfModule, Instance), MutableRenameMap], renamesSeq) = {
       val mutableDiGraph = new MutableDiGraph[(OfModule, Instance)]
       // compute instance graph
       instMaps.foreach {
@@ -281,8 +281,8 @@ class InlineInstances extends Transform with RegisteredTransform {
         case a =>
           val maxIdx = indexMap.values.max
           val resultSeq = Seq.fill(maxIdx + 1)(MutableRenameMap())
-          val resultMap = indexMap.mapValues(idx => resultSeq(maxIdx - idx))
-          (resultMap, resultSeq)
+          val resultMap = indexMap.view.mapValues(idx => resultSeq(maxIdx - idx))
+          (resultMap.toMap, resultSeq)
       }
     }
 
@@ -294,7 +294,7 @@ class InlineInstances extends Transform with RegisteredTransform {
       e match {
         case wsf @ WSubField(wr @ WRef(ref, _, InstanceKind, _), field, tpe, gen) =>
           val inst = currentModule.instOf(ref, instMap(Instance(ref)).value)
-          val renamesOpt = renamesMap.get(OfModule(currentModule.module) -> Instance(inst.instance))
+          val renamesOpt = renamesMap.get((OfModule(currentModule.module), Instance(inst.instance)))
           val port = inst.ref(field)
           renamesOpt.flatMap(_.get(port)) match {
             case Some(Seq(p)) =>

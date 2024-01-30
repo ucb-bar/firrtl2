@@ -26,11 +26,11 @@ trait Annotation extends Product {
     * @param ls
     * @return
     */
-  private def extractComponents(ls: Traversable[_]): Traversable[Target] = {
+  private def extractComponents(ls: Iterable[_]): Iterable[Target] = {
     ls.flatMap {
-      case c: Target                          => Seq(c)
-      case x: scala.collection.Traversable[_] => extractComponents(x)
-      case o: Product                         => extractComponents(o.productIterator.toIterable)
+      case c: Target                       => Seq(c)
+      case x: scala.collection.Iterable[_] => extractComponents(x)
+      case o: Product                      => extractComponents(o.productIterator.iterator.to(Iterable))
       case _ => Seq()
     }
   }
@@ -39,7 +39,7 @@ trait Annotation extends Product {
     *
     * @return
     */
-  def getTargets: Seq[Target] = extractComponents(productIterator.toIterable).toSeq
+  def getTargets: Seq[Target] = extractComponents(productIterator.iterator.to(Iterable)).toSeq
 
   /** Returns a deduplicable representation of this [[Annotation]]: a 3-tuple of the
     * deduplicated annotation's "dedup key", the deduplicated [[Annotation]], and the
