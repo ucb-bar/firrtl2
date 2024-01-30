@@ -145,7 +145,7 @@ trait Transform extends TransformLike[CircuitState] with DependencyAPI[Transform
 
   def transform(state: CircuitState): CircuitState = execute(state)
 
-  private lazy val fullCompilerSet: Set[Dependency[Transform]] = Set(Forms.VerilogOptimized:_*)
+  private lazy val fullCompilerSet: Set[Dependency[Transform]] = Set(Forms.VerilogOptimized: _*)
 
   private lazy val highOutputInvalidates = fullCompilerSet.removedAll(Forms.MinimalHighForm)
   private lazy val midOutputInvalidates = fullCompilerSet.removedAll(Forms.MidForm)

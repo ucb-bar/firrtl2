@@ -28,9 +28,9 @@ trait Annotation extends Product {
     */
   private def extractComponents(ls: Iterable[_]): Iterable[Target] = {
     ls.flatMap {
-      case c: Target                          => Seq(c)
-      case x: scala.collection.Iterable[_]    => extractComponents(x)
-      case o: Product                         => extractComponents(o.productIterator.iterator.to(Iterable))
+      case c: Target                       => Seq(c)
+      case x: scala.collection.Iterable[_] => extractComponents(x)
+      case o: Product                      => extractComponents(o.productIterator.iterator.to(Iterable))
       case _ => Seq()
     }
   }

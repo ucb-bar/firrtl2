@@ -264,8 +264,7 @@ class AddDescriptionNodes extends Transform {
       .view
       .mapValues(
         // map field 2 (component name) -> field 3 (a list of Descriptions)
-        _.groupBy(_._2)
-          .view
+        _.groupBy(_._2).view
           .mapValues(_.map(_._3))
           // and then merge like descriptions (e.g. multiple docstrings into one big docstring)
           .mapValues(mergeDescriptions)
