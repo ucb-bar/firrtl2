@@ -480,17 +480,17 @@ class ConstantPropagation extends Transform with RegisteredTransform {
     foldIfZeroedArg(foldIfOutsideRange(foldIfMatchingArgs(e)))
   }
 
-  final object FoldANDR extends SimplifyReductionOp {
+  object FoldANDR extends SimplifyReductionOp {
     override def identityValue = true
     override def reduce = (a: Boolean, b: Boolean) => a & b
   }
 
-  final object FoldORR extends SimplifyReductionOp {
+  object FoldORR extends SimplifyReductionOp {
     override def identityValue = false
     override def reduce = (a: Boolean, b: Boolean) => a | b
   }
 
-  final object FoldXORR extends SimplifyReductionOp {
+  object FoldXORR extends SimplifyReductionOp {
     override def identityValue = false
     override def reduce = (a: Boolean, b: Boolean) => a ^ b
   }

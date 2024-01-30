@@ -98,9 +98,9 @@ class InferWidths extends Transform with ResolvedAnnotationPaths {
           }
       }
     case (t1: VectorType, t2: VectorType) => addTypeConstraints(r1.index(0), r2.index(0))(t1.tpe, t2.tpe)
-    case (AsyncResetType, AsyncResetType) => Nil
-    case (ResetType, _)                   => Nil
-    case (_, ResetType)                   => Nil
+    case (AsyncResetType, AsyncResetType) =>
+    case (ResetType, _)                   =>
+    case (_, ResetType)                   =>
     case _                                => throwInternalError("Shouldn't be here")
   }
 

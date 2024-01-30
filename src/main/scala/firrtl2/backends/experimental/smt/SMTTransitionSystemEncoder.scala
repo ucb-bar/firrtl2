@@ -22,7 +22,7 @@ object SMTTransitionSystemEncoder {
 
     // emit header as comments
     if (sys.header.nonEmpty) {
-      cmds ++= sys.header.split('\n').map(Comment)
+      cmds ++= sys.header.split('\n').map((s: String) => Comment(s))
     }
 
     // declare state type
@@ -118,7 +118,7 @@ object SMTTransitionSystemEncoder {
       case BVSymbol(name, width) => Comment(s"firrtl-smt2-$kind $name $width")
       case ArraySymbol(name, indexWidth, dataWidth) =>
         Comment(s"firrtl-smt2-$kind $name $indexWidth $dataWidth")
-    }) ++ comments(sym.name).map(Comment)
+    }) ++ comments(sym.name).map((s: String) => Comment(s))
   }
   // All signals are modelled with functions that need to be called with the state as argument,
   // this replaces all Symbols with function applications to the state.

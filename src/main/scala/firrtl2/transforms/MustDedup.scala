@@ -192,7 +192,7 @@ class MustDeduplicateTransform extends Transform {
           val moduleNames = mods.map(_.leafModule).distinct
           if (moduleNames.size <= 1) None
           else {
-            val modNames = moduleNames.map(OfModule)
+            val modNames = moduleNames.map((s: String) => OfModule(s))
             Some(findDedupFailures(modNames, igraph))
           }
         case _ => None

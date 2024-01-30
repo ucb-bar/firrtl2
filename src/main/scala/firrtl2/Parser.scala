@@ -10,6 +10,7 @@ import firrtl2.Utils.time
 import firrtl2.antlr._
 import firrtl2.logger.LazyLogging
 
+import scala.collection.immutable.ArraySeq
 import scala.util.control.NonFatal
 
 class ParserException(message: String) extends FirrtlUserException(message)
@@ -119,7 +120,7 @@ object Parser extends LazyLogging {
 
   def parse(lines: Seq[String], infoMode: InfoMode): Circuit = parse(lines.iterator, infoMode)
 
-  def parse(text: String, infoMode: InfoMode): Circuit = parse(text.split("\n"), infoMode)
+  def parse(text: String, infoMode: InfoMode): Circuit = parse(ArraySeq.unsafeWrapArray(text.split("\n")), infoMode)
 
   /** Parse the concrete syntax of a FIRRTL [[firrtl2.ir.Expression]], e.g.
     *   "add(x, y)" becomes:

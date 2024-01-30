@@ -45,7 +45,7 @@ object RenameMap {
     val instOf: String => Map[String, String] =
       graph.getChildInstances.toMap
         // Laziness here is desirable, we only access each key once, some we don't access
-        .mapValues(_.map(k => k.name -> k.module).toMap)
+        .view.mapValues(_.map(k => k.name -> k.module).toMap)
     for ((OfModule(module), instMapping) <- renames) {
       val modLookup = instOf(module)
       val parentInstances = graph.findInstancesInHierarchy(module)

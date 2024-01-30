@@ -145,10 +145,10 @@ trait Transform extends TransformLike[CircuitState] with DependencyAPI[Transform
 
   def transform(state: CircuitState): CircuitState = execute(state)
 
-  private lazy val fullCompilerSet = new mutable.LinkedHashSet[Dependency[Transform]] ++ Forms.VerilogOptimized
+  private lazy val fullCompilerSet: Set[Dependency[Transform]] = Set(Forms.VerilogOptimized:_*)
 
-  private lazy val highOutputInvalidates = fullCompilerSet -- Forms.MinimalHighForm
-  private lazy val midOutputInvalidates = fullCompilerSet -- Forms.MidForm
+  private lazy val highOutputInvalidates = fullCompilerSet.removedAll(Forms.MinimalHighForm)
+  private lazy val midOutputInvalidates = fullCompilerSet.removedAll(Forms.MidForm)
 
   /** Executes before any transform's execute method
     * @param state
@@ -192,7 +192,7 @@ abstract class SeqTransform extends Transform with SeqTransformBased {
 trait ResolvedAnnotationPaths {
   this: Transform =>
 
-  val annotationClasses: Traversable[Class[_]]
+  val annotationClasses: Iterable[Class[_]]
 
   override def prepare(state: CircuitState): CircuitState = {
     state.resolvePathsOf(annotationClasses.toSeq: _*)
