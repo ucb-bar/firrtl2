@@ -100,8 +100,7 @@ lazy val docSettings = Seq(
   Compile / doc / scalacOptions ++= Seq(
     // ANTLR-generated classes aren't really part of public API and cause
     // errors in ScalaDoc generation
-    "-skip-packages",
-    "firrtl2.antlr",
+    "-skip-packages:firrtl2.antlr",
     "-Xfatal-warnings",
     "-feature",
     "-diagrams",
