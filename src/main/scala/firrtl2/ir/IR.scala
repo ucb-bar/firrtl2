@@ -8,7 +8,7 @@ import firrtl2.backends.experimental.smt.random.DefRandom
 import firrtl2.constraint.{Constraint, IsKnown, IsVar}
 import org.apache.commons.text.translate.{AggregateTranslator, JavaUnicodeEscaper, LookupTranslator}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.math.BigDecimal.RoundingMode._
 
 /** Intermediate Representation */
@@ -175,7 +175,7 @@ object MultiInfo {
       var columnsList = columns.mkString(",")
       // Wrap the columns in curly braces if it contains more than one entry
       if (columns.size > 1)
-        columnsList = '{' + columnsList + '}'
+        columnsList = s"{$columnsList}"
 
       // If there already exists line/column numbers in the buffer, delimit the new
       // info with a space

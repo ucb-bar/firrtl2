@@ -112,7 +112,7 @@ class EulerTour[T](r: Map[T, Int], e: Seq[T], h: Seq[Int]) {
     }
     tmp
   }
-  private lazy val st = constructSparseTable(a)
+  private lazy val st = constructSparseTable(a.toIndexedSeq)
 
   /** Precompute all possible RMQs for an array of size `n where each
     * entry in the range is different from the last by only +-1
@@ -165,7 +165,7 @@ class EulerTour[T](r: Map[T, Int], e: Seq[T], h: Seq[Int]) {
     val out = blocks.map(mapBlockToTable(_)).toArray
     out
   }
-  private lazy val tableIdx = mapBlocksToTables(blocks)
+  private lazy val tableIdx = mapBlocksToTables(blocks.toIndexedSeq)
 
   /** Range Minimum Query using the Berkman--Vishkin algorithm with the
     * simplifications of Bender--Farach-Colton.
