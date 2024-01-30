@@ -243,7 +243,7 @@ class ConnectionGraph protected (val circuit: Circuit, val digraph: DiGraph[Refe
                 instancePort.component.tail
               )
               val destinations = bfsShortCuts.getOrElse(modulePort, mutable.HashSet.empty[ReferenceTarget])
-              bfsShortCuts(modulePort) = destinations.union(localSource)
+              bfsShortCuts(modulePort) = destinations.union(Set(localSource))
               // Remove entrance from parent from stack
               portConnectivityStack(localSink) = currentStack.tail
             } else {
