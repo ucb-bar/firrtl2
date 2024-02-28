@@ -10,7 +10,7 @@ lazy val commonSettings = Seq(
 
 lazy val firrtlSettings = Seq(
   name := "firrtl2",
-  version := "6.0-SNAPSHOT",
+  version := "6.0.0",
   scalacOptions := Seq(
     "-deprecation",
     "-unchecked",
