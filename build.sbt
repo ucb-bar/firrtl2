@@ -4,7 +4,7 @@ enablePlugins(SiteScaladocPlugin)
 
 lazy val commonSettings = Seq(
   organization := "edu.berkeley.cs",
-  scalaVersion := "3.3.1",
+  scalaVersion := "2.13.12",
   crossScalaVersions := Seq("2.13.12", "3.3.1")
 )
 
