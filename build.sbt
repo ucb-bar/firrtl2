@@ -149,6 +149,16 @@ lazy val firrtl = (project in file("."))
   )
   .settings(mimaSettings)
 
+lazy val bridge = (project in file("bridge"))
+  .dependsOn(firrtl)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq("org.chipsalliance" %% "chisel" % "6.0.0",
+      "org.apache.commons" % "commons-lang3" % "3.12.0",
+      "org.apache.commons" % "commons-text" % "1.9"),
+    addCompilerPlugin("org.chipsalliance" % "chisel-plugin" % "6.0.0" cross CrossVersion.full),
+  )
+
 lazy val benchmark = (project in file("benchmark"))
   .dependsOn(firrtl)
   .settings(commonSettings)
