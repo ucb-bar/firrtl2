@@ -48,7 +48,7 @@ object convertTargetToFirrtl2 {
 }
 
 /// wraps Chisel elaboration to bridge it over into the firrtl2 world
-private object ChiselBridge {
+object ChiselBridge {
   private val elaboratePhase = new Elaborate
   private val maybeAspects = new MaybeAspectPhase
   private val converter = new Convert
@@ -89,7 +89,7 @@ private object ChiselBridge {
     runWiring ++: annos
   }
 
-  private def annosToState(annos: AnnotationSeq): firrtl2.CircuitState = {
+  def annosToState(annos: AnnotationSeq): firrtl2.CircuitState = {
     val circuit = annos.collectFirst { case FirrtlCircuitAnnotation(c) => c }.get
     val filteredAnnos = annos.filterNot(isInternalAnno)
     val firrtl2Annos = filteredAnnos.flatMap(convert)
@@ -166,7 +166,7 @@ private object ChiselBridge {
       Some(UnsupportedAnnotation(anno.getClass.getSimpleName, anno.toString))
   }
 
-  private def convert(c: Circuit): firrtl2.ir.Circuit =
+  def convert(c: Circuit): firrtl2.ir.Circuit =
     firrtl2.ir.Circuit(convert(c.info), c.modules.map(convert), c.main)
   private def convert(i: Info): firrtl2.ir.Info = i match {
     case FileInfo(escaped) => firrtl2.ir.FileInfo(escaped)
