@@ -161,7 +161,7 @@ private object ChiselBridge {
     case _ =>
       println(
         s"[WARNING] Unsupported annotation: ${anno.getClass.getSimpleName}\n" +
-          s" Please report this issue at https://github.com/ucb-bar/chiseltest/issues"
+          s" Please report this issue at https://github.com/ucb-bar/firrtl2/issues"
       )
       Some(UnsupportedAnnotation(anno.getClass.getSimpleName, anno.toString))
   }
