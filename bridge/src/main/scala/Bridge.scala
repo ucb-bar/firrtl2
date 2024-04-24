@@ -13,7 +13,8 @@ import firrtl.ir._
 import firrtl.annotations._
 import firrtl.stage.FirrtlCircuitAnnotation
 import firrtl.passes.wiring.{SinkAnnotation, SourceAnnotation}
-import firrtl.transforms.{DontTouchAnnotation, NoDedupAnnotation}
+import firrtl.transforms.{DontTouchAnnotation, NoDedupAnnotation, DedupGroupAnnotation}
+import circt.stage.{CIRCTTargetAnnotation}
 import logger.LogLevelAnnotation
 
 /// Indicates that an unsupported Chisel annotation was encountered
@@ -139,6 +140,7 @@ private object ChiselBridge {
     case InlineAnnotation(target)  => Some(firrtl2.passes.InlineAnnotation(convertNamed(target)))
     case FlattenAnnotation(target) => Some(firrtl2.transforms.FlattenAnnotation(convertNamed(target)))
     case NoDedupAnnotation(target) => Some(firrtl2.transforms.NoDedupAnnotation(convert(target)))
+    case DedupGroupAnnotation(target, group) => None // not supported
     // don't touch
     case DontTouchAnnotation(target) => Some(firrtl2.transforms.DontTouchAnnotation(convert(target)))
     // memory annotations
@@ -153,6 +155,8 @@ private object ChiselBridge {
       Some(firrtl2.annotations.EnumVecAnnotation(convertNamed(target), typeName, fields))
     // ignoreDecodeTableAnnotation since it is not needed by the firrtl compiler
     case _: DecodeTableAnnotation => None
+    // firrtl2 has no circt-related passes
+    case CIRCTTargetAnnotation(target) => None
     //
     case _ =>
       println(
