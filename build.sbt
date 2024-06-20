@@ -4,7 +4,7 @@ enablePlugins(SiteScaladocPlugin)
 
 lazy val commonSettings = Seq(
   organization := "edu.berkeley.cs",
-  scalaVersion := "3.3.1",
+  scalaVersion := "2.13.12",
   crossScalaVersions := Seq("2.13.12", "3.3.1")
 )
 
@@ -148,6 +148,16 @@ lazy val firrtl = (project in file("."))
     buildInfoKeys := Seq[BuildInfoKey](buildInfoPackage, version, scalaVersion, sbtVersion)
   )
   .settings(mimaSettings)
+
+lazy val bridge = (project in file("bridge"))
+  .dependsOn(firrtl)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq("org.chipsalliance" %% "chisel" % "6.0.0",
+      "org.apache.commons" % "commons-lang3" % "3.12.0",
+      "org.apache.commons" % "commons-text" % "1.9"),
+    addCompilerPlugin("org.chipsalliance" % "chisel-plugin" % "6.0.0" cross CrossVersion.full),
+  )
 
 lazy val benchmark = (project in file("benchmark"))
   .dependsOn(firrtl)
