@@ -13,7 +13,7 @@ import firrtl.ir._
 import firrtl.annotations._
 import firrtl.stage.FirrtlCircuitAnnotation
 import firrtl.passes.wiring.{SinkAnnotation, SourceAnnotation}
-import firrtl.transforms.{DontTouchAnnotation, NoDedupAnnotation, DedupGroupAnnotation}
+import firrtl.transforms.{DontTouchAnnotation, NoDedupAnnotation}
 import circt.stage.{CIRCTTargetAnnotation}
 import logger.LogLevelAnnotation
 
@@ -140,7 +140,6 @@ object ChiselBridge {
     case InlineAnnotation(target)  => Some(firrtl2.passes.InlineAnnotation(convertNamed(target)))
     case FlattenAnnotation(target) => Some(firrtl2.transforms.FlattenAnnotation(convertNamed(target)))
     case NoDedupAnnotation(target) => Some(firrtl2.transforms.NoDedupAnnotation(convert(target)))
-    case DedupGroupAnnotation(target, group) => None // not supported
     // don't touch
     case DontTouchAnnotation(target) => Some(firrtl2.transforms.DontTouchAnnotation(convert(target)))
     // memory annotations
